@@ -4,8 +4,8 @@ using GW.Membership.Models;
 
 namespace GW.Membership.Contracts.Data   
 {
-    public interface ISessionRepository :
-        IRepository<SessionParam, SessionModel, SessionList, SessionSearchResult>
+    public interface ISessionLogRepository :
+        IRepository<SessionLogParam, SessionLogModel, SessionLogList, SessionLogSearchResult>
     {
 
         new IDapperContext Context { get; set; }

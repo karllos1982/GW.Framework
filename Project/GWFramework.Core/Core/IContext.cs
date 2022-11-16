@@ -10,7 +10,7 @@ namespace GW.Core
 
         OperationStatus ExecutionStatus { get; set; }
 
-        OperationStatus Begin();
+        OperationStatus Begin(int sourceindex);
 
         OperationStatus Commit();
 

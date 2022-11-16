@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace GW.Membership.Models
 {
-    public class SessionParam
+    public class SessionLogParam
     {
 
-        public SessionParam()
+        public SessionLogParam()
         {
             pSessionID = 0;
             pUserID = 0;
@@ -31,7 +31,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class SessionModel
+    public class SessionLogModel
     {
         public Int64 SessionID { get; set; }
 
@@ -51,7 +51,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class SessionList
+    public class SessionLogList
     {
         public Int64 SessionID { get; set; }
 
@@ -63,7 +63,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class SessionSearchResult
+    public class SessionLogSearchResult
     {
         public Int64 SessionID { get; set; }
 
