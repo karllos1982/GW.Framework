@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "WkjD4BL1lvU/C3Jf+wpbn2PFnzTJNrO9sg/lWB00+IO4Zm3Y+Z7qB2tXchk47T18BbHEU6sBWxfYnyllQTPMGg==",
+  "success": true,
+  "projectFilePath": "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GWFramework.Core\\GWFramework.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\karll\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
