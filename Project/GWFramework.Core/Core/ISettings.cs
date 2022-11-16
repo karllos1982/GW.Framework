@@ -1,5 +1,5 @@
 ﻿using GW.Common;
-using GW.Helpers;
+using GW.ApplicationHelpers;
 
 namespace GW.Core
 {

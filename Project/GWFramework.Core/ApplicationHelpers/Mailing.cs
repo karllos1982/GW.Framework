@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
+using GW.Common;
+using GW.Core;
 
-namespace GW.Helpers
+namespace GW.ApplicationHelpers
 {
 
     public class MailSettings
@@ -23,11 +25,11 @@ namespace GW.Helpers
 
         public string NameSender { get; set; }
 
-        public Encoding ContentEncoding { get; set;  }
+        public Encoding ContentEncoding { get; set; }
 
     }
 
-    public class Email
+    public class MailManager
     {
 
         private MailSettings _config;
@@ -38,16 +40,16 @@ namespace GW.Helpers
         }
 
 
-        public Email()
-        {            
-            
+        public MailManager()
+        {
+
         }
 
-        public Email(MailSettings config)
+        public MailManager(ISettings configs)
         {
-            this._config = config;
+            _config = configs.MailSettings;
         }
-      
+
         private List<Destination> _destinations = new List<Destination>();
 
         public List<string> _attfiles { get; set; }
@@ -102,7 +104,7 @@ namespace GW.Helpers
                 oMail.Body = message;
                 oMail.BodyEncoding = _config.ContentEncoding;
                 oMail.SubjectEncoding = _config.ContentEncoding;
-                SmtpClient oSmtp = new SmtpClient(_config.SMTPServer, Int32.Parse(_config.Port));
+                SmtpClient oSmtp = new SmtpClient(_config.SMTPServer, int.Parse(_config.Port));
 
                 oSmtp.UseDefaultCredentials = false;
 
@@ -110,7 +112,7 @@ namespace GW.Helpers
                 oSmtp.EnableSsl = _config.SSL;
                 oSmtp.Send(oMail);
 
-                oMail.Dispose();              
+                oMail.Dispose();
                 ret = true;
             }
             catch (Exception ex)
