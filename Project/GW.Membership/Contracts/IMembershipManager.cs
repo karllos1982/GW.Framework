@@ -5,8 +5,7 @@ namespace GW.Membership.Contracts.Domain
 {
     public interface IMembershipManager: IManager
     {
-        new IDapperContext Context { get; set; }
-
+       
         IDataLogDomain DataLog { get; set; }
 
         IInstanceDomain Instance { get; set; }

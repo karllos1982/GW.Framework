@@ -15,8 +15,4 @@
     <ProjectReference Include="..\GWFramework.Core\GWFramework.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\" />
-  </ItemGroup>
-
 </Project>

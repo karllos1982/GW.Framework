@@ -1,14 +1,16 @@
 ﻿using GW.Common;
 using GW.Core;
 using GW.Membership.Models;
+using GW.Membership.Contracts.Data;
 
 namespace GW.Membership.Contracts.Domain
 {
     public interface IDataLogDomain :
         IDomain<DataLogParam, DataLogModel, DataLogList, DataLogSearchResult>
     {
-        new IDapperContext Context { get; set; }
+         IMembershipRepositorySet RepositorySet { get; set;  }    
 
     }
+
 }
 

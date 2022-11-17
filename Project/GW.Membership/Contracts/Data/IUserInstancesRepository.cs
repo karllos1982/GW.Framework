@@ -8,6 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<UserInstancesParam, UserInstancesModel, UserInstancesList, UserInstancesSearchResult>
     {
 
-
+        
     }
 }

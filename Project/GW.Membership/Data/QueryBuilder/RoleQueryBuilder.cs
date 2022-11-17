@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace GW.Membership.Data
 {
-    public class RoleQueryManager : QueryBuilder
+    public class RoleQueryBuilder : QueryBuilder
     {
-        public RoleQueryManager()
+        public RoleQueryBuilder()
         {
             Initialize();
         }

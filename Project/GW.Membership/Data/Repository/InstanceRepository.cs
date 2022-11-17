@@ -8,14 +8,12 @@ namespace GW.Membership.Data
 {
     public class InstanceRepository : IInstanceRepository        
     {
-        IDapperContext _ctx;
-
+       
         public InstanceRepository(IContext context)
         {
-            Context = Context;
-            _ctx = (IDapperContext)context;
+            Context = context;            
         }
-
+         
         private InstanceQueryBuilder query = new InstanceQueryBuilder();
 
         public IContext Context { get; set; }
@@ -25,7 +23,7 @@ namespace GW.Membership.Data
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForCreate("sysInstance", model,model);
-            ret = _ctx.Execute(sql, model);
+            ret = ((DapperContext)Context).Execute(sql, model);
 
             return ret;
         }
@@ -36,7 +34,7 @@ namespace GW.Membership.Data
             
             string sql = query.QueryForGet(null);
 
-            ret = _ctx.ExecuteQueryFirst<InstanceModel>(sql, param); 
+            ret = ((DapperContext)Context).ExecuteQueryFirst<InstanceModel>(sql, param); 
                  
             return ret;
         }
@@ -46,7 +44,7 @@ namespace GW.Membership.Data
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForUpdate("sysInstance", model, model);
-            ret = _ctx.Execute(sql, model);
+            ret = ((DapperContext)Context).Execute(sql, model);
 
             return ret;
         }
@@ -56,7 +54,7 @@ namespace GW.Membership.Data
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForDelete("sysInstance", model, model);
-            ret = _ctx.Execute(sql, model);
+            ret = ((DapperContext)Context).Execute(sql, model);
 
             return ret;
         }
@@ -65,7 +63,7 @@ namespace GW.Membership.Data
         {
             List<InstanceList> ret = null;
 
-            ret = _ctx.ExecuteQueryToList<InstanceList>(query.QueryForList(null),
+            ret = ((DapperContext)Context).ExecuteQueryToList<InstanceList>(query.QueryForList(null),
                  param); 
 
             return ret;
@@ -75,7 +73,7 @@ namespace GW.Membership.Data
         {
             List<InstanceSearchResult> ret = null;
 
-            ret = _ctx.ExecuteQueryToList<InstanceSearchResult>(query.QueryForSearch(null),
+            ret = ((DapperContext)Context).ExecuteQueryToList<InstanceSearchResult>(query.QueryForSearch(null),
                  param);
 
             return ret;

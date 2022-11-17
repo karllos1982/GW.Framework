@@ -10,3 +10,15 @@ H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramewo
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\refint\GW.Framework.dll
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GW.Framework.pdb
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\ref\GW.Framework.dll
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\bin\Debug\net6.0\GW.Framework.deps.json
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\bin\Debug\net6.0\GW.Framework.dll
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\bin\Debug\net6.0\GW.Framework.pdb
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GWFramework.Core.csproj.AssemblyReference.cache
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GWFramework.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GWFramework.Core.AssemblyInfoInputs.cache
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GWFramework.Core.AssemblyInfo.cs
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GWFramework.Core.csproj.CoreCompileInputs.cache
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GW.Framework.dll
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\refint\GW.Framework.dll
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\GW.Framework.pdb
+C:\Projetos\OUTROS\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\obj\Debug\net6.0\ref\GW.Framework.dll

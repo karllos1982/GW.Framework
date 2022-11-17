@@ -6,7 +6,7 @@ namespace GW.Core
     {
         IContext Context { get; set; }
 
-        TModel Get(TModel model);
+        TModel Get(TParam param);
 
         void FillChields(ref TModel obj);  
 

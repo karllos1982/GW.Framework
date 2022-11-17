@@ -7,7 +7,7 @@ namespace GW.Membership.Contracts.Domain
     public interface IUserDomain :
         IDomain<UserParam, UserModel, UserList, UserSearchResult>
     {
-        new IDapperContext Context { get; set; }
+ 
 
     }
 }

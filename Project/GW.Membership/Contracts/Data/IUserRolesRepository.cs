@@ -8,6 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<UserRolesParam, UserRolesModel, UserRolesList, UserRolesSearchResult>
     {
 
-
+        
     }
 }

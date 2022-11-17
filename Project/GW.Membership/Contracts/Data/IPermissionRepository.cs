@@ -8,6 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<PermissionParam, PermissionModel, PermissionList, PermissionSearchResult>
     {
 
-
+       
     }
 }

@@ -6,8 +6,7 @@ namespace GW.Membership.Contracts.Domain
 {
     public interface IPermissionDomain :
         IDomain<PermissionParam, PermissionModel, PermissionList, PermissionSearchResult>
-    {
-        new IDapperContext Context { get; set; }
+    {   
 
     }
 }

@@ -4,6 +4,7 @@ namespace GW.Core
 {
     public interface IRepository<TParam,TModel,TList,TSearchResult>
     {
+
         IContext Context { get; set; }
 
         OperationStatus Create(TModel model);

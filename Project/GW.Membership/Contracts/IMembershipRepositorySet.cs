@@ -17,7 +17,7 @@ public interface IMembershipRepositorySet: IRepositorySet
 
     IRoleRepository Role { get; set; }
 
-    ISessionLogRepository Session { get; set; }
+    ISessionLogRepository SessionLog { get; set; }
 
     IUserInstancesRepository UserInstances { get; set; }
 
