@@ -6,13 +6,13 @@ namespace GW.Core
     {
         IContext Context { get; set; }
 
-        object Create(TModel model);
+        OperationStatus Create(TModel model);
 
-        object Read(TModel model);
+        TModel Read(TParam model);
 
-        object Update(TModel model);
+        OperationStatus Update(TModel model);
 
-        object Delete(TModel model);
+        OperationStatus Delete(TModel model);
 
         List<TList> List(TParam param);
 

@@ -8,7 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<SessionLogParam, SessionLogModel, SessionLogList, SessionLogSearchResult>
     {
 
-        new IDapperContext Context { get; set; }
 
     }
 }

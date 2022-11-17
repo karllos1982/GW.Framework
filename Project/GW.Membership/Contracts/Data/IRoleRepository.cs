@@ -8,7 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<RoleParam, RoleModel, RoleList, RoleSearchResult>
     {
 
-        new IDapperContext Context { get; set; }
 
     }
 }

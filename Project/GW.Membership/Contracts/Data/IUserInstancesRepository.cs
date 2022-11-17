@@ -8,7 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<UserInstancesParam, UserInstancesModel, UserInstancesList, UserInstancesSearchResult>
     {
 
-        new IDapperContext Context { get; set; }
 
     }
 }

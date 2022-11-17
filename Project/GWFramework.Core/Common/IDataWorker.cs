@@ -1,14 +1,18 @@
 ﻿
 namespace GW.Common
 {
+    // OBSOLITE INTERFACE
     public interface IDataWorker
     {        
 
-        List<T> ExecuteQueryToList<T>(string sql, object filter = null);
+        List<T> ExecuteQueryToList<T>(ref OperationStatus executionstatus,
+            string sql, object filter = null);
 
-        T ExecuteQueryFirst<T>(string sql, object filter = null);
+        T ExecuteQueryFirst<T>(ref OperationStatus executionstatus,
+            string sql, object filter = null);
 
-        OperationStatus Execute(string sql, object obj);
+        OperationStatus Execute(ref OperationStatus executionstatus,
+            string sql, object data);
 
 
     }

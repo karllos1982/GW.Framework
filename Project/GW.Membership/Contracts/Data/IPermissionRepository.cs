@@ -8,7 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<PermissionParam, PermissionModel, PermissionList, PermissionSearchResult>
     {
 
-        new IDapperContext Context { get; set; }
 
     }
 }

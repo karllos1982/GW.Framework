@@ -3,10 +3,51 @@ using System.Reflection;
 
 namespace GW.Helpers
 {
-    public static class QueryBuilder
+    public abstract class QueryBuilder
     {
 
-        public static string BuildInsertCommand(string tablename,
+        public List<string> Keys { get; set; }
+
+        public List<string> ExcludeFields { get; set; }
+
+        public abstract void Initialize();
+
+        public abstract string QueryForGet(object param);
+
+        public abstract string QueryForList(object param);
+
+        public abstract string QueryForSearch(object param);
+
+        public string QueryForCreate(string tablename, object baseobject, object param)
+        {
+            string ret = "";
+
+            ret = BuildInsertCommand(tablename,
+                baseobject, ExcludeFields);
+
+            return ret;
+        }
+
+        public string QueryForUpdate(string tablename, object baseobject, object param)
+        {
+            string ret = "";
+
+            ret = BuildUpdateCommand(tablename,
+                baseobject, Keys, ExcludeFields);
+
+            return ret;
+        }
+
+        public string QueryForDelete(string tablename, object baseobject, object param)
+        {
+            string ret = "";
+
+            ret = BuildDeleteCommand(tablename, Keys);
+
+            return ret;
+        }
+
+        public string BuildInsertCommand(string tablename,
             object baseobject, List<string> excludefields)
         {
             string ret = "";
@@ -69,7 +110,7 @@ namespace GW.Helpers
             return ret;
         }
 
-        public static string BuildUpdateCommand(string tablename,
+        public string BuildUpdateCommand(string tablename,
          object baseobject, List<string> keyfields, List<string> excludefields)
         {
             string ret = "";
@@ -144,7 +185,7 @@ namespace GW.Helpers
             return ret;
         }
 
-        public static string BuildDeleteCommand(string tablename,
+        public string BuildDeleteCommand(string tablename,
               List<string> keyfields)
         {
             string ret = "";

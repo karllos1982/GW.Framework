@@ -14,8 +14,18 @@ namespace GW.Membership.Contracts
 
          IsolationLevel Isolation { get; set; }
 
-         IDataWorker Worker { get; set; }
+         OperationStatus Commit();
 
+         OperationStatus Rollback();
+
+         OperationStatus Execute(string sql, object data);
+
+         T ExecuteQueryFirst<T>(string sql, object filter = null);
+
+         List<T> ExecuteQueryToList<T>(string sql, object filter = null);
+
+         void RegisterDataLog(string userid, OPERATIONLOGENUM operation,
+           string tableaname, string objID, object olddata, object currentdata);
 
     }
 }

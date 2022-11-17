@@ -12,9 +12,7 @@ namespace GW.Core
 
         OperationStatus Begin(int sourceindex);
 
-        OperationStatus Commit();
-
-        OperationStatus End();
+        OperationStatus End();  
 
         void Dispose(); 
 

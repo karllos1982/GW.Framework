@@ -6,7 +6,7 @@ namespace GW.Core
     {
         IContext Context { get; set; }
 
-        object Get(TModel model);
+        TModel Get(TModel model);
 
         void FillChields(ref TModel obj);  
 
@@ -14,9 +14,9 @@ namespace GW.Core
 
         List<TSearchResult> Search(TParam param);
 
-        object Set(TModel model, object userid);
+        OperationStatus Set(TModel model, object userid);
 
-        object Delete(TModel model, object userid);
+        OperationStatus Delete(TModel model, object userid);
 
         OperationStatus EntryValidation(TModel obj);
 
