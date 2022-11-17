@@ -6,7 +6,10 @@ namespace GW.Membership.Data
 {
     public class MembershipRepositorySet: IMembershipRepositorySet
     {
-
+        public MembershipRepositorySet(IContext context)
+        {
+            this.InitializeRespositories(context);
+        }
 
         public IDataLogRepository DataLog { get; set; }
 

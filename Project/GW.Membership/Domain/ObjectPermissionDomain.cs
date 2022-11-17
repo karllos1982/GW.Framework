@@ -8,9 +8,9 @@ using GW.Helpers;
 
 namespace GW.Membership.Domain
 {
-    public class InstanceDomain : IInstanceDomain
+    public class ObjectPermissionDomain : IObjectPermissionDomain
     {
-        public InstanceDomain(IContext context, IMembershipRepositorySet repositorySet)
+        public ObjectPermissionDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
             RepositorySet = repositorySet;  
@@ -20,34 +20,34 @@ namespace GW.Membership.Domain
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public InstanceModel Get(InstanceParam param)
+        public ObjectPermissionModel Get(ObjectPermissionParam param)
         {
-            InstanceModel ret = null;
+            ObjectPermissionModel ret = null;
 
-            ret = RepositorySet.Instance.Read(param); 
+            ret = RepositorySet.ObjectPermission.Read(param); 
             
             return ret;
         }
 
-        public List<InstanceList> List(InstanceParam param)
+        public List<ObjectPermissionList> List(ObjectPermissionParam param)
         {
-            List<InstanceList> ret = null;
+            List<ObjectPermissionList> ret = null;
 
-            ret = RepositorySet.Instance.List(param);           
+            ret = RepositorySet.ObjectPermission.List(param);           
 
             return ret;
         }
 
-        public List<InstanceSearchResult> Search(InstanceParam param)
+        public List<ObjectPermissionSearchResult> Search(ObjectPermissionParam param)
         {
-            List<InstanceSearchResult> ret = null;
+            List<ObjectPermissionSearchResult> ret = null;
 
-            ret = RepositorySet.Instance.Search(param);
+            ret = RepositorySet.ObjectPermission.Search(param);
 
             return ret;
         }
 
-        public OperationStatus Set(InstanceModel model, object userid)
+        public OperationStatus Set(ObjectPermissionModel model, object userid)
         {
             OperationStatus ret = new OperationStatus(true);
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
@@ -57,38 +57,36 @@ namespace GW.Membership.Domain
             if (ret.Status)
             {
 
-                InstanceModel old 
-                    = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+                ObjectPermissionModel old 
+                    = RepositorySet.ObjectPermission.Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
 
                 if (old == null)
                 {
                     ret = InsertValidation(model);
 
                     if (ret.Status)
-                    {
-                        model.CreateDate = DateTime.Now;
-                        ret = RepositorySet.Instance.Create(model);
+                    {                        
+                        ret = RepositorySet.ObjectPermission.Create(model);
                     }
                 }
                 else
-                {
-                    model.CreateDate = old.CreateDate;
+                {                    
                     operation = OPERATIONLOGENUM.UPDATE;
 
                     ret = UpdateValidation(model);
 
                     if (ret.Status)
                     {
-                        ret = RepositorySet.Instance.Update(model);
+                        ret = RepositorySet.ObjectPermission.Update(model);
                     }
 
                 }
 
                 if (ret.Status && userid != null)
                 {
-                    RepositorySet.Instance.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSINSTANCE",
-                        model.InstanceID.ToString(), old, model);
+                    RepositorySet.ObjectPermission.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSOBJECTPERMISSION",
+                        model.ObjectPermissionID.ToString(), old, model);
 
                     ret.Returns = model;
                 }
@@ -98,17 +96,17 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public void FillChields(ref InstanceModel obj)
+        public void FillChields(ref ObjectPermissionModel obj)
         {
             
         }
 
-        public OperationStatus Delete(InstanceModel model, object userid)
+        public OperationStatus Delete(ObjectPermissionModel model, object userid)
         {
             OperationStatus ret = new OperationStatus(true);
 
-            InstanceModel old 
-                = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+            ObjectPermissionModel old 
+                = RepositorySet.ObjectPermission.Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
 
             if (old != null)
             {
@@ -116,7 +114,7 @@ namespace GW.Membership.Domain
 
                 if (ret.Status)
                 {
-                    ret = RepositorySet.Instance.Delete(model);
+                    ret = RepositorySet.ObjectPermission.Delete(model);
                 }
             }
             else
@@ -130,7 +128,7 @@ namespace GW.Membership.Domain
         }
 
 
-        public OperationStatus EntryValidation(InstanceModel obj)
+        public OperationStatus EntryValidation(ObjectPermissionModel obj)
         {
             OperationStatus ret = null;
 
@@ -146,16 +144,16 @@ namespace GW.Membership.Domain
             return ret;
         }           
              
-        public OperationStatus InsertValidation(InstanceModel obj)
+        public OperationStatus InsertValidation(ObjectPermissionModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam()
+            ObjectPermissionParam param = new ObjectPermissionParam()
             {
-                pInstanceName = obj.InstanceName
+                pObjectCode = obj.ObjectCode
             };
 
-            List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+            List<ObjectPermissionList> list
+                = RepositorySet.ObjectPermission.List(param);
 
             if (list != null)
             {
@@ -171,18 +169,18 @@ namespace GW.Membership.Domain
             return ret;
         }
             
-        public OperationStatus UpdateValidation(InstanceModel obj)
+        public OperationStatus UpdateValidation(ObjectPermissionModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam() { pInstanceName = obj.InstanceName };
-            List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+            ObjectPermissionParam param = new ObjectPermissionParam() { pObjectCode = obj.ObjectCode };
+            List<ObjectPermissionList> list
+                = RepositorySet.ObjectPermission.List(param);
 
             if (list != null)
             {
                 if (list.Count > 0)
                 {
-                    if (list[0].InstanceID != obj.InstanceID)
+                    if (list[0].ObjectPermissionID != obj.ObjectPermissionID)
                     {
                         ret.Status = false;
                         ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
@@ -196,7 +194,7 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus DeleteValidation(InstanceModel obj)
+        public OperationStatus DeleteValidation(ObjectPermissionModel obj)
         {
             return new OperationStatus(true); 
         }

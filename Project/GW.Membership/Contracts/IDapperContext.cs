@@ -23,9 +23,7 @@ namespace GW.Membership.Contracts
          T ExecuteQueryFirst<T>(string sql, object filter = null);
 
          List<T> ExecuteQueryToList<T>(string sql, object filter = null);
-
-         void RegisterDataLog(string userid, OPERATIONLOGENUM operation,
-           string tableaname, string objID, object olddata, object currentdata);
+        
 
     }
 }

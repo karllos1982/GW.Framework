@@ -12,7 +12,10 @@ namespace GW.Core
 
         OperationStatus Begin(int sourceindex);
 
-        OperationStatus End();  
+        OperationStatus End();
+
+        void RegisterDataLog(string userid, OPERATIONLOGENUM operation,
+          string tableaname, string objID, object olddata, object currentdata);
 
         void Dispose(); 
 

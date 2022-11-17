@@ -6,7 +6,7 @@ namespace GW.Core
     {
         IContext Context { get; set; }
 
-        void InitializeDomains(IContext context);
+        void InitializeDomains(IContext context, IRepositorySet repositorySet);
 
     }
 

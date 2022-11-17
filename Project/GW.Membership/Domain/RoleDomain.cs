@@ -8,9 +8,9 @@ using GW.Helpers;
 
 namespace GW.Membership.Domain
 {
-    public class InstanceDomain : IInstanceDomain
+    public class RoleDomain : IRoleDomain
     {
-        public InstanceDomain(IContext context, IMembershipRepositorySet repositorySet)
+        public RoleDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
             RepositorySet = repositorySet;  
@@ -20,34 +20,34 @@ namespace GW.Membership.Domain
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public InstanceModel Get(InstanceParam param)
+        public RoleModel Get(RoleParam param)
         {
-            InstanceModel ret = null;
+            RoleModel ret = null;
 
-            ret = RepositorySet.Instance.Read(param); 
+            ret = RepositorySet.Role.Read(param); 
             
             return ret;
         }
 
-        public List<InstanceList> List(InstanceParam param)
+        public List<RoleList> List(RoleParam param)
         {
-            List<InstanceList> ret = null;
+            List<RoleList> ret = null;
 
-            ret = RepositorySet.Instance.List(param);           
+            ret = RepositorySet.Role.List(param);           
 
             return ret;
         }
 
-        public List<InstanceSearchResult> Search(InstanceParam param)
+        public List<RoleSearchResult> Search(RoleParam param)
         {
-            List<InstanceSearchResult> ret = null;
+            List<RoleSearchResult> ret = null;
 
-            ret = RepositorySet.Instance.Search(param);
+            ret = RepositorySet.Role.Search(param);
 
             return ret;
         }
 
-        public OperationStatus Set(InstanceModel model, object userid)
+        public OperationStatus Set(RoleModel model, object userid)
         {
             OperationStatus ret = new OperationStatus(true);
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
@@ -57,8 +57,8 @@ namespace GW.Membership.Domain
             if (ret.Status)
             {
 
-                InstanceModel old 
-                    = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+                RoleModel old 
+                    = RepositorySet.Role.Read(new RoleParam() { pRoleID = model.RoleID });
 
                 if (old == null)
                 {
@@ -67,7 +67,7 @@ namespace GW.Membership.Domain
                     if (ret.Status)
                     {
                         model.CreateDate = DateTime.Now;
-                        ret = RepositorySet.Instance.Create(model);
+                        ret = RepositorySet.Role.Create(model);
                     }
                 }
                 else
@@ -79,16 +79,16 @@ namespace GW.Membership.Domain
 
                     if (ret.Status)
                     {
-                        ret = RepositorySet.Instance.Update(model);
+                        ret = RepositorySet.Role.Update(model);
                     }
 
                 }
 
                 if (ret.Status && userid != null)
                 {
-                    RepositorySet.Instance.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSINSTANCE",
-                        model.InstanceID.ToString(), old, model);
+                    RepositorySet.Role.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSROLE",
+                        model.RoleID.ToString(), old, model);
 
                     ret.Returns = model;
                 }
@@ -98,17 +98,17 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public void FillChields(ref InstanceModel obj)
+        public void FillChields(ref RoleModel obj)
         {
             
         }
 
-        public OperationStatus Delete(InstanceModel model, object userid)
+        public OperationStatus Delete(RoleModel model, object userid)
         {
             OperationStatus ret = new OperationStatus(true);
 
-            InstanceModel old 
-                = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+            RoleModel old 
+                = RepositorySet.Role.Read(new RoleParam() { pRoleID = model.RoleID });
 
             if (old != null)
             {
@@ -116,7 +116,7 @@ namespace GW.Membership.Domain
 
                 if (ret.Status)
                 {
-                    ret = RepositorySet.Instance.Delete(model);
+                    ret = RepositorySet.Role.Delete(model);
                 }
             }
             else
@@ -130,7 +130,7 @@ namespace GW.Membership.Domain
         }
 
 
-        public OperationStatus EntryValidation(InstanceModel obj)
+        public OperationStatus EntryValidation(RoleModel obj)
         {
             OperationStatus ret = null;
 
@@ -146,16 +146,16 @@ namespace GW.Membership.Domain
             return ret;
         }           
              
-        public OperationStatus InsertValidation(InstanceModel obj)
+        public OperationStatus InsertValidation(RoleModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam()
+            RoleParam param = new RoleParam()
             {
-                pInstanceName = obj.InstanceName
+                pRoleName = obj.RoleName
             };
 
-            List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+            List<RoleList> list
+                = RepositorySet.Role.List(param);
 
             if (list != null)
             {
@@ -171,18 +171,18 @@ namespace GW.Membership.Domain
             return ret;
         }
             
-        public OperationStatus UpdateValidation(InstanceModel obj)
+        public OperationStatus UpdateValidation(RoleModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam() { pInstanceName = obj.InstanceName };
-            List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+            RoleParam param = new RoleParam() { pRoleName = obj.RoleName };
+            List<RoleList> list
+                = RepositorySet.Role.List(param);
 
             if (list != null)
             {
                 if (list.Count > 0)
                 {
-                    if (list[0].InstanceID != obj.InstanceID)
+                    if (list[0].RoleID != obj.RoleID)
                     {
                         ret.Status = false;
                         ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
@@ -196,7 +196,7 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus DeleteValidation(InstanceModel obj)
+        public OperationStatus DeleteValidation(RoleModel obj)
         {
             return new OperationStatus(true); 
         }

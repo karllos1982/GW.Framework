@@ -2,28 +2,30 @@
 using GW.Core;
 
 
-namespace GW.Membership.Contracts.Data;
-
-public interface IMembershipRepositorySet: IRepositorySet
+namespace GW.Membership.Contracts.Data
 {
 
-    IDataLogRepository DataLog { get; set; }
-    
-    IInstanceRepository Instance { get; set; }
+    public interface IMembershipRepositorySet : IRepositorySet
+    {
 
-    IObjectPermissionRepository ObjectPermission { get; set; }
+        IDataLogRepository DataLog { get; set; }
 
-    IPermissionRepository Permission { get; set; }
+        IInstanceRepository Instance { get; set; }
 
-    IRoleRepository Role { get; set; }
+        IObjectPermissionRepository ObjectPermission { get; set; }
 
-    ISessionLogRepository SessionLog { get; set; }
+        IPermissionRepository Permission { get; set; }
 
-    IUserInstancesRepository UserInstances { get; set; }
+        IRoleRepository Role { get; set; }
 
-    IUserRepository User { get; set; }
+        ISessionLogRepository SessionLog { get; set; }
 
-    IUserRolesRepository UserRoles { get; set; }
+        IUserInstancesRepository UserInstances { get; set; }
+
+        IUserRepository User { get; set; }
+
+        IUserRolesRepository UserRoles { get; set; }
 
 
+    }
 }

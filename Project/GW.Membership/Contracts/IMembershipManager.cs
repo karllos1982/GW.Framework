@@ -16,7 +16,7 @@ namespace GW.Membership.Contracts.Domain
 
         IRoleDomain Role { get; set; }
 
-        ISessionLogDomain Session { get; set; }
+        ISessionLogDomain SessionLog { get; set; }
 
         IUserDomain User { get; set; }
 

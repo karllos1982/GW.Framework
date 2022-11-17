@@ -8,46 +8,46 @@ using GW.Helpers;
 
 namespace GW.Membership.Domain
 {
-    public class InstanceDomain : IInstanceDomain
+    public class UserDomain : IUserDomain
     {
-        public InstanceDomain(IContext context, IMembershipRepositorySet repositorySet)
+        public UserDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet =repositorySet;  
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public InstanceModel Get(InstanceParam param)
+        public UserModel Get(UserParam param)
         {
-            InstanceModel ret = null;
+            UserModel ret = null;
 
-            ret = RepositorySet.Instance.Read(param); 
+            ret = RepositorySet.User.Read(param); 
             
             return ret;
         }
 
-        public List<InstanceList> List(InstanceParam param)
+        public List<UserList> List(UserParam param)
         {
-            List<InstanceList> ret = null;
+            List<UserList> ret = null;
 
-            ret = RepositorySet.Instance.List(param);           
+            ret = RepositorySet.User.List(param);           
 
             return ret;
         }
 
-        public List<InstanceSearchResult> Search(InstanceParam param)
+        public List<UserSearchResult> Search(UserParam param)
         {
-            List<InstanceSearchResult> ret = null;
+            List<UserSearchResult> ret = null;
 
-            ret = RepositorySet.Instance.Search(param);
+            ret = RepositorySet.User.Search(param);
 
             return ret;
         }
 
-        public OperationStatus Set(InstanceModel model, object userid)
+        public OperationStatus Set(UserModel model, object userid)
         {
             OperationStatus ret = new OperationStatus(true);
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
@@ -57,8 +57,8 @@ namespace GW.Membership.Domain
             if (ret.Status)
             {
 
-                InstanceModel old 
-                    = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+                UserModel old 
+                    = RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
 
                 if (old == null)
                 {
@@ -67,7 +67,7 @@ namespace GW.Membership.Domain
                     if (ret.Status)
                     {
                         model.CreateDate = DateTime.Now;
-                        ret = RepositorySet.Instance.Create(model);
+                        ret = RepositorySet.User.Create(model);
                     }
                 }
                 else
@@ -79,16 +79,16 @@ namespace GW.Membership.Domain
 
                     if (ret.Status)
                     {
-                        ret = RepositorySet.Instance.Update(model);
+                        ret = RepositorySet.User.Update(model);
                     }
 
                 }
 
                 if (ret.Status && userid != null)
                 {
-                    RepositorySet.Instance.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSINSTANCE",
-                        model.InstanceID.ToString(), old, model);
+                    RepositorySet.User.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSUSER",
+                        model.UserID.ToString(), old, model);
 
                     ret.Returns = model;
                 }
@@ -98,17 +98,17 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public void FillChields(ref InstanceModel obj)
+        public void FillChields(ref UserModel obj)
         {
             
         }
 
-        public OperationStatus Delete(InstanceModel model, object userid)
+        public OperationStatus Delete(UserModel model, object userid)
         {
             OperationStatus ret = new OperationStatus(true);
 
-            InstanceModel old 
-                = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+            UserModel old 
+                = RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
 
             if (old != null)
             {
@@ -116,7 +116,7 @@ namespace GW.Membership.Domain
 
                 if (ret.Status)
                 {
-                    ret = RepositorySet.Instance.Delete(model);
+                    ret = RepositorySet.User.Delete(model);
                 }
             }
             else
@@ -130,7 +130,7 @@ namespace GW.Membership.Domain
         }
 
 
-        public OperationStatus EntryValidation(InstanceModel obj)
+        public OperationStatus EntryValidation(UserModel obj)
         {
             OperationStatus ret = null;
 
@@ -146,16 +146,16 @@ namespace GW.Membership.Domain
             return ret;
         }           
              
-        public OperationStatus InsertValidation(InstanceModel obj)
+        public OperationStatus InsertValidation(UserModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam()
+            UserParam param = new UserParam()
             {
-                pInstanceName = obj.InstanceName
+                pUserName = obj.UserName
             };
 
-            List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+            List<UserList> list
+                = RepositorySet.User.List(param);
 
             if (list != null)
             {
@@ -171,18 +171,18 @@ namespace GW.Membership.Domain
             return ret;
         }
             
-        public OperationStatus UpdateValidation(InstanceModel obj)
+        public OperationStatus UpdateValidation(UserModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam() { pInstanceName = obj.InstanceName };
-            List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+            UserParam param = new UserParam() { pUserName = obj.UserName };
+            List<UserList> list
+                = RepositorySet.User.List(param);
 
             if (list != null)
             {
                 if (list.Count > 0)
                 {
-                    if (list[0].InstanceID != obj.InstanceID)
+                    if (list[0].UserID != obj.UserID)
                     {
                         ret.Status = false;
                         ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
@@ -196,7 +196,7 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus DeleteValidation(InstanceModel obj)
+        public OperationStatus DeleteValidation(UserModel obj)
         {
             return new OperationStatus(true); 
         }
