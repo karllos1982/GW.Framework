@@ -91,7 +91,9 @@ namespace GW.Membership.Domain
                     ret.Returns = model;
                 }
 
-            }     
+            }
+
+            Context.ExecutionStatus = ret;
 
             return ret;
         }
@@ -122,8 +124,9 @@ namespace GW.Membership.Domain
                 ret.Status = false;
                 ret.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
 
-            }           
+            }
 
+            Context.ExecutionStatus = ret;
             return ret;
         }
 
@@ -166,6 +169,24 @@ namespace GW.Membership.Domain
             return new OperationStatus(true); 
         }
 
+        public List<DataLogTimelineModel> GetTimeLine(Int64 recordID)
+        {
+            List<DataLogTimelineModel> ret = null;
+
+            ret = RepositorySet.DataLog.GetDataLogTimeline(recordID);    
+
+            return ret;
+        }
+
+        public List<TabelasValueModel> GetTableList()
+        {
+            List<TabelasValueModel> ret = null;
+
+            ret = RepositorySet.DataLog.GetTableList();
+
+
+            return ret;
+        }
 
     }
 }

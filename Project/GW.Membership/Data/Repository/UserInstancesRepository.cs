@@ -69,11 +69,11 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public List<UserInstancesSearchResult> Search(UserInstancesParam param)
+        public List<UserInstancesModel> Search(UserInstancesParam param)
         {
-            List<UserInstancesSearchResult> ret = null;
+            List<UserInstancesModel> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserInstancesSearchResult>(query.QueryForSearch(null),
+            ret = ((DapperContext)Context).ExecuteQueryToList<UserInstancesModel>(query.QueryForSearch(null),
                  param);
 
             return ret;

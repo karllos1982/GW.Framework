@@ -79,7 +79,16 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        
+        public List<PermissionSearchResult> GetPermissionsByRoleUser(object param)
+        {
+            List<PermissionSearchResult> ret = null;
+
+            ret = ((DapperContext)Context).ExecuteQueryToList<PermissionSearchResult>(
+                query.QueryForGetPermissionsByRoleUser(param), param);
+
+            return ret;
+        }
+
     }
 
 }

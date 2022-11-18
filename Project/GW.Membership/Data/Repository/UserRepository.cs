@@ -79,7 +79,90 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        
+        //
+
+        public UserModel GetByEmail(string email)
+        {
+            UserModel ret = null;
+
+            string sql = query.QueryForGetByEmail();
+
+            ret = ((DapperContext)Context).ExecuteQueryFirst<UserModel>(sql,
+                 new UserParam { pEmail = email });
+
+            return ret;
+        }
+
+        public OperationStatus UpdateUserLogin(UpdateUserLogin model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForUpdateUserLogin();
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
+        public OperationStatus SetPasswordRecoveryCode(SetPasswordRecoveryCode model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForSetPasswordRecoveryCode();
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
+        public OperationStatus ChangeUserPassword(ChangeUserPassword model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForChangeUserPassword();
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
+        public OperationStatus ActiveUserAccount(ActiveUserAccount model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForActiveAccount();
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
+        public OperationStatus ChangeUserProfileImage(ChangeUserImage model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForChangeUserProfileImage();
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
+        public OperationStatus UpdateLoginFailCounter(UpdateUserLoginFailCounter model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForSetLoginFailCounter(model.Reset);
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
+        public OperationStatus ChangeState(UserChangeState model)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForChangeUserState();
+            ret = ((DapperContext)Context).Execute(sql, model);
+
+            return ret;
+        }
+
     }
 
 }

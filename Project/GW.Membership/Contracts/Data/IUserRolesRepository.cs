@@ -5,7 +5,7 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Data
 {
     public interface IUserRolesRepository :
-        IRepository<UserRolesParam, UserRolesModel, UserRolesList, UserRolesSearchResult>
+        IRepository<UserRolesParam, UserRolesModel, UserRolesModel, UserRolesModel>
     {
 
         

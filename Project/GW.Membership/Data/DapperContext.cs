@@ -141,6 +141,8 @@ namespace GW.Membership.Data
 
             }
 
+            this.Dispose(); 
+
             return ret;
         }
 

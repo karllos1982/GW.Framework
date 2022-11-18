@@ -59,21 +59,21 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        public List<UserRolesList> List(UserRolesParam param)
+        public List<UserRolesModel> List(UserRolesParam param)
         {
-            List<UserRolesList> ret = null;
+            List<UserRolesModel> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserRolesList>(query.QueryForList(null),
+            ret = ((DapperContext)Context).ExecuteQueryToList<UserRolesModel>(query.QueryForList(null),
                  param); 
 
             return ret;
         }
              
-        public List<UserRolesSearchResult> Search(UserRolesParam param)
+        public List<UserRolesModel> Search(UserRolesParam param)
         {
-            List<UserRolesSearchResult> ret = null;
+            List<UserRolesModel> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserRolesSearchResult>(query.QueryForSearch(null),
+            ret = ((DapperContext)Context).ExecuteQueryToList<UserRolesModel>(query.QueryForSearch(null),
                  param);
 
             return ret;

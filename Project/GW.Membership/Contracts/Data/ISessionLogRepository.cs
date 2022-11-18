@@ -8,6 +8,8 @@ namespace GW.Membership.Contracts.Data
         IRepository<SessionLogParam, SessionLogModel, SessionLogList, SessionLogSearchResult>
     {
 
-        
+        OperationStatus SetDateLogout(SessionLogParam obj);
+
+
     }
 }

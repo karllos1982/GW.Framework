@@ -79,7 +79,28 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        
+        public List<DataLogTimelineModel> GetDataLogTimeline(Int64 recordID)
+        {
+            List<DataLogTimelineModel> ret = null;
+            DataLogParam param = new DataLogParam() { pID = recordID };
+            ret = ((DapperContext)Context)
+                .ExecuteQueryToList<DataLogTimelineModel>(query.QueryForGetTimeLine(),
+                  param);
+
+            return ret;
+        }
+
+        public List<TabelasValueModel> GetTableList()
+        {
+            List<TabelasValueModel> ret = null;
+
+            ret = ((DapperContext)Context)
+                .ExecuteQueryToList<TabelasValueModel>(query.QueryForGetTableList(),
+                  null);
+
+            return ret;
+        }
+
     }
 
 }

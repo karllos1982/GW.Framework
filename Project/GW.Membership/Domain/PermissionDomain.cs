@@ -169,5 +169,21 @@ namespace GW.Membership.Domain
         }
 
 
+        public List<PermissionSearchResult> GetPermissionsByRoleUser(Int64 roleid, Int64 userid)
+        {
+            List<PermissionSearchResult> ret = null;
+
+            PermissionParam param = new PermissionParam()
+            {
+                pRoleID = roleid,
+                pUserID = userid
+            };
+
+            ret = RepositorySet.Permission.GetPermissionsByRoleUser(param);
+            
+
+            return ret;
+        }
+
     }
 }

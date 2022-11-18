@@ -8,7 +8,11 @@ namespace GW.Membership.Contracts.Domain
     public interface IDataLogDomain :
         IDomain<DataLogParam, DataLogModel, DataLogList, DataLogSearchResult>
     {
-         IMembershipRepositorySet RepositorySet { get; set;  }    
+         IMembershipRepositorySet RepositorySet { get; set;  }
+
+        List<DataLogTimelineModel> GetTimeLine(Int64 recordID);
+
+        List<TabelasValueModel> GetTableList();
 
     }
 

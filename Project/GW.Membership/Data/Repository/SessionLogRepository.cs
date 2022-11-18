@@ -79,7 +79,16 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        
+        public OperationStatus SetDateLogout(SessionLogParam obj)
+        {
+            OperationStatus ret = new OperationStatus(true);
+
+            string sql = query.QueryForSetDateLogout();
+            ret = ((DapperContext)Context).Execute(sql, obj);
+
+            return ret;
+        }
+
     }
 
 }
