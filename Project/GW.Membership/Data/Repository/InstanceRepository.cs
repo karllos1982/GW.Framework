@@ -18,63 +18,58 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public OperationStatus Create(InstanceModel model)
+        public async Task Create(InstanceModel model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForCreate("sysInstance", model,model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
         }
 
-        public InstanceModel Read(InstanceParam param)
+        public async Task<InstanceModel> Read(InstanceParam param)
         {
             InstanceModel ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = ((DapperContext)Context).ExecuteQueryFirst<InstanceModel>(sql, param); 
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<InstanceModel>(sql, param); 
                  
             return ret;
         }
 
-        public OperationStatus Update(InstanceModel model)
+        public async Task Update(InstanceModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForUpdate("sysInstance", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
 
-            return ret;
         }
 
-        public OperationStatus Delete(InstanceModel model)
+        public async Task Delete(InstanceModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+           
             string sql = query.QueryForDelete("sysInstance", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+           await ((DapperContext)Context).ExecuteAsync(sql, model);
+      
         }
 
-        public List<InstanceList> List(InstanceParam param)
+        public async Task<List<InstanceList>> List(InstanceParam param)
         {
             List<InstanceList> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<InstanceList>(query.QueryForList(null),
-                 param); 
-
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<InstanceList>(query.QueryForList(null), param); 
+                
             return ret;
         }
              
-        public List<InstanceSearchResult> Search(InstanceParam param)
+        public async Task<List<InstanceSearchResult>> Search(InstanceParam param)
         {
             List<InstanceSearchResult> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<InstanceSearchResult>(query.QueryForSearch(null),
-                 param);
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<InstanceSearchResult>(query.QueryForSearch(null),  param);
+               
 
             return ret;
         }

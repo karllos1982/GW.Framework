@@ -7,7 +7,7 @@ namespace GW.Membership.Contracts.Data
     public interface IPermissionRepository :
         IRepository<PermissionParam, PermissionModel, PermissionList, PermissionSearchResult>
     {
-        List<PermissionSearchResult> GetPermissionsByRoleUser(object param);
+         Task<List<PermissionSearchResult>> GetPermissionsByRoleUser(object param);
 
     }
 }

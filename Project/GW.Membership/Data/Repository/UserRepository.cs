@@ -18,147 +18,151 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public OperationStatus Create(UserModel model)
+        public async Task Create(UserModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+           
             string sql = query.QueryForCreate("sysUser", model,model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+         
         }
 
-        public UserModel Read(UserParam param)
+        public async Task<UserModel> Read(UserParam param)
         {
             UserModel ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = ((DapperContext)Context).ExecuteQueryFirst<UserModel>(sql, param); 
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<UserModel>(sql, param); 
                  
             return ret;
         }
 
-        public OperationStatus Update(UserModel model)
+        public async Task Update(UserModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+           
             string sql = query.QueryForUpdate("sysUser", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+             await((DapperContext)Context).ExecuteAsync(sql, model);
+        
         }
 
-        public OperationStatus Delete(UserModel model)
+        public async Task Delete(UserModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+           
             string sql = query.QueryForDelete("sysUser", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+           
         }
 
-        public List<UserList> List(UserParam param)
+        public async Task<List<UserList>> List(UserParam param)
         {
             List<UserList> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserList>(query.QueryForList(null),
-                 param); 
-
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<UserList>(query.QueryForList(null), param); 
+               
             return ret;
         }
              
-        public List<UserSearchResult> Search(UserParam param)
+        public async Task<List<UserSearchResult>> Search(UserParam param)
         {
             List<UserSearchResult> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserSearchResult>(query.QueryForSearch(null),
-                 param);
-
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<UserSearchResult>(query.QueryForSearch(null),  param);
+               
             return ret;
         }
 
         //
 
-        public UserModel GetByEmail(string email)
+        public async Task<UserModel> GetByEmail(string email)
         {
             UserModel ret = null;
 
             string sql = query.QueryForGetByEmail();
 
-            ret = ((DapperContext)Context).ExecuteQueryFirst<UserModel>(sql,
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<UserModel>(sql,
                  new UserParam { pEmail = email });
 
             return ret;
         }
 
-        public OperationStatus UpdateUserLogin(UpdateUserLogin model)
+        public async Task<OperationStatus> UpdateUserLogin(UpdateUserLogin model)
         {
             OperationStatus ret = new OperationStatus(true);
-
             string sql = query.QueryForUpdateUserLogin();
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            ret = Context.ExecutionStatus;
 
             return ret;
         }
 
-        public OperationStatus SetPasswordRecoveryCode(SetPasswordRecoveryCode model)
+        public async Task<OperationStatus> SetPasswordRecoveryCode(SetPasswordRecoveryCode model)
         {
             OperationStatus ret = new OperationStatus(true);
-
             string sql = query.QueryForSetPasswordRecoveryCode();
-            ret = ((DapperContext)Context).Execute(sql, model);
+             await ((DapperContext)Context).ExecuteAsync(sql, model);
+
+            ret = Context.ExecutionStatus; 
 
             return ret;
         }
 
-        public OperationStatus ChangeUserPassword(ChangeUserPassword model)
+        public async Task<OperationStatus> ChangeUserPassword(ChangeUserPassword model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForChangeUserPassword();
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+
+            ret = Context.ExecutionStatus;
 
             return ret;
         }
 
-        public OperationStatus ActiveUserAccount(ActiveUserAccount model)
+        public async Task<OperationStatus> ActiveUserAccount(ActiveUserAccount model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForActiveAccount();
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+
+            ret = Context.ExecutionStatus;
 
             return ret;
         }
 
-        public OperationStatus ChangeUserProfileImage(ChangeUserImage model)
+        public async Task<OperationStatus> ChangeUserProfileImage(ChangeUserImage model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForChangeUserProfileImage();
-            ret = ((DapperContext)Context).Execute(sql, model);
+             await ((DapperContext)Context).ExecuteAsync(sql, model);
+
+            ret = Context.ExecutionStatus;
 
             return ret;
         }
 
-        public OperationStatus UpdateLoginFailCounter(UpdateUserLoginFailCounter model)
+        public async Task<OperationStatus> UpdateLoginFailCounter(UpdateUserLoginFailCounter model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForSetLoginFailCounter(model.Reset);
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            ret = Context.ExecutionStatus;
 
             return ret;
         }
 
-        public OperationStatus ChangeState(UserChangeState model)
+        public async Task<OperationStatus> ChangeState(UserChangeState model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForChangeUserState();
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+
+            ret = Context.ExecutionStatus;
 
             return ret;
         }

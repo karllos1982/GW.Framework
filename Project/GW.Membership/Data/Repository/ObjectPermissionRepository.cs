@@ -18,64 +18,60 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public OperationStatus Create(ObjectPermissionModel model)
+        public async Task Create(ObjectPermissionModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForCreate("sysObjectPermission", model,model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            
         }
 
-        public ObjectPermissionModel Read(ObjectPermissionParam param)
+        public async Task<ObjectPermissionModel> Read(ObjectPermissionParam param)
         {
             ObjectPermissionModel ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = ((DapperContext)Context).ExecuteQueryFirst<ObjectPermissionModel>(sql, param); 
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryFirstAsync<ObjectPermissionModel>(sql, param); 
                  
             return ret;
         }
 
-        public OperationStatus Update(ObjectPermissionModel model)
+        public async Task Update(ObjectPermissionModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForUpdate("sysObjectPermission", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
 
-            return ret;
-        }
+         }
 
-        public OperationStatus Delete(ObjectPermissionModel model)
+        public async Task Delete(ObjectPermissionModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForDelete("sysObjectPermission", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
 
-            return ret;
         }
 
-        public List<ObjectPermissionList> List(ObjectPermissionParam param)
+        public async Task<List<ObjectPermissionList>> List(ObjectPermissionParam param)
         {
             List<ObjectPermissionList> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<ObjectPermissionList>(query.QueryForList(null),
-                 param); 
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<ObjectPermissionList>(query.QueryForList(null), param); 
+                
 
             return ret;
         }
              
-        public List<ObjectPermissionSearchResult> Search(ObjectPermissionParam param)
+        public async Task<List<ObjectPermissionSearchResult>> Search(ObjectPermissionParam param)
         {
             List<ObjectPermissionSearchResult> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<ObjectPermissionSearchResult>(query.QueryForSearch(null),
-                 param);
-
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<ObjectPermissionSearchResult>(query.QueryForSearch(null),param);
+                 
             return ret;
         }
 

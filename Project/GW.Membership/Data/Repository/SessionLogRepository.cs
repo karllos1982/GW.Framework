@@ -18,73 +18,69 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public OperationStatus Create(SessionLogModel model)
+        public async Task Create(SessionLogModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForCreate("sysSessionLog", model,model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            
         }
 
-        public SessionLogModel Read(SessionLogParam param)
+        public async Task<SessionLogModel> Read(SessionLogParam param)
         {
             SessionLogModel ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = ((DapperContext)Context).ExecuteQueryFirst<SessionLogModel>(sql, param); 
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryFirstAsync<SessionLogModel>(sql, param); 
                  
             return ret;
         }
 
-        public OperationStatus Update(SessionLogModel model)
+        public async Task Update(SessionLogModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForUpdate("sysSessionLog", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            
         }
 
-        public OperationStatus Delete(SessionLogModel model)
+        public async Task Delete(SessionLogModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForDelete("sysSessionLog", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+ 
         }
 
-        public List<SessionLogList> List(SessionLogParam param)
+        public async Task<List<SessionLogList>> List(SessionLogParam param)
         {
             List<SessionLogList> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<SessionLogList>(query.QueryForList(null),
-                 param); 
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<SessionLogList>(query.QueryForList(null),param); 
 
             return ret;
         }
              
-        public List<SessionLogSearchResult> Search(SessionLogParam param)
+        public async Task<List<SessionLogSearchResult>> Search(SessionLogParam param)
         {
             List<SessionLogSearchResult> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<SessionLogSearchResult>(query.QueryForSearch(null),
-                 param);
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<SessionLogSearchResult>(query.QueryForSearch(null),  param);
 
             return ret;
         }
 
-        public OperationStatus SetDateLogout(SessionLogParam obj)
+        public async Task<OperationStatus> SetDateLogout(SessionLogParam obj)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string sql = query.QueryForSetDateLogout();
-            ret = ((DapperContext)Context).Execute(sql, obj);
+             await ((DapperContext)Context).ExecuteAsync(sql, obj);
+            ret = Context.ExecutionStatus;
 
             return ret;
         }

@@ -20,91 +20,13 @@ namespace GW.Membership.Domain
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public UserModel Get(UserParam param)
-        {
-            UserModel ret = null;
-
-            ret = RepositorySet.User.Read(param); 
-            
-            return ret;
-        }
-
-        public List<UserList> List(UserParam param)
-        {
-            List<UserList> ret = null;
-
-            ret = RepositorySet.User.List(param);           
-
-            return ret;
-        }
-
-        public List<UserSearchResult> Search(UserParam param)
-        {
-            List<UserSearchResult> ret = null;
-
-            ret = RepositorySet.User.Search(param);
-
-            return ret;
-        }
-
-        public OperationStatus Set(UserModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
-
-            ret = EntryValidation(model);
-
-            if (ret.Status)
-            {
-
-                UserModel old 
-                    = RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
-
-                if (old == null)
-                {
-                    ret = InsertValidation(model);
-
-                    if (ret.Status)
-                    {
-                        model.CreateDate = DateTime.Now;
-                        ret = RepositorySet.User.Create(model);
-                    }
-                }
-                else
-                {
-                    model.CreateDate = old.CreateDate;
-                    operation = OPERATIONLOGENUM.UPDATE;
-
-                    ret = UpdateValidation(model);
-
-                    if (ret.Status)
-                    {
-                        ret = RepositorySet.User.Update(model);
-                    }
-
-                }
-
-                if (ret.Status && userid != null)
-                {
-                    RepositorySet.User.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSUSER",
-                        model.UserID.ToString(), old, model);
-
-                    ret.Returns = model;
-                }
-
-            }     
-
-            return ret;
-        }
-
-        public void FillChields(ref UserModel obj)
+        public async Task<UserModel> FillChields( UserModel obj)
         {
             UserRolesParam param = new UserRolesParam();
             param.pUserID = obj.UserID;
 
             List<UserRolesModel> roles
-                = RepositorySet.UserRoles.List(param);
+                = await  RepositorySet.UserRoles.List(param);
 
             if (roles != null)
             {
@@ -113,7 +35,7 @@ namespace GW.Membership.Domain
                     obj.RoleList = roles;
                     obj.RoleID = roles[0].RoleID;
 
-                    RoleModel r = RepositorySet.Role
+                    RoleModel r = await RepositorySet.Role
                         .Read(new RoleParam() { pRoleID = obj.RoleID });
                     obj.Role = r;
                 }
@@ -125,7 +47,7 @@ namespace GW.Membership.Domain
             param2.pUserID = obj.UserID;
 
             List<UserInstancesModel> instances
-                = RepositorySet.UserInstances.List(param2);
+                = await RepositorySet.UserInstances.List(param2);
 
             if (instances != null)
             {
@@ -134,72 +56,48 @@ namespace GW.Membership.Domain
                     obj.InstanceList = instances;
                     obj.InstanceID = instances[0].InstanceID;
 
-                    InstanceModel i = RepositorySet.Instance
+                    InstanceModel i = await RepositorySet.Instance
                         .Read(new InstanceParam() { pInstanceID = obj.InstanceID });
                     obj.Instance = i;
                 }
             }
+
+            return obj;
         }
 
-        public OperationStatus Delete(UserModel model, object userid)
+        public async Task<UserModel> Get(UserParam param)
         {
-            OperationStatus ret = new OperationStatus(true);
+            UserModel ret = null;
 
-            UserModel old = this.Get(new UserParam() { pUserID = model.UserID });
+            ret = await RepositorySet.User.Read(param); 
 
-            if (old != null)
+            if (ret != null)
             {
-                ret = DeleteValidation(model);
-
-                if (ret.Status)
-                {
-                    if (ret.Status && old.RoleList != null)
-                    {
-                        foreach (UserRolesModel u in old.RoleList)
-                        {
-                            ret = RepositorySet.UserRoles.Delete(u);
-                            if (!ret.Status)
-                            {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (ret.Status && old.InstanceList != null)
-                    {
-                        foreach (UserInstancesModel u in old.InstanceList)
-                        {
-                            ret = RepositorySet.UserInstances.Delete(u);
-                            if (!ret.Status)
-                            {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (ret.Status)
-                    {
-                        ret = RepositorySet.User.Delete(old);
-                    }
-                    else
-                    {
-                        ret.Status = false;
-                        ret.Error = new System.Exception(GW.Localization.GetItem("User-Error-Exclude-Childs").Text);
-                    }
-                }
+                ret = await FillChields(ret); 
             }
-            else
-            {
-                ret.Status = false;
-                ret.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+            
+            return ret;
+        }
 
-            }
+        public async Task<List<UserList>> List(UserParam param)
+        {
+            List<UserList> ret = null;
+
+            ret = await RepositorySet.User.List(param);           
 
             return ret;
         }
 
+        public async Task<List<UserSearchResult>> Search(UserParam param)
+        {
+            List<UserSearchResult> ret = null;
 
-        public OperationStatus EntryValidation(UserModel obj)
+            ret = await RepositorySet.User.Search(param);
+
+            return ret;
+        }
+
+        public async Task EntryValidation(UserModel obj)
         {
             OperationStatus ret = null;
 
@@ -217,11 +115,10 @@ namespace GW.Membership.Domain
             }
 
             Context.ExecutionStatus = ret;
+            
+        }
 
-            return ret;
-        }           
-             
-        public OperationStatus InsertValidation(UserModel obj)
+        public async Task InsertValidation(UserModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
             UserParam param = new UserParam()
@@ -230,7 +127,7 @@ namespace GW.Membership.Domain
             };
 
             List<UserList> list
-                = RepositorySet.User.List(param);
+                = await RepositorySet.User.List(param);
 
             if (list != null)
             {
@@ -242,17 +139,16 @@ namespace GW.Membership.Domain
             }
 
             Context.ExecutionStatus = ret;
-
-            return ret;
+         
         }
-            
-        public OperationStatus UpdateValidation(UserModel obj)
+
+        public async Task UpdateValidation(UserModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
             UserParam param = new UserParam() { pEmail = obj.Email };
 
             List<UserList> list
-                = RepositorySet.User.List(param);
+                = await RepositorySet.User.List(param);
 
             if (list != null)
             {
@@ -266,45 +162,152 @@ namespace GW.Membership.Domain
                 }
             }
 
-            Context.ExecutionStatus = ret;
+            Context.ExecutionStatus = ret;      
+
+        }
+
+        public async Task DeleteValidation(UserModel obj)
+        {
+            Context.ExecutionStatus = new OperationStatus(true);
+        }
+
+        public async Task<UserModel> Set(UserModel model, object userid)
+        {
+            UserModel ret = null;
+            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
+
+           await EntryValidation(model);
+
+            if (Context.ExecutionStatus.Status)
+            {
+
+                UserModel old 
+                    = await RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
+
+                if (old == null)
+                {
+                    await InsertValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                        model.CreateDate = DateTime.Now;
+                         await RepositorySet.User.Create(model);
+                    }
+                }
+                else
+                {
+                    model.CreateDate = old.CreateDate;
+                    operation = OPERATIONLOGENUM.UPDATE;
+
+                    await UpdateValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                        await RepositorySet.User.Update(model);
+                    }
+
+                }
+
+                if (Context.ExecutionStatus.Status && userid != null)
+                {
+                    RepositorySet.User.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSUSER",
+                        model.UserID.ToString(), old, model);
+
+                    ret = model;
+                }
+
+            }     
 
             return ret;
-
         }
 
-        public OperationStatus DeleteValidation(UserModel obj)
-        {
-            return new OperationStatus(true); 
-        }
+     
 
-        public UserModel GetByEmail(string email)
+        public async Task<UserModel> Delete(UserModel model, object userid)
         {
             UserModel ret = null;
 
-            ret = RepositorySet.User.GetByEmail(email);
+            UserModel old 
+                = await this.Get(new UserParam() { pUserID = model.UserID });
+
+            if (old != null)
+            {
+                await DeleteValidation(model);
+
+                if (Context.ExecutionStatus.Status)
+                {
+                    if (Context.ExecutionStatus.Status && old.RoleList != null)
+                    {
+                        foreach (UserRolesModel u in old.RoleList)
+                        {
+                            await RepositorySet.UserRoles.Delete(u);
+
+                            if (!Context.ExecutionStatus.Status)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (Context.ExecutionStatus.Status && old.InstanceList != null)
+                    {
+                        foreach (UserInstancesModel u in old.InstanceList)
+                        {
+                           await RepositorySet.UserInstances.Delete(u);
+                            if (!Context.ExecutionStatus.Status)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                        await RepositorySet.User.Delete(old);
+                        ret = model;
+                    }                   
+                }
+            }
+            else
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+
+            }
+
+            return ret;
+        }
+
+    
+        public async  Task<UserModel> GetByEmail(string email)
+        {
+            UserModel ret = null;
+
+            ret = await RepositorySet.User.GetByEmail(email);
 
             if (ret != null)
             {
                 if (Context.ExecutionStatus.Status)
                 {
-                    FillChields(ref ret);
+                    ret = await FillChields(ret);
                 }
             }       
 
             return ret;
         }
 
-        public OperationStatus UpdateUserLogin(UpdateUserLogin model)
+        public async Task<OperationStatus> UpdateUserLogin(UpdateUserLogin model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             UserModel obj = null;
 
-            obj = RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
+            obj = await RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
 
             if (obj != null)
             {
-                ret = RepositorySet.User.UpdateUserLogin(model);
+                ret = await RepositorySet.User.UpdateUserLogin(model);
             }
             else
             {
@@ -316,7 +319,7 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus SetPasswordRecoveryCode(ChangeUserPassword model)
+        public async Task<OperationStatus> SetPasswordRecoveryCode(ChangeUserPassword model)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -324,7 +327,7 @@ namespace GW.Membership.Domain
             string code = "";
 
             UserModel usermatch = null;
-            usermatch = RepositorySet.User.GetByEmail(model.Email);
+            usermatch = await RepositorySet.User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
             {
@@ -358,7 +361,7 @@ namespace GW.Membership.Domain
                 if (errmsg == "")
                 {
                     OperationStatus aux;
-                    aux = RepositorySet.User.SetPasswordRecoveryCode(
+                    aux = await RepositorySet.User.SetPasswordRecoveryCode(
                         new SetPasswordRecoveryCode()
                         {
                             UserID = usermatch.UserID,
@@ -394,14 +397,14 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus ChangeUserPassword(ChangeUserPassword model)
+        public async Task<OperationStatus> ChangeUserPassword(ChangeUserPassword model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string errmsg = "";
 
             UserModel usermatch = null;
-            usermatch = RepositorySet.User.GetByEmail(model.Email);
+            usermatch = await RepositorySet.User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
             {
@@ -446,7 +449,7 @@ namespace GW.Membership.Domain
                     change.NewPassword = pwd;
                     change.UserID = usermatch.UserID;
 
-                    aux = RepositorySet.User.ChangeUserPassword(change);
+                    aux = await RepositorySet.User.ChangeUserPassword(change);
 
                     if (!aux.Status)
                     {
@@ -471,13 +474,13 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus ActiveUserAccount(ActiveUserAccount model)
+        public async Task<OperationStatus> ActiveUserAccount(ActiveUserAccount model)
         {
             OperationStatus ret = new OperationStatus(true);
 
             string errmsg = "";
             UserModel usermatch = null;
-            usermatch = RepositorySet.User.GetByEmail(model.Email);
+            usermatch = await RepositorySet.User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
             {
@@ -515,7 +518,7 @@ namespace GW.Membership.Domain
                 {
                     OperationStatus aux;
 
-                    aux = RepositorySet.User.ActiveUserAccount(model);
+                    aux = await RepositorySet.User.ActiveUserAccount(model);
 
                     if (!aux.Status)
                     {
@@ -540,7 +543,7 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus ChangeUserProfileImage(ChangeUserImage model)
+        public async Task<OperationStatus> ChangeUserProfileImage(ChangeUserImage model)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -553,7 +556,7 @@ namespace GW.Membership.Domain
             else
             {
                 UserModel usermatch = null;
-                usermatch = RepositorySet.User.Read(new UserParam() { pUserID=model.UserID });
+                usermatch = await RepositorySet.User.Read(new UserParam() { pUserID=model.UserID });
 
                 if (Context.ExecutionStatus.Status)
                 {
@@ -574,7 +577,7 @@ namespace GW.Membership.Domain
                     if (errmsg == "")
                     {
                         OperationStatus aux;
-                        aux = RepositorySet.User.ChangeUserProfileImage(model);
+                        aux = await RepositorySet.User.ChangeUserProfileImage(model);
 
                         if (!aux.Status)
                         {
@@ -600,41 +603,41 @@ namespace GW.Membership.Domain
 
         }
 
-        public OperationStatus UpdateLoginFailCounter(UpdateUserLoginFailCounter model)
+        public async Task<OperationStatus> UpdateLoginFailCounter(UpdateUserLoginFailCounter model)
         {
             OperationStatus ret = new OperationStatus(true);
 
-            ret = RepositorySet.User.UpdateLoginFailCounter(model);
+            ret = await RepositorySet.User.UpdateLoginFailCounter(model);
 
             return ret;
 
         }
 
-        public OperationStatus ChangeState(UserChangeState model)
+        public async Task<OperationStatus> ChangeState(UserChangeState model)
         {
             OperationStatus ret = new OperationStatus(true);
 
-            ret = RepositorySet.User.ChangeState(model);    
+            ret = await RepositorySet.User.ChangeState(model);    
 
             return ret;
 
         }
 
-        public OperationStatus SetDateLogout(Int64 userid)
+        public async Task<OperationStatus> SetDateLogout(Int64 userid)
         {
             OperationStatus ret = new OperationStatus(true);
 
             SessionLogParam param = new SessionLogParam();
           
             param.pUserID = userid;
-            ret = RepositorySet.SessionLog.SetDateLogout(param);
+            ret = await RepositorySet.SessionLog.SetDateLogout(param);
 
   
             return ret;
 
         }
 
-        public OperationStatus AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit)
+        public async Task<OperationStatus> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -643,7 +646,7 @@ namespace GW.Membership.Domain
             param.pUserID = userid;
             param.pRoleID = roleid;
 
-            list = RepositorySet.UserRoles.Search(param);
+            list = await RepositorySet.UserRoles.Search(param);
 
             if (list != null)
             {
@@ -661,7 +664,7 @@ namespace GW.Membership.Domain
                 obj.RoleID = roleid;
                 obj.UserID = userid;
 
-                ret = RepositorySet.UserRoles.Create(obj);
+                 await RepositorySet.UserRoles.Create(obj);
 
                 if (ret.Status)
                 {
@@ -673,7 +676,7 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public OperationStatus RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit)
+        public async Task<OperationStatus> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -682,7 +685,7 @@ namespace GW.Membership.Domain
             param.pUserID = userid;
             param.pRoleID = roleid;
 
-            list = RepositorySet.UserRoles.Search(param);
+            list = await RepositorySet.UserRoles.Search(param);
 
             if (list != null)
             {
@@ -702,7 +705,7 @@ namespace GW.Membership.Domain
             {
                 UserRolesModel obj = list[0];
 
-                ret = RepositorySet.UserRoles.Delete(obj);
+                await RepositorySet.UserRoles.Delete(obj);
 
                 if (ret.Status)
                 {
@@ -714,7 +717,7 @@ namespace GW.Membership.Domain
         }
 
 
-        public OperationStatus AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit)
+        public async Task<OperationStatus> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -723,7 +726,7 @@ namespace GW.Membership.Domain
             param.pUserID = userid;
             param.pInstanceID = instanceid;
 
-            list = RepositorySet.UserInstances.Search(param);
+            list = await RepositorySet.UserInstances.Search(param);
 
             if (list != null)
             {
@@ -741,7 +744,7 @@ namespace GW.Membership.Domain
                 obj.InstanceID = instanceid;
                 obj.UserID = userid;
 
-                ret = RepositorySet.UserInstances.Create(obj);
+                 await RepositorySet.UserInstances.Create(obj);
 
                 if (ret.Status)
                 {
@@ -754,7 +757,7 @@ namespace GW.Membership.Domain
         }
 
 
-        public OperationStatus RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit)
+        public async Task<OperationStatus> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -763,7 +766,7 @@ namespace GW.Membership.Domain
             param.pUserID = userid;
             param.pInstanceID = instanceid;
 
-            list = RepositorySet.UserInstances.Search(param);
+            list = await RepositorySet.UserInstances.Search(param);
 
             if (list != null)
             {
@@ -783,7 +786,7 @@ namespace GW.Membership.Domain
             {
                 UserInstancesModel obj = list[0];
 
-                ret = RepositorySet.UserInstances.Delete(obj);
+                await RepositorySet.UserInstances.Delete(obj);
 
                 if (ret.Status)
                 {

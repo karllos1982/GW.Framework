@@ -148,32 +148,30 @@ namespace GW.Membership.Data
 
         //
 
-        public OperationStatus Execute(string sql, object data)
+        public void Execute(string sql, object data)
         {
-            OperationStatus ret = new OperationStatus(true);
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
+            ExecutionStatus.Returns = null;
 
             if (this.Connection.State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                    this.Connection.Execute(sql, data, Transaction);
+                    this.Connection.ExecuteAsync(sql, data, Transaction);
 
                 }
                 catch (SqlException ex)
                 {
-                    ret.Status = false;
-                    ret.Error = ex;
-                    ExecutionStatus = ret;
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
 
                 }
                 catch (System.Exception ex)
                 {
-                    ret.Status = false;
-                    ret.Error = ex;
-                    ExecutionStatus = ret;
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
 
                 }
 
@@ -183,34 +181,24 @@ namespace GW.Membership.Data
                 ExecutionStatus.Status = false;
                 ExecutionStatus.Error = new Exception("The connection is closed!");
             }
-
-
-            return ret;
 
         }
 
-        public T ExecuteQueryFirst<T>( string sql, object filter = null)
+        public T ExecuteQueryFirst<T>(string sql,object filter = null)                
         {
-            T ret = (default);
-
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
+            ExecutionStatus.Returns = null;
+
+            T ret = (default);
 
             if (this.Connection.State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                    List<T> list = this.Connection
-                        .Query<T>(sql, filter, Transaction).AsList<T>();
-                    if (list != null)
-                    {
-                        if (list.Count > 0)
-                        {
-                            ret = list[0];
-                        }
-                    }
-
+                    ret = this.Connection.QueryFirst<T>(sql, filter, Transaction);
+                 
                 }
                 catch (SqlException ex)
                 {
@@ -231,7 +219,6 @@ namespace GW.Membership.Data
                 ExecutionStatus.Status = false;
                 ExecutionStatus.Error = new Exception("The connection is closed!");
             }
-
 
             return ret;
 
@@ -251,6 +238,130 @@ namespace GW.Membership.Data
                 {
                     ret = this.Connection
                         .Query<T>(sql, filter, Transaction).AsList<T>();
+                }
+                catch (SqlException ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+                catch (System.Exception ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+
+            }
+            else
+            {
+                ExecutionStatus.Status = false;
+                ExecutionStatus.Error = new Exception("The connection is closed!");
+            }
+
+
+            return ret;
+
+        }
+
+
+        // asyncs:
+
+        public async Task ExecuteAsync(string sql, object data)
+        {
+            ExecutionStatus.Status = true;
+            ExecutionStatus.Error = null;
+            ExecutionStatus.Returns = null;
+
+            if (this.Connection.State == System.Data.ConnectionState.Open)
+            {
+
+                try
+                {
+                  await  this.Connection.ExecuteAsync(sql, data, Transaction);
+
+                }
+                catch (SqlException ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;                
+
+                }
+                catch (System.Exception ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;                   
+
+                }
+
+            }
+            else
+            {
+                ExecutionStatus.Status = false;
+                ExecutionStatus.Error = new Exception("The connection is closed!");
+            }
+
+        }
+
+        public async Task<T> ExecuteQueryFirstAsync<T>( string sql, object filter = null)            
+        {
+            ExecutionStatus.Status = true;
+            ExecutionStatus.Error = null;
+            ExecutionStatus.Returns = null;
+
+            T ret = (default);
+        
+
+            if (this.Connection.State == System.Data.ConnectionState.Open)
+            {
+
+                try
+                {
+
+                    ret = await this.Connection.QueryFirstAsync<T>(sql, filter, Transaction);                  
+
+                }
+                catch (SqlException ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+                catch (System.Exception ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+
+            }
+            else
+            {
+                ExecutionStatus.Status = false;
+                ExecutionStatus.Error = new Exception("The connection is closed!");
+            }
+
+            return ret;
+
+        }
+
+        public async Task<List<T>> ExecuteQueryToListAsync<T>(string sql, object filter = null)
+        {
+            List<T> ret = new List<T>();
+
+            ExecutionStatus.Status = true;
+            ExecutionStatus.Error = null;
+
+            if (this.Connection.State == System.Data.ConnectionState.Open)
+            {
+
+                try
+                {
+                    IEnumerable<T> list = await this.Connection
+                        .QueryAsync<T>(sql, filter, Transaction);
+
+                    ret = list.AsList(); 
+
                 }
                 catch (SqlException ex)
                 {

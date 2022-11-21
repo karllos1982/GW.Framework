@@ -18,64 +18,59 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public OperationStatus Create(UserRolesModel model)
+        public async Task Create(UserRolesModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForCreate("sysUserRoles", model,model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            
         }
 
-        public UserRolesModel Read(UserRolesParam param)
+        public async Task<UserRolesModel> Read(UserRolesParam param)
         {
             UserRolesModel ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = ((DapperContext)Context).ExecuteQueryFirst<UserRolesModel>(sql, param); 
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryFirstAsync<UserRolesModel>(sql, param); 
                  
             return ret;
         }
 
-        public OperationStatus Update(UserRolesModel model)
+        public async Task Update(UserRolesModel model)
         {
-            OperationStatus ret = new OperationStatus(true);
-
+            
             string sql = query.QueryForUpdate("sysUserRoles", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            
         }
 
-        public OperationStatus Delete(UserRolesModel model)
-        {
-            OperationStatus ret = new OperationStatus(true);
+        public async Task Delete(UserRolesModel model)
+        {            
 
             string sql = query.QueryForDelete("sysUserRoles", model, model);
-            ret = ((DapperContext)Context).Execute(sql, model);
-
-            return ret;
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
+            
         }
 
-        public List<UserRolesModel> List(UserRolesParam param)
+        public async  Task<List<UserRolesModel>> List(UserRolesParam param)
         {
             List<UserRolesModel> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserRolesModel>(query.QueryForList(null),
-                 param); 
-
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<UserRolesModel>(query.QueryForList(null),param); 
+                 
             return ret;
         }
              
-        public List<UserRolesModel> Search(UserRolesParam param)
+        public async Task<List<UserRolesModel>> Search(UserRolesParam param)
         {
             List<UserRolesModel> ret = null;
 
-            ret = ((DapperContext)Context).ExecuteQueryToList<UserRolesModel>(query.QueryForSearch(null),
-                 param);
-
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<UserRolesModel>(query.QueryForSearch(null),param);
+                 
             return ret;
         }
 

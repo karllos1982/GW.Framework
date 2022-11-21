@@ -20,115 +20,39 @@ namespace GW.Membership.Domain
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public ObjectPermissionModel Get(ObjectPermissionParam param)
+        public async Task<ObjectPermissionModel> FillChields(ObjectPermissionModel obj)
+        {
+            return obj;
+        }
+
+        public async Task<ObjectPermissionModel> Get(ObjectPermissionParam param)
         {
             ObjectPermissionModel ret = null;
 
-            ret = RepositorySet.ObjectPermission.Read(param); 
+            ret = await RepositorySet.ObjectPermission.Read(param); 
             
             return ret;
         }
 
-        public List<ObjectPermissionList> List(ObjectPermissionParam param)
+        public async Task<List<ObjectPermissionList>> List(ObjectPermissionParam param)
         {
             List<ObjectPermissionList> ret = null;
 
-            ret = RepositorySet.ObjectPermission.List(param);           
+            ret = await RepositorySet.ObjectPermission.List(param);           
 
             return ret;
         }
 
-        public List<ObjectPermissionSearchResult> Search(ObjectPermissionParam param)
+        public async Task<List<ObjectPermissionSearchResult>> Search(ObjectPermissionParam param)
         {
             List<ObjectPermissionSearchResult> ret = null;
 
-            ret = RepositorySet.ObjectPermission.Search(param);
+            ret = await RepositorySet.ObjectPermission.Search(param);
 
             return ret;
         }
 
-        public OperationStatus Set(ObjectPermissionModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
-
-            ret = EntryValidation(model);
-
-            if (ret.Status)
-            {
-
-                ObjectPermissionModel old 
-                    = RepositorySet.ObjectPermission.Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
-
-                if (old == null)
-                {
-                    ret = InsertValidation(model);
-
-                    if (ret.Status)
-                    {                        
-                        ret = RepositorySet.ObjectPermission.Create(model);
-                    }
-                }
-                else
-                {                    
-                    operation = OPERATIONLOGENUM.UPDATE;
-
-                    ret = UpdateValidation(model);
-
-                    if (ret.Status)
-                    {
-                        ret = RepositorySet.ObjectPermission.Update(model);
-                    }
-
-                }
-
-                if (ret.Status && userid != null)
-                {
-                    RepositorySet.ObjectPermission.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSOBJECTPERMISSION",
-                        model.ObjectPermissionID.ToString(), old, model);
-
-                    ret.Returns = model;
-                }
-
-            }     
-
-            return ret;
-        }
-
-        public void FillChields(ref ObjectPermissionModel obj)
-        {
-            
-        }
-
-        public OperationStatus Delete(ObjectPermissionModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-
-            ObjectPermissionModel old 
-                = RepositorySet.ObjectPermission.Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
-
-            if (old != null)
-            {
-                ret = DeleteValidation(model);
-
-                if (ret.Status)
-                {
-                    ret = RepositorySet.ObjectPermission.Delete(model);
-                }
-            }
-            else
-            {
-                ret.Status = false;
-                ret.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
-
-            }           
-
-            return ret;
-        }
-
-
-        public OperationStatus EntryValidation(ObjectPermissionModel obj)
+        public async Task EntryValidation(ObjectPermissionModel obj)
         {
             OperationStatus ret = null;
 
@@ -139,12 +63,11 @@ namespace GW.Membership.Domain
                 ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
             }
 
-            Context.ExecutionStatus = ret; 
+            Context.ExecutionStatus = ret;
+         
+        }
 
-            return ret;
-        }           
-             
-        public OperationStatus InsertValidation(ObjectPermissionModel obj)
+        public async Task InsertValidation(ObjectPermissionModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
             ObjectPermissionParam param = new ObjectPermissionParam()
@@ -153,7 +76,7 @@ namespace GW.Membership.Domain
             };
 
             List<ObjectPermissionList> list
-                = RepositorySet.ObjectPermission.List(param);
+                = await RepositorySet.ObjectPermission.List(param);
 
             if (list != null)
             {
@@ -165,16 +88,16 @@ namespace GW.Membership.Domain
             }
 
             Context.ExecutionStatus = ret;
-
-            return ret;
+           
         }
-            
-        public OperationStatus UpdateValidation(ObjectPermissionModel obj)
+
+        public async Task UpdateValidation(ObjectPermissionModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
             ObjectPermissionParam param = new ObjectPermissionParam() { pObjectCode = obj.ObjectCode };
+           
             List<ObjectPermissionList> list
-                = RepositorySet.ObjectPermission.List(param);
+                = await RepositorySet.ObjectPermission.List(param);
 
             if (list != null)
             {
@@ -188,17 +111,93 @@ namespace GW.Membership.Domain
                 }
             }
 
-            Context.ExecutionStatus = ret;
+            Context.ExecutionStatus = ret;    
+
+        }
+
+        public async Task DeleteValidation(ObjectPermissionModel obj)
+        {
+            Context.ExecutionStatus = new OperationStatus(true);
+        }
+
+        public async Task<ObjectPermissionModel> Set(ObjectPermissionModel model, object userid)
+        {
+            ObjectPermissionModel ret = null;
+            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
+
+           await EntryValidation(model);
+
+            if (Context.ExecutionStatus.Status)
+            {
+
+                ObjectPermissionModel old 
+                    = await RepositorySet.ObjectPermission
+                        .Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
+
+                if (old == null)
+                {
+                   await InsertValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {                        
+                        await RepositorySet.ObjectPermission.Create(model);
+                    }
+                }
+                else
+                {                    
+                    operation = OPERATIONLOGENUM.UPDATE;
+
+                   await UpdateValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                         await RepositorySet.ObjectPermission.Update(model);
+                    }
+
+                }
+
+                if (Context.ExecutionStatus.Status && userid != null)
+                {
+                    RepositorySet.ObjectPermission.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSOBJECTPERMISSION",
+                        model.ObjectPermissionID.ToString(), old, model);
+
+                    ret = model;
+                }
+
+            }     
 
             return ret;
-
         }
-
-        public OperationStatus DeleteValidation(ObjectPermissionModel obj)
+      
+        public async Task<ObjectPermissionModel> Delete(ObjectPermissionModel model, object userid)
         {
-            return new OperationStatus(true); 
-        }
+            ObjectPermissionModel ret = null;
 
+            ObjectPermissionModel old 
+                = await RepositorySet.ObjectPermission
+                    .Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
+
+            if (old != null)
+            {
+                await DeleteValidation(model);
+
+                if (Context.ExecutionStatus.Status)
+                {
+                     await RepositorySet.ObjectPermission.Delete(model);
+                    ret = model;
+                }
+            }
+            else
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+
+            }           
+
+            return ret;
+        }
+     
 
     }
 }

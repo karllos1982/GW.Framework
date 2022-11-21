@@ -20,117 +20,39 @@ namespace GW.Membership.Domain
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public InstanceModel Get(InstanceParam param)
+        public async Task<InstanceModel> FillChields(InstanceModel obj)
+        {
+            return obj;
+        }
+
+        public async Task<InstanceModel> Get(InstanceParam param)
         {
             InstanceModel ret = null;
 
-            ret = RepositorySet.Instance.Read(param); 
+            ret = await RepositorySet.Instance.Read(param); 
             
             return ret;
         }
 
-        public List<InstanceList> List(InstanceParam param)
+        public async Task<List<InstanceList>> List(InstanceParam param)
         {
             List<InstanceList> ret = null;
 
-            ret = RepositorySet.Instance.List(param);           
+            ret = await RepositorySet.Instance.List(param);           
 
             return ret;
         }
 
-        public List<InstanceSearchResult> Search(InstanceParam param)
+        public async Task<List<InstanceSearchResult>> Search(InstanceParam param)
         {
             List<InstanceSearchResult> ret = null;
 
-            ret = RepositorySet.Instance.Search(param);
+            ret = await RepositorySet.Instance.Search(param);
 
             return ret;
         }
 
-        public OperationStatus Set(InstanceModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
-
-            ret = EntryValidation(model);
-
-            if (ret.Status)
-            {
-
-                InstanceModel old 
-                    = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
-
-                if (old == null)
-                {
-                    ret = InsertValidation(model);
-
-                    if (ret.Status)
-                    {
-                        model.CreateDate = DateTime.Now;
-                        ret = RepositorySet.Instance.Create(model);
-                    }
-                }
-                else
-                {
-                    model.CreateDate = old.CreateDate;
-                    operation = OPERATIONLOGENUM.UPDATE;
-
-                    ret = UpdateValidation(model);
-
-                    if (ret.Status)
-                    {
-                        ret = RepositorySet.Instance.Update(model);
-                    }
-
-                }
-
-                if (ret.Status && userid != null)
-                {
-                    RepositorySet.Instance.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSINSTANCE",
-                        model.InstanceID.ToString(), old, model);
-
-                    ret.Returns = model;
-                }
-
-            }     
-
-            return ret;
-        }
-
-        public void FillChields(ref InstanceModel obj)
-        {
-            
-        }
-
-        public OperationStatus Delete(InstanceModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-
-            InstanceModel old 
-                = RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
-
-            if (old != null)
-            {
-                ret = DeleteValidation(model);
-
-                if (ret.Status)
-                {
-                    ret = RepositorySet.Instance.Delete(model);
-                }
-            }
-            else
-            {
-                ret.Status = false;
-                ret.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
-
-            }           
-
-            return ret;
-        }
-
-
-        public OperationStatus EntryValidation(InstanceModel obj)
+        public async Task EntryValidation(InstanceModel obj)
         {
             OperationStatus ret = null;
 
@@ -141,12 +63,11 @@ namespace GW.Membership.Domain
                 ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
             }
 
-            Context.ExecutionStatus = ret; 
+            Context.ExecutionStatus = ret;
+         
+        }
 
-            return ret;
-        }           
-             
-        public OperationStatus InsertValidation(InstanceModel obj)
+        public async Task InsertValidation(InstanceModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
             InstanceParam param = new InstanceParam()
@@ -155,7 +76,7 @@ namespace GW.Membership.Domain
             };
 
             List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+                =  await RepositorySet.Instance.List(param);
 
             if (list != null)
             {
@@ -167,16 +88,15 @@ namespace GW.Membership.Domain
             }
 
             Context.ExecutionStatus = ret;
-
-            return ret;
-        }
             
-        public OperationStatus UpdateValidation(InstanceModel obj)
+        }
+
+        public async Task UpdateValidation(InstanceModel obj)
         {
             OperationStatus ret = new OperationStatus(true);
             InstanceParam param = new InstanceParam() { pInstanceName = obj.InstanceName };
             List<InstanceList> list
-                = RepositorySet.Instance.List(param);
+                = await RepositorySet.Instance.List(param);
 
             if (list != null)
             {
@@ -190,17 +110,93 @@ namespace GW.Membership.Domain
                 }
             }
 
-            Context.ExecutionStatus = ret;
+            Context.ExecutionStatus = ret;  
+
+        }
+
+        public async Task DeleteValidation(InstanceModel obj)
+        {
+            Context.ExecutionStatus = new OperationStatus(true);
+        }
+
+        public async Task<InstanceModel> Set(InstanceModel model, object userid)
+        {
+            InstanceModel ret = null;
+            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
+
+           await EntryValidation(model);
+
+            if (Context.ExecutionStatus.Status)
+            {
+
+                InstanceModel old 
+                    =  await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+
+                if (old == null)
+                {
+                   await  InsertValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                        model.CreateDate = DateTime.Now;
+                        await RepositorySet.Instance.Create(model);
+                    }
+                }
+                else
+                {
+                    model.CreateDate = old.CreateDate;
+                    operation = OPERATIONLOGENUM.UPDATE;
+
+                    await UpdateValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                        await RepositorySet.Instance.Update(model);
+                    }
+
+                }
+
+                if (Context.ExecutionStatus.Status && userid != null)
+                {
+                    RepositorySet.Instance.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSINSTANCE",
+                        model.InstanceID.ToString(), old, model);
+
+                    ret = model;
+                }
+
+            }     
 
             return ret;
-
         }
-
-        public OperationStatus DeleteValidation(InstanceModel obj)
+      
+        public async Task<InstanceModel> Delete(InstanceModel model, object userid)
         {
-            return new OperationStatus(true); 
+            InstanceModel ret = null;
+
+            InstanceModel old 
+                = await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+
+            if (old != null)
+            {
+               await DeleteValidation(model);
+
+                if (Context.ExecutionStatus.Status)
+                {
+                    await RepositorySet.Instance.Delete(model);
+                }
+            }
+            else
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+
+            }           
+
+            return ret;
         }
 
+      
 
     }
 }

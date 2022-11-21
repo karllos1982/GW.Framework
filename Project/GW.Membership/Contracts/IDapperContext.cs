@@ -18,12 +18,21 @@ namespace GW.Membership.Contracts
 
          OperationStatus Rollback();
 
-         OperationStatus Execute(string sql, object data);
+         void Execute(string sql,object data);
 
-         T ExecuteQueryFirst<T>(string sql, object filter = null);
+         T ExecuteQueryFirst<T>(string sql,  object filter = null);
 
-         List<T> ExecuteQueryToList<T>(string sql, object filter = null);
-        
+         List<T> ExecuteQueryToList<T>(string sql,  object filter = null);
+
+
+        // asyncs:
+
+        Task ExecuteAsync(string sql, object data);
+
+        Task<T> ExecuteQueryFirstAsync<T>(string sql, object filter = null);
+
+        Task<List<T>> ExecuteQueryToListAsync<T>(string sql, object filter = null);
+
 
     }
 }

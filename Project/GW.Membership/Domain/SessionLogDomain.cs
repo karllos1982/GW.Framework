@@ -20,117 +20,39 @@ namespace GW.Membership.Domain
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public SessionLogModel Get(SessionLogParam param)
+        public async Task<SessionLogModel> FillChields(SessionLogModel obj)
+        {
+            return obj;
+        }
+
+        public async Task<SessionLogModel> Get(SessionLogParam param)
         {
             SessionLogModel ret = null;
 
-            ret = RepositorySet.SessionLog.Read(param); 
+            ret = await RepositorySet.SessionLog.Read(param); 
             
             return ret;
         }
 
-        public List<SessionLogList> List(SessionLogParam param)
+        public async Task<List<SessionLogList>> List(SessionLogParam param)
         {
             List<SessionLogList> ret = null;
 
-            ret = RepositorySet.SessionLog.List(param);           
+            ret = await RepositorySet.SessionLog.List(param);           
 
             return ret;
         }
 
-        public List<SessionLogSearchResult> Search(SessionLogParam param)
+        public async Task<List<SessionLogSearchResult>> Search(SessionLogParam param)
         {
             List<SessionLogSearchResult> ret = null;
 
-            ret = RepositorySet.SessionLog.Search(param);
+            ret = await  RepositorySet.SessionLog.Search(param);
 
             return ret;
         }
 
-        public OperationStatus Set(SessionLogModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
-
-            ret = EntryValidation(model);
-
-            if (ret.Status)
-            {
-
-                SessionLogModel old 
-                    = RepositorySet.SessionLog.Read(new SessionLogParam() 
-                    { pSessionID = model.SessionID });
-
-                if (old == null)
-                {
-                    ret = InsertValidation(model);
-
-                    if (ret.Status)
-                    {                        
-                        ret = RepositorySet.SessionLog.Create(model);
-                    }
-                }
-                else
-                {                    
-                    operation = OPERATIONLOGENUM.UPDATE;
-
-                    ret = UpdateValidation(model);
-
-                    if (ret.Status)
-                    {
-                        ret = RepositorySet.SessionLog.Update(model);
-                    }
-
-                }
-
-                if (ret.Status && userid != null)
-                {
-                    RepositorySet.SessionLog.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSSESSIONLOG",
-                        model.SessionID.ToString(), old, model);
-
-                    ret.Returns = model;
-                }
-
-            }     
-
-            return ret;
-        }
-
-        public void FillChields(ref SessionLogModel obj)
-        {
-            
-        }
-
-        public OperationStatus Delete(SessionLogModel model, object userid)
-        {
-            OperationStatus ret = new OperationStatus(true);
-
-            SessionLogModel old 
-                = RepositorySet.SessionLog.Read(new SessionLogParam() 
-                { pSessionID = model.SessionID });
-
-            if (old != null)
-            {
-                ret = DeleteValidation(model);
-
-                if (ret.Status)
-                {
-                    ret = RepositorySet.SessionLog.Delete(model);
-                }
-            }
-            else
-            {
-                ret.Status = false;
-                ret.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
-
-            }           
-
-            return ret;
-        }
-
-
-        public OperationStatus EntryValidation(SessionLogModel obj)
+        public async Task EntryValidation(SessionLogModel obj)
         {
             OperationStatus ret = null;
 
@@ -141,35 +63,104 @@ namespace GW.Membership.Domain
                 ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
             }
 
-            Context.ExecutionStatus = ret; 
-
-            return ret;
-        }           
-             
-        public OperationStatus InsertValidation(SessionLogModel obj)
-        {
-            OperationStatus ret = new OperationStatus(true);
-            
             Context.ExecutionStatus = ret;
-
-            return ret;
-        }
-            
-        public OperationStatus UpdateValidation(SessionLogModel obj)
-        {
-            OperationStatus ret = new OperationStatus(true);
         
-            Context.ExecutionStatus = ret;
+        }
+
+        public async Task InsertValidation(SessionLogModel obj)
+        {
+            Context.ExecutionStatus = new OperationStatus(true);
+        }
+
+        public async Task UpdateValidation(SessionLogModel obj)
+        {
+            Context.ExecutionStatus = new OperationStatus(true);
+
+        }
+
+        public async Task DeleteValidation(SessionLogModel obj)
+        {
+            Context.ExecutionStatus = new OperationStatus(true);
+        }
+
+        public async Task<SessionLogModel> Set(SessionLogModel model, object userid)
+        {
+            SessionLogModel ret = null;
+            OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
+
+             await EntryValidation(model);
+
+            if (Context.ExecutionStatus.Status)
+            {
+
+                SessionLogModel old 
+                    = await RepositorySet.SessionLog.Read(new SessionLogParam() 
+                            { pSessionID = model.SessionID });
+
+                if (old == null)
+                {
+                    await InsertValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {                        
+                        await RepositorySet.SessionLog.Create(model);
+                    }
+                }
+                else
+                {                    
+                    operation = OPERATIONLOGENUM.UPDATE;
+
+                   await UpdateValidation(model);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                       await RepositorySet.SessionLog.Update(model);
+                    }
+
+                }
+
+                if (Context.ExecutionStatus.Status && userid != null)
+                {
+                    RepositorySet.SessionLog.Context
+                        .RegisterDataLog(userid.ToString(), operation, "SYSSESSIONLOG",
+                        model.SessionID.ToString(), old, model);
+
+                    ret= model;
+                }
+
+            }     
 
             return ret;
-
         }
-
-        public OperationStatus DeleteValidation(SessionLogModel obj)
+      
+        public async Task<SessionLogModel> Delete(SessionLogModel model, object userid)
         {
-            return new OperationStatus(true); 
+            SessionLogModel ret = null;
+
+            SessionLogModel old 
+                = await RepositorySet.SessionLog.Read(new SessionLogParam() 
+                    { pSessionID = model.SessionID });
+
+            if (old != null)
+            {
+                await DeleteValidation(model);
+
+                if (Context.ExecutionStatus.Status)
+                {
+                    await RepositorySet.SessionLog.Delete(model);
+                }
+            }
+            else
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+
+            }           
+
+            return ret;
         }
 
+        
 
     }
 }

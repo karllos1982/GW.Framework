@@ -10,9 +10,9 @@ namespace GW.Membership.Contracts.Domain
     {
          IMembershipRepositorySet RepositorySet { get; set;  }
 
-        List<DataLogTimelineModel> GetTimeLine(Int64 recordID);
+       Task<List<DataLogTimelineModel>> GetTimeLine(Int64 recordID);
 
-        List<TabelasValueModel> GetTableList();
+       Task<List<TabelasValueModel>> GetTableList();
 
     }
 

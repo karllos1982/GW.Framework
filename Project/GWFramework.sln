@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GWFramework.Core", "GWFramework.Core\GWFramework.Core.csproj", "{4E4EB4E4-805D-4797-9093-EB7CD1720220}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GW.Membership", "GW.Membership\GW.Membership.csproj", "{6C84ED37-17F1-42D2-AA2A-86E929BD0B42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GW.Membership", "GW.Membership\GW.Membership.csproj", "{6C84ED37-17F1-42D2-AA2A-86E929BD0B42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{35ADF68B-9E85-4C00-8A7F-59A5E0FD2E1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6C84ED37-17F1-42D2-AA2A-86E929BD0B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C84ED37-17F1-42D2-AA2A-86E929BD0B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C84ED37-17F1-42D2-AA2A-86E929BD0B42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35ADF68B-9E85-4C00-8A7F-59A5E0FD2E1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35ADF68B-9E85-4C00-8A7F-59A5E0FD2E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35ADF68B-9E85-4C00-8A7F-59A5E0FD2E1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35ADF68B-9E85-4C00-8A7F-59A5E0FD2E1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

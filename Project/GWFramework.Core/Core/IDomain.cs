@@ -6,25 +6,25 @@ namespace GW.Core
     {
         IContext Context { get; set; }
 
-        TModel Get(TParam param);
+        Task<TModel> Get(TParam param);
 
-        void FillChields(ref TModel obj);  
+        Task<TModel> FillChields(TModel obj);
 
-        List<TList> List(TParam param);
+        Task<List<TList>> List(TParam param);
 
-        List<TSearchResult> Search(TParam param);
+        Task<List<TSearchResult>> Search(TParam param);
 
-        OperationStatus Set(TModel model, object userid);
+        Task<TModel> Set(TModel model, object userid);
 
-        OperationStatus Delete(TModel model, object userid);
+        Task<TModel> Delete(TModel model, object userid);
 
-        OperationStatus EntryValidation(TModel obj);
+        Task EntryValidation(TModel obj);
 
-        OperationStatus InsertValidation(TModel obj);
+        Task InsertValidation(TModel obj);
 
-        OperationStatus UpdateValidation(TModel obj);
+        Task UpdateValidation(TModel obj);
 
-        OperationStatus DeleteValidation(TModel obj);
+        Task DeleteValidation(TModel obj);
 
     }
 

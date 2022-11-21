@@ -26,30 +26,30 @@ namespace GW.Membership.Contracts.Domain
 
 
 
-        OperationStatus CreateNewUser(NewUser data, bool gocommit, object userid);
+        Task<UserModel> CreateNewUser(NewUser data, bool gocommit, object userid);
 
-        OperationStatus Login(UserLogin model);
+        Task<UserModel> Login(UserLogin model);
 
-        List<UserPermissions> GetUserPermissions(Int64 roleid, Int64 userid);
+        Task<List<UserPermissions>> GetUserPermissions(Int64 roleid, Int64 userid);
 
-        PERMISSION_STATE_ENUM CheckPermission(List<UserPermissions> permissions,
+        Task<PERMISSION_STATE_ENUM> CheckPermission(List<UserPermissions> permissions,
             string objectcode, PERMISSION_CHECK_ENUM type);
 
-        PermissionsState GetPermissionsState(List<UserPermissions> permissions,
+        Task<PermissionsState> GetPermissionsState(List<UserPermissions> permissions,
             string objectcode, bool allownone);
 
-        void RegisterLoginState(UserLogin model, UpdateUserLogin stateinfo);
+        Task RegisterLoginState(UserLogin model, UpdateUserLogin stateinfo);
 
 
-        void Logout(Int64 userid);
+        Task Logout(Int64 userid);
 
-        OperationStatus GetTemporaryPassword(ChangeUserPassword model);
+        Task<OperationStatus> GetTemporaryPassword(ChangeUserPassword model);
 
-        OperationStatus GetActiveAccountCode(ActiveUserAccount model);
+        Task<OperationStatus> GetActiveAccountCode(ActiveUserAccount model);
 
-        OperationStatus GetChangePasswordCode(ChangeUserPassword model);
+        Task<OperationStatus> GetChangePasswordCode(ChangeUserPassword model);
 
-        OperationStatus ChangeUserProfileImage(ChangeUserImage model);
+        Task<OperationStatus> ChangeUserProfileImage(ChangeUserImage model);
 
 
     }

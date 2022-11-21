@@ -47,10 +47,9 @@ namespace GW.Membership.Domain
         // 
 
 
-        public OperationStatus Login(UserLogin model)
+        public async Task<UserModel> Login(UserLogin model)
         {
-            OperationStatus ret = new OperationStatus(false);
-
+            UserModel ret = null;
 
             string errmsg = "";
             bool invalidpassword = false;
@@ -58,7 +57,7 @@ namespace GW.Membership.Domain
             int trys = 0;
 
             UserModel usermatch = null;
-            usermatch = User.GetByEmail(model.Email);
+            usermatch = await User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
             {
@@ -121,40 +120,34 @@ namespace GW.Membership.Domain
                 if (errmsg == "")
                 {
                     usermatch.Permissions
-                        = this.GetUserPermissions(usermatch.RoleID, usermatch.UserID);
+                        = await this.GetUserPermissions(usermatch.RoleID, usermatch.UserID);
 
-                    ret.Returns = usermatch;
+                    ret = usermatch;
                 }
 
                 if (invalidpassword)
                 {
-                    User.UpdateLoginFailCounter(new UpdateUserLoginFailCounter()
+                   await User.UpdateLoginFailCounter(new UpdateUserLoginFailCounter()
                     { UserID = usermatch.UserID.ToString(), ActiveStatus = activestatus, Reset = false });
                 }
 
             }
-            else
-            {
-                errmsg = "Erro de execução: " + Context.ExecutionStatus.Error.Message;
-            }
-
+            
             if (errmsg != "")
             {
-                ret.Status = false;
-                ret.Error = new Exception(errmsg);
-
-                Context.ExecutionStatus = ret; 
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new Exception(errmsg);             
             }       
 
             return ret;
         }
 
-        public List<UserPermissions> GetUserPermissions(Int64 roleid, Int64 userid)
+        public async Task<List<UserPermissions>> GetUserPermissions(Int64 roleid, Int64 userid)
         {
             List<UserPermissions> ret = new List<UserPermissions>();
 
             List<PermissionSearchResult> list
-                = Permission.GetPermissionsByRoleUser(roleid, userid);
+                = await Permission.GetPermissionsByRoleUser(roleid, userid);
 
             foreach (PermissionSearchResult item in list)
             {
@@ -173,7 +166,7 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public PERMISSION_STATE_ENUM CheckPermission(List<UserPermissions> permissions,
+        public async Task<PERMISSION_STATE_ENUM> CheckPermission(List<UserPermissions> permissions,
           string objectcode, PERMISSION_CHECK_ENUM type)
         {
             PERMISSION_STATE_ENUM ret = PERMISSION_STATE_ENUM.NONE;
@@ -183,7 +176,7 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public PermissionsState GetPermissionsState(List<UserPermissions> permissions,
+        public async Task<PermissionsState> GetPermissionsState(List<UserPermissions> permissions,
          string objectcode, bool allownone)
         {
             PermissionsState ret = new PermissionsState(false, false, false);
@@ -193,10 +186,10 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public void RegisterLoginState(UserLogin model, UpdateUserLogin stateinfo)
+        public async Task RegisterLoginState(UserLogin model, UpdateUserLogin stateinfo)
         {
 
-            User.UpdateUserLogin(stateinfo);
+            await User.UpdateUserLogin(stateinfo);
 
             SessionLogModel session = new SessionLogModel();
             session.SessionID = 0;
@@ -206,31 +199,27 @@ namespace GW.Membership.Domain
             session.BrowserName = model.ClienteBrowserName;
             session.DateLogout = null;
 
-            SessionLog.Set(session, stateinfo.UserID);            
+            await SessionLog.Set(session, stateinfo.UserID);            
 
         }
 
 
-        public void Logout(Int64 userid)
+        public async Task Logout(Int64 userid)
         {
-            User.SetDateLogout(userid);
+            await User.SetDateLogout(userid);
         }
 
-        public OperationStatus CreateNewUser(NewUser data, bool gocommit, object userid)
+        public async Task<UserModel> CreateNewUser(NewUser data, bool gocommit, object userid)
         {
-            OperationStatus ret = new OperationStatus(true);
+            UserModel ret = null;
 
-            ret = PrimaryValidation.Execute(data, new List<string>());
+            Context.ExecutionStatus =  PrimaryValidation.Execute(data, new List<string>());
 
-            if (!ret.Status)
-            {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
-            }
-            else
-            {
+            if (Context.ExecutionStatus.Status)
+            {             
                 UserModel obj = new UserModel();
 
-                obj = this.User.GetByEmail(data.Email);
+                obj = await this.User.GetByEmail(data.Email);
 
                 string pwd = MD5.BuildMD5(data.Password);
                 string slt = "GWSLT";
@@ -276,54 +265,54 @@ namespace GW.Membership.Domain
                             }
                             );
 
-                    ret = this.User.Set(obj, userid);
+                    ret = await this.User.Set(obj, userid);
                    
                 }
                 else
                 {
-                    ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("User-Exists").Text + data.Email);
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Exists").Text + data.Email);
                    
                 }
             }
-
-            Context.ExecutionStatus = ret;
+          
             return ret;
         }
 
 
-        public OperationStatus GetTemporaryPassword(ChangeUserPassword model)
+        public async Task<OperationStatus> GetTemporaryPassword(ChangeUserPassword model)
         {
             OperationStatus ret = new OperationStatus(false);
 
-            ret = User.SetPasswordRecoveryCode(model);
+            ret = await User.SetPasswordRecoveryCode(model);
 
             return ret;
         }
 
-        public OperationStatus GetActiveAccountCode(ActiveUserAccount model)
+        public async Task<OperationStatus> GetActiveAccountCode(ActiveUserAccount model)
         {
             OperationStatus ret = new OperationStatus(false);
 
-            ret = User.SetPasswordRecoveryCode(new ChangeUserPassword() { Email = model.Email, ToActivate = true });
+            ret = await User.SetPasswordRecoveryCode(new ChangeUserPassword()
+                    { Email = model.Email, ToActivate = true });
 
             return ret;
         }
 
-        public OperationStatus GetChangePasswordCode(ChangeUserPassword model)
+        public async Task<OperationStatus> GetChangePasswordCode(ChangeUserPassword model)
         {
             OperationStatus ret = new OperationStatus(false);
 
-            ret = User.SetPasswordRecoveryCode(model);
+            ret = await User.SetPasswordRecoveryCode(model);
 
             return ret;
         }
 
-        public OperationStatus ChangeUserProfileImage(ChangeUserImage model)
+        public async Task<OperationStatus> ChangeUserProfileImage(ChangeUserImage model)
         {
             OperationStatus ret = new OperationStatus(false);
 
-            ret = User.ChangeUserProfileImage(model);
+            ret = await User.ChangeUserProfileImage(model);
 
             return ret;
         }

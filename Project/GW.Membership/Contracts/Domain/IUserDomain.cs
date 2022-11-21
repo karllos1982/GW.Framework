@@ -7,31 +7,31 @@ namespace GW.Membership.Contracts.Domain
     public interface IUserDomain :
         IDomain<UserParam, UserModel, UserList, UserSearchResult>
     {
-        UserModel GetByEmail(string email);
+        Task<UserModel> GetByEmail(string email);
 
-        OperationStatus UpdateUserLogin(UpdateUserLogin model);
+        Task<OperationStatus> UpdateUserLogin(UpdateUserLogin model);
 
-        OperationStatus SetPasswordRecoveryCode(ChangeUserPassword model);
+        Task<OperationStatus> SetPasswordRecoveryCode(ChangeUserPassword model);
 
-        OperationStatus ChangeUserPassword(ChangeUserPassword model);
+        Task<OperationStatus> ChangeUserPassword(ChangeUserPassword model);
 
-        OperationStatus ActiveUserAccount(ActiveUserAccount model);
+        Task<OperationStatus> ActiveUserAccount(ActiveUserAccount model);
 
-        OperationStatus ChangeUserProfileImage(ChangeUserImage model);
+        Task<OperationStatus> ChangeUserProfileImage(ChangeUserImage model);
 
-        OperationStatus UpdateLoginFailCounter(UpdateUserLoginFailCounter model);
+        Task<OperationStatus> UpdateLoginFailCounter(UpdateUserLoginFailCounter model);
 
-        OperationStatus ChangeState(UserChangeState model);
+        Task<OperationStatus> ChangeState(UserChangeState model);
 
-        OperationStatus SetDateLogout(Int64 userid);
+        Task<OperationStatus> SetDateLogout(Int64 userid);
 
-        OperationStatus AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit);
+        Task<OperationStatus> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit);
 
-        OperationStatus RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit);
+        Task<OperationStatus> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit);
 
-        OperationStatus AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit);
+        Task<OperationStatus> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit);
 
-        OperationStatus RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit);
+        Task<OperationStatus> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit);
 
     }
 }

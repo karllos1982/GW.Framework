@@ -8,7 +8,7 @@ namespace GW.Membership.Contracts.Domain
         IDomain<PermissionParam, PermissionModel, PermissionList, PermissionSearchResult>
     {
 
-        List<PermissionSearchResult> GetPermissionsByRoleUser(Int64 roleid, Int64 userid);
+       Task<List<PermissionSearchResult>> GetPermissionsByRoleUser(Int64 roleid, Int64 userid);
 
     }
 }

@@ -8,21 +8,21 @@ namespace GW.Membership.Contracts.Data
         IRepository<UserParam, UserModel, UserList, UserSearchResult>
     {
 
-        UserModel GetByEmail(string email);
+        Task<UserModel> GetByEmail(string email);
 
-        OperationStatus UpdateUserLogin(UpdateUserLogin model);
+        Task<OperationStatus> UpdateUserLogin(UpdateUserLogin model);
 
-        OperationStatus SetPasswordRecoveryCode(SetPasswordRecoveryCode model);
+        Task<OperationStatus> SetPasswordRecoveryCode(SetPasswordRecoveryCode model);
 
-        OperationStatus ChangeUserPassword(ChangeUserPassword model);
+        Task<OperationStatus> ChangeUserPassword(ChangeUserPassword model);
 
-        OperationStatus ActiveUserAccount(ActiveUserAccount model);
+        Task<OperationStatus> ActiveUserAccount(ActiveUserAccount model);
 
-        OperationStatus ChangeUserProfileImage(ChangeUserImage model);
+        Task<OperationStatus> ChangeUserProfileImage(ChangeUserImage model);
 
-        OperationStatus UpdateLoginFailCounter(UpdateUserLoginFailCounter model);
+        Task<OperationStatus> UpdateLoginFailCounter(UpdateUserLoginFailCounter model);
 
-        OperationStatus ChangeState(UserChangeState model);
+        Task<OperationStatus> ChangeState(UserChangeState model);
 
     }
 }
