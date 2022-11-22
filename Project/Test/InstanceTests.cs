@@ -1,7 +1,4 @@
-﻿using Test;
-using GW.Membership.Models;
-using Shouldly;
-
+﻿
 namespace GW.Membership.Test
 {
     [TestClass]

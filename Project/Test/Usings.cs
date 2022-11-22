@@ -9,3 +9,7 @@ global using GW.Membership.Contracts.Domain;
 global using GW.Membership.Data;
 global using GW.Membership.Domain;
 global using Shouldly;
+global using Test;
+global using GW.Membership.Models;
+
+
