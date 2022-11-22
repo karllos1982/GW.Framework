@@ -1,8 +1,3 @@
-using System;
-using Test;
-using GW.Membership.Models;
-using Shouldly;
-using GW.Core.Helpers;
 
 namespace GW.Membership.Test
 {

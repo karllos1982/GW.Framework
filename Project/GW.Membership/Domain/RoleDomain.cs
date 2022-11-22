@@ -139,6 +139,7 @@ namespace GW.Membership.Domain
                     if (Context.ExecutionStatus.Status)
                     {
                         model.CreateDate = DateTime.Now;
+                        if (model.RoleID == 0) { model.RoleID = GW.Helpers.Utilities.GenerateId(); }
                         await RepositorySet.Role.Create(model);
                     }
                 }

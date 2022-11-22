@@ -102,7 +102,8 @@ namespace GW.Membership.Domain
                     await InsertValidation(model);
 
                     if (Context.ExecutionStatus.Status)
-                    {                        
+                    {
+                        if (model.SessionID == 0) { model.SessionID = GW.Helpers.Utilities.GenerateId(); }
                         await RepositorySet.SessionLog.Create(model);
                     }
                 }

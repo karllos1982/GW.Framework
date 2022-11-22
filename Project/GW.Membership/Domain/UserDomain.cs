@@ -191,7 +191,8 @@ namespace GW.Membership.Domain
                     if (Context.ExecutionStatus.Status)
                     {
                         model.CreateDate = DateTime.Now;
-                         await RepositorySet.User.Create(model);
+                        if (model.UserID == 0) { model.UserID = GW.Helpers.Utilities.GenerateId(); }
+                        await RepositorySet.User.Create(model);
                     }
                 }
                 else

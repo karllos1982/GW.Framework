@@ -101,7 +101,8 @@ namespace GW.Membership.Domain
                 {
                     await InsertValidation(model); 
                     if (Context.ExecutionStatus.Status)
-                    {                        
+                    {           
+                        if (model.DataLogID ==0 ) { model.DataLogID = GW.Helpers.Utilities.GenerateId(); }
                         await RepositorySet.DataLog.Create(model);
                     }
                 }

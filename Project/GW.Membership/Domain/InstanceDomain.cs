@@ -13,7 +13,7 @@ namespace GW.Membership.Domain
         public InstanceDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet = repositorySet;
         }
 
         public IContext Context { get; set; }
@@ -29,8 +29,8 @@ namespace GW.Membership.Domain
         {
             InstanceModel ret = null;
 
-            ret = await RepositorySet.Instance.Read(param); 
-            
+            ret = await RepositorySet.Instance.Read(param);
+
             return ret;
         }
 
@@ -38,7 +38,7 @@ namespace GW.Membership.Domain
         {
             List<InstanceList> ret = null;
 
-            ret = await RepositorySet.Instance.List(param);           
+            ret = await RepositorySet.Instance.List(param);
 
             return ret;
         }
@@ -64,7 +64,7 @@ namespace GW.Membership.Domain
             }
 
             Context.ExecutionStatus = ret;
-         
+
         }
 
         public async Task InsertValidation(InstanceModel obj)
@@ -76,7 +76,7 @@ namespace GW.Membership.Domain
             };
 
             List<InstanceList> list
-                =  await RepositorySet.Instance.List(param);
+                = await RepositorySet.Instance.List(param);
 
             if (list != null)
             {
@@ -88,7 +88,7 @@ namespace GW.Membership.Domain
             }
 
             Context.ExecutionStatus = ret;
-            
+
         }
 
         public async Task UpdateValidation(InstanceModel obj)
@@ -110,7 +110,7 @@ namespace GW.Membership.Domain
                 }
             }
 
-            Context.ExecutionStatus = ret;  
+            Context.ExecutionStatus = ret;
 
         }
 
@@ -124,21 +124,22 @@ namespace GW.Membership.Domain
             InstanceModel ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
-           await EntryValidation(model);
+            await EntryValidation(model);
 
             if (Context.ExecutionStatus.Status)
             {
 
-                InstanceModel old 
-                    =  await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
+                InstanceModel old
+                    = await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
 
                 if (old == null)
                 {
-                   await  InsertValidation(model);
+                    await InsertValidation(model);
 
                     if (Context.ExecutionStatus.Status)
                     {
                         model.CreateDate = DateTime.Now;
+                        if (model.InstanceID == 0) { model.InstanceID = GW.Helpers.Utilities.GenerateId(); }
                         await RepositorySet.Instance.Create(model);
                     }
                 }
@@ -165,21 +166,21 @@ namespace GW.Membership.Domain
                     ret = model;
                 }
 
-            }     
+            }
 
             return ret;
         }
-      
+
         public async Task<InstanceModel> Delete(InstanceModel model, object userid)
         {
             InstanceModel ret = null;
 
-            InstanceModel old 
+            InstanceModel old
                 = await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
 
             if (old != null)
             {
-               await DeleteValidation(model);
+                await DeleteValidation(model);
 
                 if (Context.ExecutionStatus.Status)
                 {
@@ -191,12 +192,12 @@ namespace GW.Membership.Domain
                 Context.ExecutionStatus.Status = false;
                 Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
 
-            }           
+            }
 
             return ret;
         }
 
-      
+
 
     }
 }

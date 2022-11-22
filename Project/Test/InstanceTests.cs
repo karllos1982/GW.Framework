@@ -7,8 +7,8 @@ namespace GW.Membership.Test
         public T00_InstanceTests()
         {
             //this.init();
-           // this.Context.End(false,true);
-
+            // this.Context.End(false,true);
+            
         }
 
         [TestMethod]
@@ -25,11 +25,10 @@ namespace GW.Membership.Test
             obj.IsActive = 1;
 
             InstanceModel model = await this.Domain.Instance.Set(obj, this.SysDefaultUser);
-
-            this.finalize();
-
+       
             this.Perform_ShouldBeTrue();
 
+            this.finalize();
         }
 
         [TestMethod]
@@ -46,11 +45,10 @@ namespace GW.Membership.Test
             obj.IsActive = 1;
 
             InstanceModel model = await this.Domain.Instance.Set(obj, this.SysDefaultUser);
-
-            this.finalize();
-
+                   
             this.Perform_ShouldBeFalse();
 
+            this.finalize();
         }
 
         [TestMethod]
@@ -97,8 +95,7 @@ namespace GW.Membership.Test
             this.finalize();
 
         }
-
-      
+              
 
     }
 }

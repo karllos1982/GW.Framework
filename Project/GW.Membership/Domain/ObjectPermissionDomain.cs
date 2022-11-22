@@ -139,7 +139,8 @@ namespace GW.Membership.Domain
                    await InsertValidation(model);
 
                     if (Context.ExecutionStatus.Status)
-                    {                        
+                    {
+                        if (model.ObjectPermissionID == 0) { model.ObjectPermissionID = GW.Helpers.Utilities.GenerateId(); }
                         await RepositorySet.ObjectPermission.Create(model);
                     }
                 }
