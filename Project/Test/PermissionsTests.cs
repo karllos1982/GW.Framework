@@ -19,65 +19,65 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T03_01_InsertObjectPermissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             ObjectPermissionModel obj;
 
             obj = CreateNewObjectPermission(1001, "Table.Sys.Basic", "SYSTEST");
-            ObjectPermissionModel newobj = await this.Domain.ObjectPermission.Set(obj, SysDefaultUser);
+            ObjectPermissionModel newobj = await res.Domain.ObjectPermission.Set(obj, SysDefaultUser);
 
             obj = CreateNewObjectPermission(1002, "Table.Sys2.Basic2", "SYSTEST2");                       
-            newobj = await this.Domain.ObjectPermission.Set(obj, SysDefaultUser);
+            newobj = await res.Domain.ObjectPermission.Set(obj, SysDefaultUser);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T03_02_List_ObjectPermissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<ObjectPermissionList> result = null;
 
-            result = await this.Domain.ObjectPermission.List(new ObjectPermissionParam() { });
+            result = await res.Domain.ObjectPermission.List(new ObjectPermissionParam() { });
+         
+            res.finalize();
 
             result.ShouldNotBeNull<List<ObjectPermissionList>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T03_02_2_Get_ObjectPermissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             ObjectPermissionModel result = null;
 
-            result = await this.Domain.ObjectPermission.Get(
+            result = await res.Domain.ObjectPermission.Get(
                 new ObjectPermissionParam() { pObjectPermissionID = 1001 });
+           
+            res.finalize();
 
             result.ObjectCode.ShouldBeEquivalentTo("SYSTEST");
-
-            this.finalize();
 
 
         }
         [TestMethod]
         public async Task T03_03_Search_ObjectPermissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<ObjectPermissionSearchResult> result = null;
 
-            result = await this.Domain.ObjectPermission.Search(new ObjectPermissionParam() { });
+            result = await res.Domain.ObjectPermission.Search(new ObjectPermissionParam() { });
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<ObjectPermissionSearchResult>>();
-
-            this.finalize();
 
         }
 
@@ -85,7 +85,7 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T03_04_Insert_PermissionsForRole()
         {
-            this.init();
+            Resources res = new Resources();
 
             PermissionModel obj;
 
@@ -101,18 +101,18 @@ namespace GW.Membership.Test
                 TypeGrant = "N"
             };
 
-            PermissionModel newobj = await this.Domain.Permission.Set(obj, SysDefaultUser);
+            PermissionModel newobj = await res.Domain.Permission.Set(obj, SysDefaultUser);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T03_05_Insert_PermissionsForUser()
         {
-            this.init();
+            Resources res = new Resources();
 
             PermissionModel obj;
 
@@ -129,18 +129,18 @@ namespace GW.Membership.Test
             };
 
             PermissionModel newobj = 
-                await  this.Domain.Permission.Set(obj, SysDefaultUser);
+                await  res.Domain.Permission.Set(obj, SysDefaultUser);
+        
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T03_06_Insert_PermissionsForUser()
         {
-            this.init();
+            Resources res = new Resources();
 
             PermissionModel obj;
 
@@ -157,57 +157,57 @@ namespace GW.Membership.Test
             };
 
             PermissionModel newobj = 
-                await this.Domain.Permission.Set(obj, SysDefaultUser);
+                await res.Domain.Permission.Set(obj, SysDefaultUser);
+          
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T03_07_List_Permissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<PermissionList> result = null;
 
             result = 
-                await this.Domain.Permission.List(new PermissionParam() { });
+                await res.Domain.Permission.List(new PermissionParam() { });
+         
+            res.finalize();
 
             result.ShouldNotBeNull<List<PermissionList>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T03_08_Search_Permissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<PermissionSearchResult> result = null;
 
-            result = await this.Domain.Permission.Search(new PermissionParam() { });
+            result = await res.Domain.Permission.Search(new PermissionParam() { });
+         
+            res.finalize();
 
             result.ShouldNotBeNull<List<PermissionSearchResult>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T03_09_Search_PermissionsByUser()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<PermissionSearchResult> result = null;
 
-            result = await this.Domain.Permission.GetPermissionsByRoleUser(1,1001 );
+            result = await res.Domain.Permission.GetPermissionsByRoleUser(1,1001 );
+         
+            res.finalize();
 
             result.Count.ShouldBeEquivalentTo(8);
-
-            this.finalize();
 
         }
 

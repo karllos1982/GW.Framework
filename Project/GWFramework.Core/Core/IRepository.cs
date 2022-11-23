@@ -22,6 +22,26 @@ namespace GW.Core
 
     }
 
+    public interface IRepositorySync<TParam, TModel, TList, TSearchResult>
+    {
+
+        IContext Context { get; set; }
+
+        void Create(TModel model);
+
+        TModel Read(TParam model);
+
+        void Update(TModel model);
+
+        void Delete(TModel model);
+
+        List<TList> List(TParam param);
+
+        List<TSearchResult> Search(TParam param);
+
+
+    }
+
 }
 
 

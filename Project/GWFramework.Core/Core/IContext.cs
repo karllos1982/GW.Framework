@@ -17,6 +17,9 @@ namespace GW.Core
         void RegisterDataLog(string userid, OPERATIONLOGENUM operation,
           string tableaname, string objID, object olddata, object currentdata);
 
+        Task RegisterDataLogAsync(string userid, OPERATIONLOGENUM operation,
+             string tableaname, string objID, object olddata, object currentdata);
+
         void Dispose(); 
 
     }

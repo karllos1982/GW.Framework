@@ -28,4 +28,30 @@ namespace GW.Core
 
     }
 
+    public interface IDomainSync<TParam, TModel, TList, TSearchResult>
+    {
+        IContext Context { get; set; }
+
+        TModel Get(TParam param);
+
+        TModel FillChields(TModel obj);
+
+        List<TList> List(TParam param);
+
+        List<TSearchResult> Search(TParam param);
+
+        TModel Set(TModel model, object userid);
+
+        TModel Delete(TModel model, object userid);
+
+        void EntryValidation(TModel obj);
+
+        void InsertValidation(TModel obj);
+
+        void UpdateValidation(TModel obj);
+
+        void DeleteValidation(TModel obj);
+
+    }
+
 }

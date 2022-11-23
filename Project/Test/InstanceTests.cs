@@ -14,7 +14,7 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T00_01_1_Insert_New_Instance_Success()
         {
-            this.init();
+            Resources res = new Resources(); 
 
             InstanceModel obj = new InstanceModel();
 
@@ -24,17 +24,17 @@ namespace GW.Membership.Test
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            InstanceModel model = await this.Domain.Instance.Set(obj, this.SysDefaultUser);
-       
-            this.Perform_ShouldBeTrue();
+            InstanceModel model = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
+                       
+            res.finalize();
 
-            this.finalize();
+            res.Perform_ShouldBeTrue();
         }
 
         [TestMethod]
         public async Task T00_01_2_Insert_New_Instance_InvalidName()
         {
-            this.init();
+            Resources res = new Resources();
 
             InstanceModel obj = new InstanceModel();
 
@@ -44,55 +44,55 @@ namespace GW.Membership.Test
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            InstanceModel model = await this.Domain.Instance.Set(obj, this.SysDefaultUser);
-                   
-            this.Perform_ShouldBeFalse();
+            InstanceModel model = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
+            
+            res.finalize();
 
-            this.finalize();
+            res.Perform_ShouldBeFalse();
         }
 
         [TestMethod]
         public async Task T00_02_Get_Instance()
         {
-            this.init();
+            Resources res = new Resources();
 
             InstanceModel result = null;
 
-            result = await this.Domain.Instance.Get(new InstanceParam() { pInstanceID=2});
+            result = await res.Domain.Instance.Get(new InstanceParam() { pInstanceID=2});
+           
+            res.finalize();
 
             result.ShouldNotBeNull<InstanceModel>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T00_03_List_Instance()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<InstanceList> result = null;
 
-            result = await this.Domain.Instance.List(new InstanceParam() { });
+            result = await res.Domain.Instance.List(new InstanceParam() { });
+          
+            res.finalize();
 
             result.ShouldNotBeNull<List<InstanceList>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T00_04_Search_InstanceByName()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<InstanceSearchResult> result = null;
 
-            result = await this.Domain.Instance.Search(new InstanceParam() { pInstanceName = "System" });
+            result = await res.Domain.Instance.Search(new InstanceParam() { pInstanceName = "System" });
+           
+            res.finalize();
 
             result.ShouldNotBeNull<List<InstanceSearchResult>>();
-
-            this.finalize();
 
         }
               

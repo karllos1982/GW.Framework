@@ -8,102 +8,102 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T02_01_Get_User()
         {
-            this.init();
+            Resources res = new Resources();
 
             UserModel result = null;
 
-            result = await this.Domain.User.Get(new UserParam() { pUserID = 1001 });
+            result = await res.Domain.User.Get(new UserParam() { pUserID = 1001 });
+            
+            res.finalize();
 
             result.ShouldNotBeNull<UserModel>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T02_02_List_User()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserList> result = null;
 
-            result = await this.Domain.User.List(new UserParam() { });
+            result = await res.Domain.User.List(new UserParam() { });
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<UserList>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T02_03_Search_UserByEmail()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserSearchResult> result = null;
 
-            result = await  this.Domain.User.Search(
+            result = await  res.Domain.User.Search(
                 new UserParam() { pEmail = "deleted.user@sys.com" });
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<UserSearchResult>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T02_04_Search_UserByRole()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserSearchResult> result = null;
 
-            result = await this.Domain.User.Search(new UserParam() { pRoleID=1 });
+            result = await res.Domain.User.Search(new UserParam() { pRoleID=1 });
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<UserSearchResult>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T02_05_Search_UserByInstance()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserSearchResult> result = null;
 
-            result = await this.Domain.User.Search(new UserParam() { pInstanceID = 1 });
+            result = await res.Domain.User.Search(new UserParam() { pInstanceID = 1 });
+           
+            res.finalize();
 
             result.ShouldNotBeNull<List<UserSearchResult>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T02_06_01_AddRoleToUser_Success()
         {
-            this.init();            
+            Resources res = new Resources();            
 
-            status = await this.Domain.User.AddRoleToUser(1003, 4, true);
+            status = await res.Domain.User.AddRoleToUser(1003, 4, true);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T02_06_02_AddRoleToUser_Fail()
         {
-            this.init();
+            Resources res = new Resources();
 
-            status = await this.Domain.User.AddRoleToUser(1003, 4, true);
+            status = await res.Domain.User.AddRoleToUser(1003, 4, true);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeFalse();
-
-            this.finalize();
+            res.Perform_ShouldBeFalse();
 
         }
 
@@ -111,39 +111,39 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T02_06_03_RemoveRole_FromUser()
         {
-            this.init();
+            Resources res = new Resources();
 
-            status = await this.Domain.User.RemoveRoleFromUser(1003, 4, true);
+            status = await res.Domain.User.RemoveRoleFromUser(1003, 4, true);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T02_07_01_AddInstanceToUser_Success()
         {
-            this.init();
+            Resources res = new Resources();
 
-            status = await this.Domain.User.AddInstanceToUser(1003, 2, true);
+            status = await res.Domain.User.AddInstanceToUser(1003, 2, true);
 
-            this.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue();
 
-            this.finalize();
+            res.finalize();
 
         }
 
         [TestMethod]
         public async Task T02_07_02_AddRoleToUser_Fail()
         {
-            this.init();
+            Resources res = new Resources();
 
-            status = await this.Domain.User.AddInstanceToUser(1003, 2, true);
+            status = await res.Domain.User.AddInstanceToUser(1003, 2, true);
+          
+            res.finalize();
 
-            this.Perform_ShouldBeFalse();
-
-            this.finalize();
+            res.Perform_ShouldBeFalse();
 
         }
 
@@ -151,13 +151,13 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T02_07_03_RemoveRole_FromUser()
         {
-            this.init();
+            Resources res = new Resources();
 
-            status = await this.Domain.User.RemoveInstanceFromUser(1003, 2, true);
+            status = await res.Domain.User.RemoveInstanceFromUser(1003, 2, true);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
@@ -165,19 +165,17 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T02_08_Delete_User()
         {
-            this.init();
+            Resources res = new Resources();
 
             UserModel obj = new UserModel() { UserID = 1002 };
 
-            UserModel newobj = await this.Domain.User.Delete(obj, SysDefaultUser);
+            UserModel newobj = await res.Domain.User.Delete(obj, SysDefaultUser);
+      
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue();
 
-            this.finalize();
-
-        }
-
-     
+        }             
      
 
     }

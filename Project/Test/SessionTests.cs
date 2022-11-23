@@ -10,22 +10,22 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T05_01_List_Session()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<SessionLogList> result = null;
 
-            result = await this.Domain.SessionLog.List(new SessionLogParam() { });
+            result = await res.Domain.SessionLog.List(new SessionLogParam() { });
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<SessionLogList>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T05_02_Search_Session()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<SessionLogSearchResult> result = null;
             SessionLogParam param = new SessionLogParam();
@@ -34,11 +34,11 @@ namespace GW.Membership.Test
             param.pDate_Start = DateTime.Now.AddDays(-1);
             param.pData_End = DateTime.Now.AddDays(1);
             
-            result = await this.Domain.SessionLog.Search(param);
+            result = await res.Domain.SessionLog.Search(param);
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<SessionLogSearchResult>>();
-
-            this.finalize();
 
         }
     

@@ -26,31 +26,83 @@ namespace Test
         public MailSettings MailSettings { get; set; }
     }
 
-    public static class Resources
+    public class Resources
     {
-      
-        public static ISettings BuildSettings()
+        public Resources()
         {
-            return new TesteConfigs();
+            Settings = new TesteConfigs();
+            Context = new DapperContext(Settings);
+            Repository = new MembershipRepositorySet(Context);
+            Domain = new MembershipManager(Context, Repository);
+            Context.Begin(0);
         }
 
-        public static IDapperContext BuildContext()
-        {           
-                        
-            return new DapperContext(BuildSettings());
-        }
+        public ISettings Settings { get; set; }
 
-        public static IMembershipRepositorySet GetMembershipRepositorySet(IDapperContext context)
-        {            
+        public IDapperContext Context { get; set; }
 
-            return new MembershipRepositorySet(context);
-        }
+        public MembershipRepositorySet Repository { get; set; }
 
-        public static IMembershipManager GetMembershipManager()
+        public MembershipManager Domain { get; set; }
+
+        public void finalize()
         {
-            IDapperContext context = BuildContext();
-            return new MembershipManager(context, GetMembershipRepositorySet(context)); 
+            OperationStatus ret =  Context.End();
+
+            Console.Write("Exec Status => " + ret.Status.ToString());
+            if (ret.Error != null)  
+            {
+                Console.Write("Msg => " + ret.Error.Message.ToString());
+            }
         }
+
+        public void Perform_ShouldBeTrue()
+        {
+            if (Domain.Context.ExecutionStatus.Error != null)
+            {
+                Domain.Context.ExecutionStatus.Status.ShouldBeTrue(Domain.Context.ExecutionStatus.Error.Message);
+            }
+            else
+            {
+                Domain.Context.ExecutionStatus.Status.ShouldBeTrue();
+            }
+        }
+
+        public void Perform_ShouldBeFalse()
+        {
+            if (Domain.Context.ExecutionStatus.Error != null)
+            {
+                Domain.Context.ExecutionStatus.Status.ShouldBeFalse(Domain.Context.ExecutionStatus.Error.Message);
+            }
+            else
+            {
+                Domain.Context.ExecutionStatus.Status.ShouldBeFalse();
+            }
+        }
+
+
+        //public static ISettings BuildSettings()
+        //{
+        //    return new TesteConfigs();
+        //}
+
+        //public static IDapperContext BuildContext()
+        //{           
+
+        //    return new DapperContext(BuildSettings());
+        //}
+
+        //public static IMembershipRepositorySet GetMembershipRepositorySet(IDapperContext context)
+        //{            
+
+        //    return new MembershipRepositorySet(context);
+        //}
+
+        //public static IMembershipManager GetMembershipManager()
+        //{
+        //    IDapperContext context = BuildContext();
+        //    return new MembershipManager(context, GetMembershipRepositorySet(context)); 
+        //}
 
 
     }
@@ -65,16 +117,20 @@ namespace Test
             }
         }
 
+        protected Resources Resource { get; set; }
+
         protected IMembershipManager Domain;
 
         protected OperationStatus status;
 
 
         public void init()
-        {          
-            Domain = Resources.GetMembershipManager();
+        {
+            //Resource = new Resources();
 
-            Domain.Context.Begin(0); 
+            //Domain = Resource.Domain;
+
+           // Domain.Context.Begin(0); 
         }
 
 

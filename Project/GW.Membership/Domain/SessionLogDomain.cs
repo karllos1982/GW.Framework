@@ -122,8 +122,8 @@ namespace GW.Membership.Domain
 
                 if (Context.ExecutionStatus.Status && userid != null)
                 {
-                    RepositorySet.SessionLog.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSSESSIONLOG",
+                   await  RepositorySet.SessionLog.Context
+                        .RegisterDataLogAsync(userid.ToString(), operation, "SYSSESSIONLOG",
                         model.SessionID.ToString(), old, model);
 
                     ret= model;

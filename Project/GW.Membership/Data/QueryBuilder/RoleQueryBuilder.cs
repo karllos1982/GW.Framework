@@ -28,8 +28,12 @@ namespace GW.Membership.Data
         public override string QueryForList(object param)
         {
             string ret = @"select *, cast(RoleID as varchar(32)) as sRoleID              
-             from sysRole ";
-             
+             from sysRole 
+             where 1=1 
+             and (@pRoleName='' or RoleName=@pRoleName)
+             and (@pRoleID=0 or RoleID=@pRoleID)
+             ";
+
             return ret;
         }
 

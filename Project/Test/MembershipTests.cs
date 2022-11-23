@@ -12,7 +12,7 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T04_01_1_Create_New_User_Success()
         {
-            this.init();
+            Resources res = new Resources();
 
             NewUser nuser = new NewUser();
 
@@ -21,19 +21,19 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
-            UserModel user = await this.Domain.CreateNewUser(nuser, false, 1001);
+            UserModel user = await res.Domain.CreateNewUser(nuser, false, 1001);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue();
 
-            this.finalize();
-                        
 
         }
 
         [TestMethod]
         public async Task T04_01_2_Create_New_User_Email_Repetido()
         {
-            this.init();
+            Resources res = new Resources();
 
             NewUser nuser = new NewUser();
 
@@ -42,27 +42,26 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
-            UserModel user = await this.Domain.CreateNewUser(nuser, false, 1001);
+            UserModel user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
-            this.finalize();
+            res.finalize();
 
-            this.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse();
 
         }
 
         [TestMethod]
         public async Task T04_02_Active_User_Account()
         {
-            this.init();
+            Resources res = new Resources();
           
             // get code
             ChangeUserPassword changemodel = new ChangeUserPassword();
             changemodel.Email =  EMAIL_DEFAULT;
             changemodel.ToActivate = true;
-            status = await this.Domain.User.SetPasswordRecoveryCode(changemodel);
+            status = await res.Domain.User.SetPasswordRecoveryCode(changemodel);
             
-            this.init();
-
+        
             // change password
             if (status.Status)
             {               
@@ -70,21 +69,19 @@ namespace GW.Membership.Test
                 activemodel.Email = EMAIL_DEFAULT;
                 activemodel.Code = status.Returns.ToString();
 
-                status = await this.Domain.User.ActiveUserAccount(activemodel);
-                this.Perform_ShouldBeTrue();
+                status = await res.Domain.User.ActiveUserAccount(activemodel);
+                
+            }
 
-            }
-            else
-            {
-                this.Perform_ShouldBeTrue();
-            }
+            res.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T04_03_1_Login_Success()
         {
-            this.init();
+            Resources res = new Resources();
 
             UserLogin model = new UserLogin();
 
@@ -95,18 +92,18 @@ namespace GW.Membership.Test
             model.AuthToken = Guid.NewGuid().ToString();
             model.AuthTokenExpires = DateTime.Now.AddHours(8);
 
-            UserModel user = await this.Domain.Login(model);
-           
-            this.Perform_ShouldBeTrue();
+            UserModel user = await res.Domain.Login(model);
+                       
+            res.finalize();
 
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T04_04_2_Login_InvalidPassword()
         {
-            this.init();
+            Resources res = new Resources();
 
             UserLogin model = new UserLogin();
 
@@ -117,101 +114,99 @@ namespace GW.Membership.Test
             model.AuthToken = Guid.NewGuid().ToString();
             model.AuthTokenExpires = DateTime.Now.AddHours(8);
 
-            UserModel user = await this.Domain.Login(model);
+            UserModel user = await res.Domain.Login(model);
+           
+            res.finalize();
 
-            this.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse();
 
-            this.finalize();
-
-            
         }
 
 
         [TestMethod]
         public async Task T04_05_1_CheckPermissions_When_Allowed()
         {
-            this.init();
+            Resources res = new Resources();
             
             List<UserPermissions> userPermissions = new List<UserPermissions>();
 
-            userPermissions = await this.Domain.GetUserPermissions(2, 1003);
+            userPermissions = await res.Domain.GetUserPermissions(2, 1003);
 
             userPermissions.ShouldNotBeNull<List<UserPermissions>>();
 
             PERMISSION_STATE_ENUM state 
-                = await this.Domain.CheckPermission(userPermissions, "SYSTEST", PERMISSION_CHECK_ENUM.READ);
+                = await res.Domain.CheckPermission(userPermissions, "SYSTEST", PERMISSION_CHECK_ENUM.READ);
 
             state.ShouldBeEquivalentTo(PERMISSION_STATE_ENUM.ALLOWED);
 
-            this.finalize();
+            res.finalize();
            
         }
 
         [TestMethod]
         public async Task T04_05_2_CheckPermissions_When_Allowed()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserPermissions> userPermissions = new List<UserPermissions>();
 
-            userPermissions = await this.Domain.GetUserPermissions(2, 1003);
+            userPermissions = await res.Domain.GetUserPermissions(2, 1003);
 
             userPermissions.ShouldNotBeNull<List<UserPermissions>>();
 
             PermissionsState state
-                = await this.Domain.GetPermissionsState(userPermissions, "SYSTEST",true);
+                = await res.Domain.GetPermissionsState(userPermissions, "SYSTEST",true);
 
             state.AllowRead.ShouldBeEquivalentTo(true);
             state.AllowSave.ShouldBeEquivalentTo(true);
             state.AllowDelete.ShouldBeEquivalentTo(true);
 
-            this.finalize();
+            res.finalize();
 
         }
 
         [TestMethod]
         public async Task T04_05_3_GetListPermissions()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserPermissions> userPermissions = new List<UserPermissions>();
-            userPermissions = await this.Domain.GetUserPermissions(2, 1003);
+            userPermissions = await res.Domain.GetUserPermissions(2, 1003);
 
             userPermissions = (from UserPermissions p in userPermissions
                                where p.ObjectCode == "SYSTEST"
                     select p).ToList();
+            
+            res.finalize();
 
             userPermissions.ShouldNotBeNull<List<UserPermissions>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T04_06_CheckPermissions_When_Denied()
         {
-            this.init();
+            Resources res = new Resources();
 
             List<UserPermissions> userPermissions = new List<UserPermissions>();
 
-            userPermissions = await this.Domain.GetUserPermissions(1, 1001);
+            userPermissions = await res.Domain.GetUserPermissions(1, 1001);
 
             userPermissions.ShouldNotBeNull<List<UserPermissions>>();
 
             PERMISSION_STATE_ENUM state
-                = await this.Domain.CheckPermission(userPermissions, "SYSUSER", PERMISSION_CHECK_ENUM.SAVE);
+                = await res.Domain.CheckPermission(userPermissions, "SYSUSER", PERMISSION_CHECK_ENUM.SAVE);
+           
+            res.finalize();
 
             state.ShouldBeEquivalentTo(PERMISSION_STATE_ENUM.DENIED);
-
-            this.finalize();
-
         }
 
 
         [TestMethod]
         public async Task T04_07_Register_Login_State()
         {
-            this.init();
+            Resources res = new Resources();
 
             UserLogin model = new UserLogin();         
             model.ClientIP = "127.0.0.1";
@@ -220,7 +215,11 @@ namespace GW.Membership.Test
             UpdateUserLogin login = new UpdateUserLogin();
             login.UserID = 1003;
 
-            await this.Domain.RegisterLoginState(model, login);            
+            await res.Domain.RegisterLoginState(model, login);
+
+            res.finalize();
+
+            res.Perform_ShouldBeTrue();                        
 
         }
 
@@ -228,75 +227,80 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T04_08_Logout()
         {
-            this.init();
+            Resources res = new Resources();
 
-            status = await this.Domain.User.SetDateLogout(USERID_DEFAULT);
+            status = await res.Domain.User.SetDateLogout(USERID_DEFAULT);
+        
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
-
-            this.finalize();
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T04_09_Get_Temporary_Password()
         {
-            this.init();
+            Resources res = new Resources();
 
             ChangeUserPassword model = new ChangeUserPassword();
             model.Email = EMAIL_DEFAULT;
 
-            status = await this.Domain.GetTemporaryPassword(model);
+            status = await res.Domain.GetTemporaryPassword(model);
 
-            this.Perform_ShouldBeTrue();
+            res.finalize();
+
+            res.Perform_ShouldBeTrue();
 
         }
 
         [TestMethod]
         public async Task T04_10_Change_User_State()
         {
-            this.init();
+            Resources res = new Resources();
 
             UserChangeState model = new UserChangeState();
             model.UserID = USERID_DEFAULT;
             model.LockedValue = 0;
             model.ActiveValue = 1;
 
-            status = await this.Domain.User.ChangeState(model);
+            status = await res.Domain.User.ChangeState(model);
 
-            this.Perform_ShouldBeTrue();
+            res.finalize();
 
-            this.finalize();
+            res.Perform_ShouldBeTrue();
+
+          
         }
  
 
         [TestMethod]
         public async Task T04_11_Change_User_Password()
         {
-            this.init();
+            Resources res = new Resources();
           
             // get code
             ChangeUserPassword changemodel = new ChangeUserPassword();
             changemodel.Email = EMAIL_DEFAULT;
             changemodel.NewPassword = "NEWPWD"; 
 
-            status = await this.Domain.User.SetPasswordRecoveryCode(changemodel);
-                        
-            this.init();
-
+            status = await res.Domain.User.SetPasswordRecoveryCode(changemodel);
+                         
             // change password
             if (status.Status)
             {            
                 changemodel.Code = status.Returns.ToString();
 
-                status = await this.Domain.User.ChangeUserPassword(changemodel);
-                this.Perform_ShouldBeTrue();
+                status = await res.Domain.User.ChangeUserPassword(changemodel);
+                res.finalize();
+                res.Perform_ShouldBeTrue();
 
             }
             else
             {
-                this.Perform_ShouldBeFalse();
+                res.finalize();
+                res.Perform_ShouldBeFalse();
             }
+            
 
         }
 
@@ -304,15 +308,17 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T04_12_Change_User_Profile_Image()
         {
-            this.init();
+            Resources res = new Resources();
 
             ChangeUserImage model = new ChangeUserImage();
             model.UserID = USERID_DEFAULT;
             model.FileName = "image_user.png"; 
 
-            status = await this.Domain.ChangeUserProfileImage(model);
+            status = await res.Domain.ChangeUserProfileImage(model);
+            
+            res.finalize();
 
-            this.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue();
 
         }
    

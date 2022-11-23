@@ -16,7 +16,7 @@ namespace GW.Membership.Data
             Settings = settings;
             ConnStatus = new OperationStatus(true);
             ExecutionStatus = new OperationStatus(true);
-            Isolation = IsolationLevel.ReadCommitted;
+            Isolation = IsolationLevel.ReadUncommitted;
         }
 
         public IDbConnection Connection { get; set; }
@@ -71,7 +71,7 @@ namespace GW.Membership.Data
                         {
                             ret.Status = false;
                             ret.Error = ex;
-                            ExecutionStatus = ret; 
+                           
                         }
                                               
                     }                   
@@ -79,6 +79,8 @@ namespace GW.Membership.Data
                 }
 
             }
+
+            ExecutionStatus = ret;
 
             return ret;
         }
@@ -104,7 +106,7 @@ namespace GW.Membership.Data
                         {
                             ret.Status = false;
                             ret.Error = ex;
-                            ExecutionStatus = ret;
+                           
                         }
 
                     }
@@ -113,6 +115,7 @@ namespace GW.Membership.Data
 
             }
 
+            ExecutionStatus = ret;
             return ret;
         }
 
@@ -141,7 +144,9 @@ namespace GW.Membership.Data
 
             }
 
-            this.Dispose(); 
+            this.Dispose();
+
+            ExecutionStatus = ret;
 
             return ret;
         }
@@ -457,6 +462,58 @@ namespace GW.Membership.Data
                     qw.BuildInsertCommand("[sysdatalog]", obj, null);
 
             Execute(sqltext, obj);
+
+
+        }
+
+        public async Task RegisterDataLogAsync(string userid, OPERATIONLOGENUM operation,
+              string tableaname, string objID, object olddata, object currentdata)
+        {
+
+            DataLogObject obj = new DataLogObject();
+
+            string s_olddata = "";
+            string s_currentdata = "";
+
+            obj.DataLogID = Helpers.Utilities.GenerateId();
+            obj.UserID = Int64.Parse(userid);
+            obj.Date = DateTime.Now;
+
+            switch (operation)
+            {
+                case OPERATIONLOGENUM.INSERT:
+                    obj.Operation = "I";
+
+                    s_currentdata = JsonConvert.SerializeObject(currentdata);
+
+                    break;
+
+                case OPERATIONLOGENUM.UPDATE:
+                    obj.Operation = "U";
+
+                    s_olddata = JsonConvert.SerializeObject(olddata);
+                    s_currentdata = JsonConvert.SerializeObject(currentdata);
+
+                    break;
+
+                case OPERATIONLOGENUM.DELETE:
+                    obj.Operation = "D";
+
+                    s_olddata = JsonConvert.SerializeObject(olddata);
+                    break;
+            }
+
+            obj.TableName = tableaname;
+            obj.ID = Int64.Parse(objID);
+            obj.LogOldData = s_olddata;
+            obj.LogCurrentData = s_currentdata;
+
+            DataLogQueryBuilder qw = new DataLogQueryBuilder();
+
+            string sqltext =
+                    qw.BuildInsertCommand("[sysdatalog]", obj, null);
+
+            await ExecuteAsync(sqltext, obj);
 
 
         }

@@ -159,8 +159,8 @@ namespace GW.Membership.Domain
 
                 if (Context.ExecutionStatus.Status && userid != null)
                 {
-                    RepositorySet.Instance.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSINSTANCE",
+                    await RepositorySet.Instance.Context
+                        .RegisterDataLogAsync(userid.ToString(), operation, "SYSINSTANCE",
                         model.InstanceID.ToString(), old, model);
 
                     ret = model;

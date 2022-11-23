@@ -49,7 +49,7 @@ namespace GW.Membership.Data
         {
            
             string sql = query.QueryForDelete("sysInstance", model, model);
-           await ((DapperContext)Context).ExecuteAsync(sql, model);
+            await ((DapperContext)Context).ExecuteAsync(sql, model);
       
         }
 

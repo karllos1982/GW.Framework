@@ -121,8 +121,8 @@ namespace GW.Membership.Domain
 
                 if (Context.ExecutionStatus.Status && userid != null)
                 {
-                    RepositorySet.Permission.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSPERMISSION",
+                   await  RepositorySet.Permission.Context
+                        .RegisterDataLogAsync(userid.ToString(), operation, "SYSPERMISSION",
                         model.PermissionID.ToString(), old, model);
 
                     ret = model;

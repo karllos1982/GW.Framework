@@ -159,8 +159,8 @@ namespace GW.Membership.Domain
 
                 if (Context.ExecutionStatus.Status && userid != null)
                 {
-                    RepositorySet.Role.Context
-                        .RegisterDataLog(userid.ToString(), operation, "SYSROLE",
+                   await  RepositorySet.Role.Context
+                        .RegisterDataLogAsync(userid.ToString(), operation, "SYSROLE",
                         model.RoleID.ToString(), old, model);
 
                     ret = model;

@@ -11,22 +11,22 @@ namespace GW.Membership.Test
         [TestMethod]
         public async Task T06_01_List_DataLog()
         {
-            this.init();
+             Resources res = new Resources(); 
 
             List<DataLogList> result = null;
 
-            result = await this.Domain.DataLog.List(new DataLogParam() { });
+            result = await res.Domain.DataLog.List(new DataLogParam() { });
+           
+            res.finalize();
 
             result.ShouldNotBeNull<List<DataLogList>>();
-
-            this.finalize();
 
         }
 
         [TestMethod]
         public async Task T06_02_Search_DataLog()
         {
-            this.init();
+             Resources res = new Resources(); 
 
             List<DataLogSearchResult> result = null;
             DataLogParam param = new DataLogParam();
@@ -35,11 +35,11 @@ namespace GW.Membership.Test
             param.pDate_Start = DateTime.Now.AddDays(-1);
             param.pData_End = DateTime.Now.AddDays(1);
 
-            result = await this.Domain.DataLog.Search(param);
+            result = await res.Domain.DataLog.Search(param);
+            
+            res.finalize();
 
             result.ShouldNotBeNull<List<DataLogSearchResult>>();
-
-            this.finalize();
 
         }
 
