@@ -44,9 +44,11 @@ namespace GW.Membership.Test
             nuser.InstanceID = 1;
             UserModel user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse(status);
 
         }
 
@@ -92,8 +94,8 @@ namespace GW.Membership.Test
             model.AuthToken = Guid.NewGuid().ToString();
             model.AuthTokenExpires = DateTime.Now.AddHours(8);
 
-            UserModel user = await res.Domain.Login(model);
-                       
+            UserModel user = await res.Domain.Login(model);            
+
             res.finalize();
 
             res.Perform_ShouldBeTrue();
@@ -115,10 +117,12 @@ namespace GW.Membership.Test
             model.AuthTokenExpires = DateTime.Now.AddHours(8);
 
             UserModel user = await res.Domain.Login(model);
-           
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse(status );
 
         }
 
@@ -157,11 +161,13 @@ namespace GW.Membership.Test
             PermissionsState state
                 = await res.Domain.GetPermissionsState(userPermissions, "SYSTEST",true);
 
+            res.finalize();
+
             state.AllowRead.ShouldBeEquivalentTo(true);
             state.AllowSave.ShouldBeEquivalentTo(true);
             state.AllowDelete.ShouldBeEquivalentTo(true);
 
-            res.finalize();
+            
 
         }
 
@@ -297,8 +303,9 @@ namespace GW.Membership.Test
             }
             else
             {
-                res.finalize();
-                res.Perform_ShouldBeFalse();
+
+                res.finalize( );
+                res.Perform_ShouldBeFalse(status);
             }
             
 

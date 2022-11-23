@@ -638,9 +638,9 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task<OperationStatus> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit)
+        public async Task<UserRolesModel> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit)
         {
-            OperationStatus ret = new OperationStatus(true);
+            UserRolesModel ret = null;
 
             List<UserRolesModel> list;
             UserRolesParam param = new UserRolesParam();
@@ -653,12 +653,12 @@ namespace GW.Membership.Domain
             {
                 if (list.Count > 0)
                 {
-                    ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("User-Role-Exists").Text);
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Role-Exists").Text);
                 }
             }
 
-            if (ret.Status)
+            if (Context.ExecutionStatus.Status)
             {
                 UserRolesModel obj = new UserRolesModel();
                 obj.UserRoleID = Utilities.GenerateId();
@@ -667,19 +667,19 @@ namespace GW.Membership.Domain
 
                  await RepositorySet.UserRoles.Create(obj);
 
-                if (ret.Status)
+                if (Context.ExecutionStatus.Status)
                 {
-                    ret.Returns = obj;
+                    ret= obj;
                 }
 
             }
-
+          
             return ret;
         }
 
-        public async Task<OperationStatus> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit)
+        public async Task<UserRolesModel> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit)
         {
-            OperationStatus ret = new OperationStatus(true);
+            UserRolesModel ret = null;
 
             List<UserRolesModel> list;
             UserRolesParam param = new UserRolesParam();
@@ -692,25 +692,25 @@ namespace GW.Membership.Domain
             {
                 if (list.Count == 0)
                 {
-                    ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("User-Role-No-Exists").Text);
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Role-No-Exists").Text);
                 }
             }
             else
             {
-                ret.Status = false;
-                ret.Error = new Exception(GW.Localization.GetItem("User-Role-No-Exists").Text);
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Role-No-Exists").Text);
             }
 
-            if (ret.Status)
+            if (Context.ExecutionStatus.Status)
             {
                 UserRolesModel obj = list[0];
 
                 await RepositorySet.UserRoles.Delete(obj);
 
-                if (ret.Status)
+                if (Context.ExecutionStatus.Status)
                 {
-                    ret.Returns = obj;
+                    ret= obj;
                 }
             }        
 
@@ -718,9 +718,9 @@ namespace GW.Membership.Domain
         }
 
 
-        public async Task<OperationStatus> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit)
+        public async Task<UserInstancesModel> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit)
         {
-            OperationStatus ret = new OperationStatus(true);
+            UserInstancesModel ret = null;
 
             List<UserInstancesModel> list;
             UserInstancesParam param = new UserInstancesParam();
@@ -733,12 +733,12 @@ namespace GW.Membership.Domain
             {
                 if (list.Count > 0)
                 {
-                    ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("User-Instance-Exists").Text);
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Instance-Exists").Text);
                 }
             }
 
-            if (ret.Status)
+            if (Context.ExecutionStatus.Status)
             {
                 UserInstancesModel obj = new UserInstancesModel();
                 obj.UserInstanceID = Utilities.GenerateId();
@@ -747,9 +747,9 @@ namespace GW.Membership.Domain
 
                  await RepositorySet.UserInstances.Create(obj);
 
-                if (ret.Status)
+                if (Context.ExecutionStatus.Status)
                 {
-                    ret.Returns = obj;
+                    ret = obj;
                 }
 
             }
@@ -758,9 +758,9 @@ namespace GW.Membership.Domain
         }
 
 
-        public async Task<OperationStatus> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit)
+        public async Task<UserInstancesModel> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit)
         {
-            OperationStatus ret = new OperationStatus(true);
+            UserInstancesModel ret = null; ;
 
             List<UserInstancesModel> list;
             UserInstancesParam param = new UserInstancesParam();
@@ -773,25 +773,25 @@ namespace GW.Membership.Domain
             {
                 if (list.Count == 0)
                 {
-                    ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("User-Instance-No-Exists").Text);
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Instance-No-Exists").Text);
                 }
             }
             else
             {
-                ret.Status = false;
-                ret.Error = new Exception(GW.Localization.GetItem("User-Instance-No-Exists").Text);
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Instance-No-Exists").Text);
             }
 
-            if (ret.Status)
+            if (Context.ExecutionStatus.Status)
             {
                 UserInstancesModel obj = list[0];
 
                 await RepositorySet.UserInstances.Delete(obj);
 
-                if (ret.Status)
+                if (Context.ExecutionStatus.Status)
                 {
-                    ret.Returns = obj;
+                    ret= obj;
                 }
             }         
 

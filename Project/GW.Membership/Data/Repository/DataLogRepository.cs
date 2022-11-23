@@ -58,7 +58,7 @@ namespace GW.Membership.Data
             List<DataLogList> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<DataLogList>(query.QueryForList(null),param); 
+                .ExecuteQueryToListAsync<DataLogList>(query.QueryForList(param),param); 
                  
             return ret;
         }
@@ -68,7 +68,7 @@ namespace GW.Membership.Data
             List<DataLogSearchResult> ret = null;
 
             ret = await  ((DapperContext)Context)
-                .ExecuteQueryToListAsync<DataLogSearchResult>(query.QueryForSearch(null), param);
+                .ExecuteQueryToListAsync<DataLogSearchResult>(query.QueryForSearch(param), param);
                 
 
             return ret;

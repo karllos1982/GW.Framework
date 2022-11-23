@@ -86,7 +86,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();            
 
-            status = await res.Domain.User.AddRoleToUser(1003, 4, true);
+            var obj = await res.Domain.User.AddRoleToUser(1003, 4, true);
             
             res.finalize();
 
@@ -99,11 +99,13 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            status = await res.Domain.User.AddRoleToUser(1003, 4, true);
-            
+            var obj = await res.Domain.User.AddRoleToUser(1003, 4, true);
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse(status );
 
         }
 
@@ -113,7 +115,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            status = await res.Domain.User.RemoveRoleFromUser(1003, 4, true);
+            var obj = await res.Domain.User.RemoveRoleFromUser(1003, 4, true);
             
             res.finalize();
 
@@ -126,7 +128,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            status = await res.Domain.User.AddInstanceToUser(1003, 2, true);
+            var obj = await res.Domain.User.AddInstanceToUser(1003, 2, true);
 
             res.Perform_ShouldBeTrue();
 
@@ -139,11 +141,13 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            status = await res.Domain.User.AddInstanceToUser(1003, 2, true);
-          
+            var obj = await res.Domain.User.AddInstanceToUser(1003, 2, true);
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse(status );
 
         }
 
@@ -153,7 +157,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            status = await res.Domain.User.RemoveInstanceFromUser(1003, 2, true);
+            var obj = await res.Domain.User.RemoveInstanceFromUser(1003, 2, true);
             
             res.finalize();
 

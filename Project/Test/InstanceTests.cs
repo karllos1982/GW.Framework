@@ -45,10 +45,12 @@ namespace GW.Membership.Test
             obj.IsActive = 1;
 
             InstanceModel model = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
-            
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse(status );
         }
 
         [TestMethod]

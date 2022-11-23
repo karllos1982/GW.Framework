@@ -25,13 +25,13 @@ namespace GW.Membership.Contracts.Domain
 
         Task<OperationStatus> SetDateLogout(Int64 userid);
 
-        Task<OperationStatus> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit);
+        Task<UserRolesModel> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit);
 
-        Task<OperationStatus> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit);
+        Task<UserRolesModel> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit);
 
-        Task<OperationStatus> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit);
+        Task<UserInstancesModel> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit);
 
-        Task<OperationStatus> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit);
+        Task<UserInstancesModel> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit);
 
     }
 }

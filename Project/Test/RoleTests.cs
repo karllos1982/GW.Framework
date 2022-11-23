@@ -41,9 +41,11 @@ namespace GW.Membership.Test
 
             RoleModel newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
 
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeFalse();
+            res.Perform_ShouldBeFalse(status );
 
         }
 

@@ -68,15 +68,15 @@ namespace Test
             }
         }
 
-        public void Perform_ShouldBeFalse()
+        public void Perform_ShouldBeFalse(OperationStatus status )
         {
-            if (Domain.Context.ExecutionStatus.Error != null)
+            if (status.Error != null)
             {
-                Domain.Context.ExecutionStatus.Status.ShouldBeFalse(Domain.Context.ExecutionStatus.Error.Message);
+                status.Status.ShouldBeFalse(status.Error.Message);
             }
             else
             {
-                Domain.Context.ExecutionStatus.Status.ShouldBeFalse();
+                status.Status.ShouldBeFalse();
             }
         }
 

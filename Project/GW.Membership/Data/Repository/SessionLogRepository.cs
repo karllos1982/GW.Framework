@@ -59,7 +59,7 @@ namespace GW.Membership.Data
             List<SessionLogList> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<SessionLogList>(query.QueryForList(null),param); 
+                .ExecuteQueryToListAsync<SessionLogList>(query.QueryForList(param),param); 
 
             return ret;
         }
@@ -69,7 +69,7 @@ namespace GW.Membership.Data
             List<SessionLogSearchResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<SessionLogSearchResult>(query.QueryForSearch(null),  param);
+                .ExecuteQueryToListAsync<SessionLogSearchResult>(query.QueryForSearch(param),  param);
 
             return ret;
         }
