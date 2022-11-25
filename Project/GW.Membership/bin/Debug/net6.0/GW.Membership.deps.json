@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "GW.Membership/1.0.0": {
+      "GW.Membership/2.0": {
         "dependencies": {
           "Dapper": "2.0.123",
           "GW.Framework": "4.0.0",
@@ -118,7 +118,7 @@
     }
   },
   "libraries": {
-    "GW.Membership/1.0.0": {
+    "GW.Membership/2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

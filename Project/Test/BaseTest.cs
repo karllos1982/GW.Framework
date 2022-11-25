@@ -12,8 +12,7 @@ namespace Test
             Sources[0] = new SourceConfig()
             {
                 SourceName = "Default",
-                SourceValue = @"data source=sql5086.site4now.net;initial catalog=db_a83278_gwmodel;persist security info=True;
-                    user id=db_a83278_gwmodel_admin;password=synd_p123;MultipleActiveResultSets=True;App=EntityFramework"
+                SourceValue = "[INSERT YOUR CONNECTION STRING]"
 
             };
          }

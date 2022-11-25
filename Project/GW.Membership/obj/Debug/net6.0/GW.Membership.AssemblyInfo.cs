@@ -11,13 +11,17 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("GW.Membership")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("GW Tecnologia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("Library foundations for building apps such as websites, desktop and mobile. There" +
+    " are all materials for managing users, roles and logs. It is linked to GW.Framew" +
+    "ork package.")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("2.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("GW.Membership")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GW.Membership")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("2.0.0.0")]
+[assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/karllos1982/GW.Framework")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.
 

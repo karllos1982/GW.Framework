@@ -103,6 +103,11 @@ namespace GW.Membership.Domain
                     if (Context.ExecutionStatus.Status)
                     {
                         if (model.PermissionID  == 0) { model.PermissionID = GW.Helpers.Utilities.GenerateId(); }
+
+                        if (model.RoleID != null) { model.TypeGrant = "R"; }
+                        if (model.UserID != null) { model.TypeGrant = "U"; }
+                        if (model.RoleID != null && model.UserID != null) { model.TypeGrant = "U"; }
+
                         await RepositorySet.Permission.Create(model);
                     }
                 }

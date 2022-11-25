@@ -28,8 +28,9 @@ namespace GW.ApplicationHelpers
         public Encoding ContentEncoding { get; set; }
 
     }
+   
 
-    public class MailManager
+    public abstract class MailManager
     {
 
         private MailSettings _config;

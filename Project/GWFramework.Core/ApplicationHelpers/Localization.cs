@@ -76,7 +76,7 @@ namespace GW
             items.Add(new Item() { Code = "50", Name = "User-Instance-No-Exists", Text = "This Instance does not belong to the user." });
         }
 
-        public static Item GetItem(string codeorname)
+        public static Item GetItem(string codeorname, string language = "")
         {
             Item ret = null;
             string content = null;
@@ -87,10 +87,16 @@ namespace GW
 
                 try
                 {
+                    string jsonfile = "localization.json";
+
+                    if (language == "")
+                    {
+                        jsonfile = "localization-" + language + ".json";
+                    }
 
                     string filename = System.Reflection.Assembly.GetExecutingAssembly().Location;
                     filename = filename.Replace("\\GW.Framework.dll", "");
-                    filename = Path.Combine(filename, "localization.json");
+                    filename = Path.Combine(filename, jsonfile );
                     if (File.Exists(filename))
                     {
                         content = File.ReadAllText(filename);
