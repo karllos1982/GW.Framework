@@ -10,24 +10,27 @@ namespace GW.Membership.Domain
 {
     public class RoleDomain : IRoleDomain
     {
+        private string lang = "";
+
         public RoleDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet = repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public async Task<RoleModel> FillChields(RoleModel obj)
+        public async Task<RoleResult> FillChields(RoleResult obj)
         {
             return obj;
         }
 
-        public async Task<RoleModel> Get(RoleParam param)
+        public async Task<RoleResult> Get(RoleParam param)
         {
-            RoleModel ret = null;
+            RoleResult ret = null;
 
             ret = await RepositorySet.Role.Read(param); 
             
@@ -43,15 +46,15 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<RoleSearchResult>> Search(RoleParam param)
+        public async Task<List<RoleResult>> Search(RoleParam param)
         {
-            List<RoleSearchResult> ret = null;
+            List<RoleResult> ret = null;
 
             ret = await RepositorySet.Role.Search(param);
 
             return ret;
         }
-        public async Task EntryValidation(RoleModel obj)
+        public async Task EntryValidation(RoleEntry obj)
         {
             OperationStatus ret = null;
 
@@ -59,14 +62,15 @@ namespace GW.Membership.Domain
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error",lang).Text);
             }
 
             Context.ExecutionStatus = ret;
            
         }
 
-        public async Task InsertValidation(RoleModel obj)
+        public async Task InsertValidation(RoleEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             RoleParam param = new RoleParam()
@@ -82,7 +86,9 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
+                    string msg 
+                        = string.Format(GW.Localization.GetItem("Validation-Unique-Value",lang).Text, "Role Name");
+                    ret.Error = new Exception(msg);
                 }
             }
 
@@ -90,7 +96,7 @@ namespace GW.Membership.Domain
           
         }
 
-        public async Task UpdateValidation(RoleModel obj)
+        public async Task UpdateValidation(RoleEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             RoleParam param = new RoleParam() { pRoleName = obj.RoleName };
@@ -105,7 +111,9 @@ namespace GW.Membership.Domain
                     if (list[0].RoleID != obj.RoleID)
                     {
                         ret.Status = false;
-                        ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
+                        string msg 
+                            = string.Format(GW.Localization.GetItem("Validation-Unique-Value",lang).Text, "Role Name");
+                        ret.Error = new Exception(msg);
                     }
                 }
             }
@@ -114,14 +122,14 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task DeleteValidation(RoleModel obj)
+        public async Task DeleteValidation(RoleEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<RoleModel> Set(RoleModel model, object userid)
+        public async Task<RoleEntry> Set(RoleEntry model, object userid)
         {
-            RoleModel ret = null;
+            RoleEntry ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
             await EntryValidation(model);
@@ -129,7 +137,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                RoleModel old 
+                RoleResult old 
                     = await RepositorySet.Role.Read(new RoleParam() { pRoleID = model.RoleID });
 
                 if (old == null)
@@ -171,11 +179,11 @@ namespace GW.Membership.Domain
             return ret;
         }
       
-        public async Task<RoleModel> Delete(RoleModel model, object userid)
+        public async Task<RoleEntry> Delete(RoleEntry model, object userid)
         {
-            RoleModel ret = null;
+            RoleEntry ret = null;
 
-            RoleModel old 
+            RoleResult old 
                 = await RepositorySet.Role.Read(new RoleParam() { pRoleID = model.RoleID });
 
             if (old != null)
@@ -185,13 +193,21 @@ namespace GW.Membership.Domain
                 if (Context.ExecutionStatus.Status)
                 {
                    await RepositorySet.Role.Delete(model);
-                    ret = model; 
+                    if (Context.ExecutionStatus.Status && userid != null)
+                    {
+                        await RepositorySet.User.Context
+                            .RegisterDataLogAsync(userid.ToString(), OPERATIONLOGENUM.DELETE, "SYSROLE",
+                            model.RoleID.ToString(), old, model);
+
+                        ret = model;
+                    }
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error 
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",lang).Text);
 
             }           
 

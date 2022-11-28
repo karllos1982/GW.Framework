@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(RoleModel model)
+        public async Task Create(RoleEntry model)
         {
             
             string sql = query.QueryForCreate("sysRole", model,model);
@@ -26,18 +26,18 @@ namespace GW.Membership.Data
             
         }
 
-        public async Task<RoleModel> Read(RoleParam param)
+        public async Task<RoleResult> Read(RoleParam param)
         {
-            RoleModel ret = null;
+            RoleResult ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<RoleModel>(sql, param); 
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<RoleResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(RoleModel model)
+        public async Task Update(RoleEntry model)
         {
             
             string sql = query.QueryForUpdate("sysRole", model, model);
@@ -45,7 +45,7 @@ namespace GW.Membership.Data
          
          }
 
-        public async Task Delete(RoleModel model)
+        public async Task Delete(RoleEntry model)
         {
             
             string sql = query.QueryForDelete("sysRole", model, model);
@@ -63,12 +63,12 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public async Task<List<RoleSearchResult>> Search(RoleParam param)
+        public async Task<List<RoleResult>> Search(RoleParam param)
         {
-            List<RoleSearchResult> ret = null;
+            List<RoleResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<RoleSearchResult>(query.QueryForSearch(null),param);
+                .ExecuteQueryToListAsync<RoleResult>(query.QueryForSearch(null),param);
                  
 
             return ret;

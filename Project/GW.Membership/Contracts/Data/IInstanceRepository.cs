@@ -5,7 +5,7 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Data
 {
     public interface IInstanceRepository:
-        IRepository<InstanceParam, InstanceModel, InstanceList, InstanceSearchResult>
+        IRepository<InstanceParam, InstanceEntry, InstanceResult, InstanceList>
     {
      
 

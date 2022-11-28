@@ -5,9 +5,9 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Domain
 {
     public interface IUserDomain :
-        IDomain<UserParam, UserModel, UserList, UserSearchResult>
+        IDomain<UserParam, UserEntry, UserResult, UserList>
     {
-        Task<UserModel> GetByEmail(string email);
+        Task<UserResult> GetByEmail(string email);
 
         Task<OperationStatus> UpdateUserLogin(UpdateUserLogin model);
 
@@ -25,13 +25,13 @@ namespace GW.Membership.Contracts.Domain
 
         Task<OperationStatus> SetDateLogout(Int64 userid);
 
-        Task<UserRolesModel> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit);
+        Task<UserRolesEntry> AddRoleToUser(Int64 userid, Int64 roleid);
 
-        Task<UserRolesModel> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit);
+        Task<UserRolesEntry> RemoveRoleFromUser(Int64 userid, Int64 roleid);
 
-        Task<UserInstancesModel> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit);
+        Task<UserInstancesEntry> AddInstanceToUser(Int64 userid, Int64 instanceid);
 
-        Task<UserInstancesModel> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit);
+        Task<UserInstancesEntry> RemoveInstanceFromUser(Int64 userid, Int64 instanceid);
 
     }
 }

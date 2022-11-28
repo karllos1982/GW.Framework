@@ -12,9 +12,13 @@ namespace Test
             Sources[0] = new SourceConfig()
             {
                 SourceName = "Default",
-                SourceValue = "[INSERT YOUR CONNECTION STRING]"
-
+                //SourceValue = "[INSERT YOUR CONNECTION STRING]"
+                SourceValue = @"data source=sql5086.site4now.net;initial catalog=db_a83278_gwmodel;persist security info=True;
+                    user id=db_a83278_gwmodel_admin;password=synd_p123;MultipleActiveResultSets=True;App=EntityFramework"
+                         
             };
+
+            this.LocalizationLanguage = "pt";
          }
             
             
@@ -23,6 +27,9 @@ namespace Test
         public string ProfileImageDir { get; set; }
         public string ApplicationName { get; set; }
         public MailSettings MailSettings { get; set; }
+
+        public string LocalizationLanguage { get; set; }
+
     }
 
     public class Resources
@@ -33,7 +40,7 @@ namespace Test
             Context = new DapperContext(Settings);
             Repository = new MembershipRepositorySet(Context);
             Domain = new MembershipManager(Context, Repository);
-            Context.Begin(0);
+            Context.Begin();
         }
 
         public ISettings Settings { get; set; }
@@ -55,15 +62,15 @@ namespace Test
             }
         }
 
-        public void Perform_ShouldBeTrue()
+        public void Perform_ShouldBeTrue(OperationStatus status)
         {
-            if (Domain.Context.ExecutionStatus.Error != null)
+            if (status.Error != null)
             {
-                Domain.Context.ExecutionStatus.Status.ShouldBeTrue(Domain.Context.ExecutionStatus.Error.Message);
+                status.Status.ShouldBeTrue(status.Error.Message);
             }
             else
             {
-                Domain.Context.ExecutionStatus.Status.ShouldBeTrue();
+                status.Status.ShouldBeTrue();
             }
         }
 

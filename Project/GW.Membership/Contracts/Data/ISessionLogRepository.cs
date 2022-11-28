@@ -5,7 +5,7 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Data   
 {
     public interface ISessionLogRepository :
-        IRepository<SessionLogParam, SessionLogModel, SessionLogList, SessionLogSearchResult>
+        IRepository<SessionLogParam, SessionLogEntry, SessionLogResult, SessionLogList>
     {
 
         Task<OperationStatus> SetDateLogout(SessionLogParam obj);

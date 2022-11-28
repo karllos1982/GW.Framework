@@ -21,11 +21,13 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
-            UserModel user = await res.Domain.CreateNewUser(nuser, false, 1001);
-            
+            UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
 
         }
@@ -42,7 +44,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
-            UserModel user = await res.Domain.CreateNewUser(nuser, false, 1001);
+            UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;
 
@@ -58,25 +60,25 @@ namespace GW.Membership.Test
             Resources res = new Resources();
           
             // get code
-            ChangeUserPassword changemodel = new ChangeUserPassword();
-            changemodel.Email =  EMAIL_DEFAULT;
-            changemodel.ToActivate = true;
-            status = await res.Domain.User.SetPasswordRecoveryCode(changemodel);
+            ChangeUserPassword changeEntry = new ChangeUserPassword();
+            changeEntry.Email =  EMAIL_DEFAULT;
+            changeEntry.ToActivate = true;
+            status = await res.Domain.User.SetPasswordRecoveryCode(changeEntry);
             
         
             // change password
             if (status.Status)
             {               
-                ActiveUserAccount activemodel = new ActiveUserAccount();
-                activemodel.Email = EMAIL_DEFAULT;
-                activemodel.Code = status.Returns.ToString();
+                ActiveUserAccount activeEntry = new ActiveUserAccount();
+                activeEntry.Email = EMAIL_DEFAULT;
+                activeEntry.Code = status.Returns.ToString();
 
-                status = await res.Domain.User.ActiveUserAccount(activemodel);
+                status = await res.Domain.User.ActiveUserAccount(activeEntry);
                 
             }
 
             res.finalize();
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -85,20 +87,22 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            UserLogin model = new UserLogin();
+            UserLogin Entry = new UserLogin();
 
-            model.Email = EMAIL_DEFAULT;
-            model.Password = GW.Helpers.MD5.BuildMD5(PASSWORD_DEFAULT);
-            model.ClientIP = "127.0.0.1";
-            model.ClienteBrowserName = "Test";
-            model.AuthToken = Guid.NewGuid().ToString();
-            model.AuthTokenExpires = DateTime.Now.AddHours(8);
+            Entry.Email = EMAIL_DEFAULT;
+            Entry.Password = GW.Helpers.MD5.BuildMD5(PASSWORD_DEFAULT);
+            Entry.ClientIP = "127.0.0.1";
+            Entry.ClienteBrowserName = "Test";
+            Entry.AuthToken = Guid.NewGuid().ToString();
+            Entry.AuthTokenExpires = DateTime.Now.AddHours(8);
 
-            UserModel user = await res.Domain.Login(model);            
+            UserResult user = await res.Domain.Login(Entry);
+
+            status = res.Context.ExecutionStatus;
 
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -107,16 +111,16 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            UserLogin model = new UserLogin();
+            UserLogin Entry = new UserLogin();
 
-            model.Email = EMAIL_DEFAULT;
-            model.Password = GW.Helpers.MD5.BuildMD5("pwdinvalid");
-            model.ClientIP = "127.0.0.1";
-            model.ClienteBrowserName = "Test";
-            model.AuthToken = Guid.NewGuid().ToString();
-            model.AuthTokenExpires = DateTime.Now.AddHours(8);
+            Entry.Email = EMAIL_DEFAULT;
+            Entry.Password = GW.Helpers.MD5.BuildMD5("pwdinvalid");
+            Entry.ClientIP = "127.0.0.1";
+            Entry.ClienteBrowserName = "Test";
+            Entry.AuthToken = Guid.NewGuid().ToString();
+            Entry.AuthTokenExpires = DateTime.Now.AddHours(8);
 
-            UserModel user = await res.Domain.Login(model);
+            UserResult user = await res.Domain.Login(Entry);
 
             status = res.Context.ExecutionStatus;
 
@@ -141,10 +145,10 @@ namespace GW.Membership.Test
             PERMISSION_STATE_ENUM state 
                 = await res.Domain.CheckPermission(userPermissions, "SYSTEST", PERMISSION_CHECK_ENUM.READ);
 
-            state.ShouldBeEquivalentTo(PERMISSION_STATE_ENUM.ALLOWED);
-
             res.finalize();
-           
+
+            state.ShouldBeEquivalentTo(PERMISSION_STATE_ENUM.ALLOWED);
+                       
         }
 
         [TestMethod]
@@ -214,18 +218,23 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            UserLogin model = new UserLogin();         
-            model.ClientIP = "127.0.0.1";
-            model.ClienteBrowserName = "Test";
-         
+            UserLogin Entry = new UserLogin();         
+            Entry.ClientIP = "127.0.0.1";
+            Entry.ClienteBrowserName = "Test";
+            
             UpdateUserLogin login = new UpdateUserLogin();
             login.UserID = 1003;
+            login.LastLoginDate = DateTime.UtcNow;
+            login.AuthToken = Guid.NewGuid().ToString();
+            login.AuthTokenExpires = DateTime.Now.AddHours(10); 
+            
+            await res.Domain.RegisterLoginState(Entry, login);
 
-            await res.Domain.RegisterLoginState(model, login);
+            status = res.Context.ExecutionStatus;
 
             res.finalize();
 
-            res.Perform_ShouldBeTrue();                        
+            res.Perform_ShouldBeTrue(status);                        
 
         }
 
@@ -239,7 +248,7 @@ namespace GW.Membership.Test
         
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -248,14 +257,14 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            ChangeUserPassword model = new ChangeUserPassword();
-            model.Email = EMAIL_DEFAULT;
+            ChangeUserPassword Entry = new ChangeUserPassword();
+            Entry.Email = EMAIL_DEFAULT;
 
-            status = await res.Domain.GetTemporaryPassword(model);
+            status = await res.Domain.GetTemporaryPassword(Entry);
 
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -264,16 +273,16 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            UserChangeState model = new UserChangeState();
-            model.UserID = USERID_DEFAULT;
-            model.LockedValue = 0;
-            model.ActiveValue = 1;
+            UserChangeState Entry = new UserChangeState();
+            Entry.UserID = USERID_DEFAULT;
+            Entry.LockedValue = 0;
+            Entry.ActiveValue = 1;
 
-            status = await res.Domain.User.ChangeState(model);
+            status = await res.Domain.User.ChangeState(Entry);
 
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
           
         }
@@ -285,20 +294,20 @@ namespace GW.Membership.Test
             Resources res = new Resources();
           
             // get code
-            ChangeUserPassword changemodel = new ChangeUserPassword();
-            changemodel.Email = EMAIL_DEFAULT;
-            changemodel.NewPassword = "NEWPWD"; 
+            ChangeUserPassword changeEntry = new ChangeUserPassword();
+            changeEntry.Email = EMAIL_DEFAULT;
+            changeEntry.NewPassword = "NEWPWD"; 
 
-            status = await res.Domain.User.SetPasswordRecoveryCode(changemodel);
+            status = await res.Domain.User.SetPasswordRecoveryCode(changeEntry);
                          
             // change password
             if (status.Status)
             {            
-                changemodel.Code = status.Returns.ToString();
+                changeEntry.Code = status.Returns.ToString();
 
-                status = await res.Domain.User.ChangeUserPassword(changemodel);
+                status = await res.Domain.User.ChangeUserPassword(changeEntry);
                 res.finalize();
-                res.Perform_ShouldBeTrue();
+                res.Perform_ShouldBeTrue(status);
 
             }
             else
@@ -317,15 +326,15 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            ChangeUserImage model = new ChangeUserImage();
-            model.UserID = USERID_DEFAULT;
-            model.FileName = "image_user.png"; 
+            ChangeUserImage Entry = new ChangeUserImage();
+            Entry.UserID = USERID_DEFAULT;
+            Entry.FileName = "image_user.png"; 
 
-            status = await res.Domain.ChangeUserProfileImage(model);
+            status = await res.Domain.ChangeUserProfileImage(Entry);
             
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
    

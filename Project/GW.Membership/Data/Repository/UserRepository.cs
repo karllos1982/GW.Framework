@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(UserModel model)
+        public async Task Create(UserEntry model)
         {
            
             string sql = query.QueryForCreate("sysUser", model,model);
@@ -26,18 +26,18 @@ namespace GW.Membership.Data
          
         }
 
-        public async Task<UserModel> Read(UserParam param)
+        public async Task<UserResult> Read(UserParam param)
         {
-            UserModel ret = null;
+            UserResult ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<UserModel>(sql, param); 
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<UserResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(UserModel model)
+        public async Task Update(UserEntry model)
         {
            
             string sql = query.QueryForUpdate("sysUser", model, model);
@@ -45,7 +45,7 @@ namespace GW.Membership.Data
         
         }
 
-        public async Task Delete(UserModel model)
+        public async Task Delete(UserEntry model)
         {
            
             string sql = query.QueryForDelete("sysUser", model, model);
@@ -63,25 +63,25 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public async Task<List<UserSearchResult>> Search(UserParam param)
+        public async Task<List<UserResult>> Search(UserParam param)
         {
-            List<UserSearchResult> ret = null;
+            List<UserResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<UserSearchResult>(query.QueryForSearch(null),  param);
+                .ExecuteQueryToListAsync<UserResult>(query.QueryForSearch(null),  param);
                
             return ret;
         }
 
         //
 
-        public async Task<UserModel> GetByEmail(string email)
+        public async Task<UserResult> GetByEmail(string email)
         {
-            UserModel ret = null;
+            UserResult ret = null;
 
             string sql = query.QueryForGetByEmail();
 
-            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<UserModel>(sql,
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<UserResult>(sql,
                  new UserParam { pEmail = email });
 
             return ret;

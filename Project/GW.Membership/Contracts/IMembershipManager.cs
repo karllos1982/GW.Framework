@@ -26,9 +26,9 @@ namespace GW.Membership.Contracts.Domain
 
 
 
-        Task<UserModel> CreateNewUser(NewUser data, bool gocommit, object userid);
+        Task<UserEntry> CreateNewUser(NewUser data, bool gocommit, object userid);
 
-        Task<UserModel> Login(UserLogin model);
+        Task<UserResult> Login(UserLogin model);
 
         Task<List<UserPermissions>> GetUserPermissions(Int64 roleid, Int64 userid);
 

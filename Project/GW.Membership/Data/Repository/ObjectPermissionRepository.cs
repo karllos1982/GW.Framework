@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(ObjectPermissionModel model)
+        public async Task Create(ObjectPermissionEntry model)
         {
             
             string sql = query.QueryForCreate("sysObjectPermission", model,model);
@@ -26,19 +26,19 @@ namespace GW.Membership.Data
             
         }
 
-        public async Task<ObjectPermissionModel> Read(ObjectPermissionParam param)
+        public async Task<ObjectPermissionResult> Read(ObjectPermissionParam param)
         {
-            ObjectPermissionModel ret = null;
+            ObjectPermissionResult ret = null;
             
             string sql = query.QueryForGet(null);
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryFirstAsync<ObjectPermissionModel>(sql, param); 
+                .ExecuteQueryFirstAsync<ObjectPermissionResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(ObjectPermissionModel model)
+        public async Task Update(ObjectPermissionEntry model)
         {
             
             string sql = query.QueryForUpdate("sysObjectPermission", model, model);
@@ -46,7 +46,7 @@ namespace GW.Membership.Data
 
          }
 
-        public async Task Delete(ObjectPermissionModel model)
+        public async Task Delete(ObjectPermissionEntry model)
         {
             
             string sql = query.QueryForDelete("sysObjectPermission", model, model);
@@ -65,12 +65,12 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public async Task<List<ObjectPermissionSearchResult>> Search(ObjectPermissionParam param)
+        public async Task<List<ObjectPermissionResult>> Search(ObjectPermissionParam param)
         {
-            List<ObjectPermissionSearchResult> ret = null;
+            List<ObjectPermissionResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<ObjectPermissionSearchResult>(query.QueryForSearch(null),param);
+                .ExecuteQueryToListAsync<ObjectPermissionResult>(query.QueryForSearch(null),param);
                  
             return ret;
         }

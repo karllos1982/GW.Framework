@@ -16,7 +16,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources(); 
 
-            InstanceModel obj = new InstanceModel();
+            InstanceEntry obj = new InstanceEntry();
 
             obj.InstanceID = 2;
             obj.InstanceName = "System";
@@ -24,11 +24,13 @@ namespace GW.Membership.Test
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            InstanceModel model = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
-                       
+            InstanceEntry Entry = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
         }
 
         [TestMethod]
@@ -36,7 +38,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            InstanceModel obj = new InstanceModel();
+            InstanceEntry obj = new InstanceEntry();
 
             obj.InstanceID = 0;
             obj.InstanceName = "System";
@@ -44,7 +46,7 @@ namespace GW.Membership.Test
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            InstanceModel model = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
+            InstanceEntry Entry = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
 
             status = res.Context.ExecutionStatus;
 
@@ -58,13 +60,13 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            InstanceModel result = null;
+            InstanceResult result = null;
 
             result = await res.Domain.Instance.Get(new InstanceParam() { pInstanceID=2});
            
             res.finalize();
 
-            result.ShouldNotBeNull<InstanceModel>();
+            result.ShouldNotBeNull<InstanceResult>();
 
         }
 
@@ -88,13 +90,13 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            List<InstanceSearchResult> result = null;
+            List<InstanceResult> result = null;
 
             result = await res.Domain.Instance.Search(new InstanceParam() { pInstanceName = "System" });
            
             res.finalize();
 
-            result.ShouldNotBeNull<List<InstanceSearchResult>>();
+            result.ShouldNotBeNull<List<InstanceResult>>();
 
         }
               

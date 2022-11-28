@@ -10,24 +10,27 @@ namespace GW.Membership.Domain
 {
     public class SessionLogDomain : ISessionLogDomain
     {
+        private string lang = "";
+
         public SessionLogDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet = repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public async Task<SessionLogModel> FillChields(SessionLogModel obj)
+        public async Task<SessionLogResult> FillChields(SessionLogResult obj)
         {
             return obj;
         }
 
-        public async Task<SessionLogModel> Get(SessionLogParam param)
+        public async Task<SessionLogResult> Get(SessionLogParam param)
         {
-            SessionLogModel ret = null;
+            SessionLogResult ret = null;
 
             ret = await RepositorySet.SessionLog.Read(param); 
             
@@ -43,16 +46,16 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<SessionLogSearchResult>> Search(SessionLogParam param)
+        public async Task<List<SessionLogResult>> Search(SessionLogParam param)
         {
-            List<SessionLogSearchResult> ret = null;
+            List<SessionLogResult> ret = null;
 
             ret = await  RepositorySet.SessionLog.Search(param);
 
             return ret;
         }
 
-        public async Task EntryValidation(SessionLogModel obj)
+        public async Task EntryValidation(SessionLogEntry obj)
         {
             OperationStatus ret = null;
 
@@ -60,32 +63,33 @@ namespace GW.Membership.Domain
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
             }
 
             Context.ExecutionStatus = ret;
         
         }
 
-        public async Task InsertValidation(SessionLogModel obj)
+        public async Task InsertValidation(SessionLogEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task UpdateValidation(SessionLogModel obj)
+        public async Task UpdateValidation(SessionLogEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
 
         }
 
-        public async Task DeleteValidation(SessionLogModel obj)
+        public async Task DeleteValidation(SessionLogEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<SessionLogModel> Set(SessionLogModel model, object userid)
+        public async Task<SessionLogEntry> Set(SessionLogEntry model, object userid)
         {
-            SessionLogModel ret = null;
+            SessionLogEntry ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
              await EntryValidation(model);
@@ -93,7 +97,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                SessionLogModel old 
+                SessionLogResult old 
                     = await RepositorySet.SessionLog.Read(new SessionLogParam() 
                             { pSessionID = model.SessionID });
 
@@ -134,11 +138,11 @@ namespace GW.Membership.Domain
             return ret;
         }
       
-        public async Task<SessionLogModel> Delete(SessionLogModel model, object userid)
+        public async Task<SessionLogEntry> Delete(SessionLogEntry model, object userid)
         {
-            SessionLogModel ret = null;
+            SessionLogEntry ret = null;
 
-            SessionLogModel old 
+            SessionLogResult old 
                 = await RepositorySet.SessionLog.Read(new SessionLogParam() 
                     { pSessionID = model.SessionID });
 
@@ -149,12 +153,22 @@ namespace GW.Membership.Domain
                 if (Context.ExecutionStatus.Status)
                 {
                     await RepositorySet.SessionLog.Delete(model);
+
+                    if (Context.ExecutionStatus.Status && userid != null)
+                    {
+                        await RepositorySet.User.Context
+                            .RegisterDataLogAsync(userid.ToString(), OPERATIONLOGENUM.DELETE, "SYSSESSIONLOG",
+                            model.SessionID.ToString(), old, model);
+
+                        ret = model;
+                    }
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error 
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",lang).Text);
 
             }           
 

@@ -2,55 +2,55 @@
 
 namespace GW.Core
 {
-    public interface IDomain<TParam,TModel,TList,TSearchResult>
+    public interface IDomain<TParam, TEntry, TResult, TList>
     {
         IContext Context { get; set; }
 
-        Task<TModel> Get(TParam param);
+        Task<TResult> Get(TParam param);
 
-        Task<TModel> FillChields(TModel obj);
+        Task<TResult> FillChields(TResult obj);
 
         Task<List<TList>> List(TParam param);
 
-        Task<List<TSearchResult>> Search(TParam param);
+        Task<List<TResult>> Search(TParam param);
 
-        Task<TModel> Set(TModel model, object userid);
+        Task<TEntry> Set(TEntry model, object userid);
 
-        Task<TModel> Delete(TModel model, object userid);
+        Task<TEntry> Delete(TEntry model, object userid);
 
-        Task EntryValidation(TModel obj);
+        Task EntryValidation(TEntry obj);
 
-        Task InsertValidation(TModel obj);
+        Task InsertValidation(TEntry obj);
 
-        Task UpdateValidation(TModel obj);
+        Task UpdateValidation(TEntry obj);
 
-        Task DeleteValidation(TModel obj);
+        Task DeleteValidation(TEntry obj);
 
     }
 
-    public interface IDomainSync<TParam, TModel, TList, TSearchResult>
+    public interface IDomainSync<TParam, TEntry, TResult, TList>
     {
         IContext Context { get; set; }
 
-        TModel Get(TParam param);
+        TResult Get(TParam param);
 
-        TModel FillChields(TModel obj);
+        TResult FillChields(TResult obj);
 
         List<TList> List(TParam param);
 
-        List<TSearchResult> Search(TParam param);
+        List<TResult> Search(TParam param);
 
-        TModel Set(TModel model, object userid);
+        TEntry Set(TEntry model, object userid);
 
-        TModel Delete(TModel model, object userid);
+        TEntry Delete(TEntry model, object userid);
 
-        void EntryValidation(TModel obj);
+        void EntryValidation(TEntry obj);
 
-        void InsertValidation(TModel obj);
+        void InsertValidation(TEntry obj);
 
-        void UpdateValidation(TModel obj);
+        void UpdateValidation(TEntry obj);
 
-        void DeleteValidation(TModel obj);
+        void DeleteValidation(TEntry obj);
 
     }
 

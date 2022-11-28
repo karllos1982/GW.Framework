@@ -17,15 +17,17 @@ namespace GW.Membership.Data
             ExcludeFields = new List<string>();
 
             Keys.Add("UserRoleID");
-            ExcludeFields.Add("RecordState");
-            ExcludeFields.Add("RoleName");
+            ExcludeFields.Add("RecordState");          
 
         }
 
         public override string QueryForGet(object param)
         {
-            string ret = @"Select * from sysUserRoles
-                where UserRoleID=@pUserRoleID";
+            string ret = @"select a.UserRoleID, a.UserID, u.UserName, a.RoleID, r.RoleName             
+             from sysUserRoles a
+             inner join sysRole r on r.RoleID=a.RoleID
+             inner join sysUser u on u.UserID=a.UserID            
+             where UserRoleID=@pUserRoleID";
 
             return ret;
         }

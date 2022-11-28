@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(UserInstancesModel model)
+        public async Task Create(UserInstancesEntry model)
         {
             
             string sql = query.QueryForCreate("sysUserInstances", model,model);
@@ -26,19 +26,19 @@ namespace GW.Membership.Data
            
         }
 
-        public async Task<UserInstancesModel> Read(UserInstancesParam param)
+        public async Task<UserInstancesResult> Read(UserInstancesParam param)
         {
-            UserInstancesModel ret = null;
+            UserInstancesResult ret = null;
             
             string sql = query.QueryForGet(null);
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryFirstAsync<UserInstancesModel>(sql, param); 
+                .ExecuteQueryFirstAsync<UserInstancesResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(UserInstancesModel model)
+        public async Task Update(UserInstancesEntry model)
         {
             
             string sql = query.QueryForUpdate("sysUserInstances", model, model);
@@ -46,7 +46,7 @@ namespace GW.Membership.Data
             
         }
 
-        public async Task Delete(UserInstancesModel model)
+        public async Task Delete(UserInstancesEntry model)
         {
             
             string sql = query.QueryForDelete("sysUserInstances", model, model);
@@ -54,22 +54,22 @@ namespace GW.Membership.Data
 
           }
 
-        public async Task<List<UserInstancesModel>> List(UserInstancesParam param)
+        public async Task<List<UserInstancesResult>> List(UserInstancesParam param)
         {
-            List<UserInstancesModel> ret = null;
+            List<UserInstancesResult> ret = null;
 
             ret =await  ((DapperContext)Context)
-                .ExecuteQueryToListAsync<UserInstancesModel>(query.QueryForList(null), param); 
+                .ExecuteQueryToListAsync<UserInstancesResult>(query.QueryForList(null), param); 
 
             return ret;
         }
              
-        public async Task<List<UserInstancesModel>> Search(UserInstancesParam param)
+        public async Task<List<UserInstancesResult>> Search(UserInstancesParam param)
         {
-            List<UserInstancesModel> ret = null;
+            List<UserInstancesResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<UserInstancesModel>(query.QueryForSearch(null), param);
+                .ExecuteQueryToListAsync<UserInstancesResult>(query.QueryForSearch(null), param);
 
             return ret;
         }

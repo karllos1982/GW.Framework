@@ -9,10 +9,15 @@ namespace GW.Membership.Domain
 {
     public class MembershipManager : IMembershipManager
     {
+
+        private string lang = "";
+
         public MembershipManager(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            InitializeDomains(context, repositorySet); 
+            InitializeDomains(context, repositorySet);
+
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public void InitializeDomains(IContext context, IRepositorySet repositorySet)
@@ -47,16 +52,16 @@ namespace GW.Membership.Domain
         // 
 
 
-        public async Task<UserModel> Login(UserLogin model)
+        public async Task<UserResult> Login(UserLogin model)
         {
-            UserModel ret = null;
+            UserResult ret = null;
 
             string errmsg = "";
             bool invalidpassword = false;
             Int32 activestatus = 1;
             int trys = 0;
 
-            UserModel usermatch = null;
+            UserResult usermatch = null;
             usermatch = await User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
@@ -75,7 +80,7 @@ namespace GW.Membership.Domain
                             else
                             {
                                 trys = 5 - usermatch.LoginFailCounter;
-                                errmsg = GW.Localization.GetItem("Login-Invalid-Password").Text.Replace("{trys}", trys.ToString());
+                                errmsg = GW.Localization.GetItem("Login-Invalid-Password",lang).Text.Replace("{trys}", trys.ToString());
                                 invalidpassword = true;
 
                                 if (usermatch.PasswordRecoveryCode != null)
@@ -93,7 +98,7 @@ namespace GW.Membership.Domain
                                 if (usermatch.LoginFailCounter == 5)
                                 {
                                     activestatus = 0;
-                                    errmsg = GW.Localization.GetItem("Login-Attempts").Text;
+                                    errmsg = GW.Localization.GetItem("Login-Attempts",lang).Text;
                                 }
 
                             }
@@ -101,20 +106,20 @@ namespace GW.Membership.Domain
                         }
                         else
                         {
-                            errmsg = GW.Localization.GetItem("Login-Inactive-Account").Text;
+                            errmsg = GW.Localization.GetItem("Login-Inactive-Account",lang).Text;
 
                         }
                     }
                     else
                     {
                         errmsg =
-                            GW.Localization.GetItem("Login-Locked-Account").Text;
+                            GW.Localization.GetItem("Login-Locked-Account", lang).Text;
                     }
                 }
                 else
                 {
                     errmsg =
-                         GW.Localization.GetItem("Login-User-NotFound").Text;
+                         GW.Localization.GetItem("Login-User-NotFound", lang).Text;
                 }
 
                 if (errmsg == "")
@@ -146,10 +151,10 @@ namespace GW.Membership.Domain
         {
             List<UserPermissions> ret = new List<UserPermissions>();
 
-            List<PermissionSearchResult> list
+            List<PermissionResult> list
                 = await Permission.GetPermissionsByRoleUser(roleid, userid);
 
-            foreach (PermissionSearchResult item in list)
+            foreach (PermissionResult item in list)
             {
                 ret.Add(new UserPermissions()
                 {
@@ -191,7 +196,7 @@ namespace GW.Membership.Domain
 
             await User.UpdateUserLogin(stateinfo);
 
-            SessionLogModel session = new SessionLogModel();
+            SessionLogEntry session = new SessionLogEntry();
             session.SessionID = 0;
             session.UserID = stateinfo.UserID;
             session.Date = DateTime.Now;
@@ -209,28 +214,28 @@ namespace GW.Membership.Domain
             await User.SetDateLogout(userid);
         }
 
-        public async Task<UserModel> CreateNewUser(NewUser data, bool gocommit, object userid)
+        public async Task<UserEntry> CreateNewUser(NewUser data, bool gocommit, object userid)
         {
-            UserModel ret = null;
+            UserEntry ret = null;
 
             Context.ExecutionStatus =  PrimaryValidation.Execute(data, new List<string>());
 
             if (Context.ExecutionStatus.Status)
-            {             
-                UserModel obj = new UserModel();
+            {
+                UserResult old = new UserResult();
+                UserEntry obj ;
 
-                obj = await this.User.GetByEmail(data.Email);
+                old = await this.User.GetByEmail(data.Email);
 
                 string pwd = MD5.BuildMD5(data.Password);
                 string slt = "GWSLT";
 
-                if (obj == null)
+                if (old == null)
                 {
-                    obj = new UserModel();
+                    obj = new UserEntry();
                     obj.UserID = 0;
                     obj.UserName = data.UserName;
-                    obj.ApplicationID = 0;
-                    obj.RoleID = data.RoleID;
+                    obj.ApplicationID = 0;                    
                     obj.Email = data.Email;
                     obj.Password = MD5.BuildMD5(pwd + slt);
                     obj.Salt = slt;
@@ -246,32 +251,21 @@ namespace GW.Membership.Domain
                     obj.PasswordRecoveryCode = null;
                     obj.ProfileImage = null;
                     obj.AuthUserID = null;
-
-                    obj.RoleList = new List<UserRolesModel>();
-                    obj.RoleList
-                            .Add(new UserRolesModel()
-                            {
-                                RecordState = RECORDSTATEENUM.ADD,
-                                RoleID = data.RoleID
-                            }
-                            );
-
-                    obj.InstanceList = new List<UserInstancesModel>();
-                    obj.InstanceList
-                            .Add(new UserInstancesModel()
-                            {
-                                RecordState = RECORDSTATEENUM.ADD,
-                                InstanceID = data.InstanceID
-                            }
-                            );
-
+                    
                     ret = await this.User.Set(obj, userid);
+
+                    if (Context.ExecutionStatus.Status)
+                    {
+                        var aux 
+                            = await this.User.AddRoleToUser(ret.UserID, data.RoleID); 
+                    }
                    
                 }
                 else
                 {
                     Context.ExecutionStatus.Status = false;
-                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Exists").Text + data.Email);
+                    Context.ExecutionStatus.Error 
+                        = new Exception(GW.Localization.GetItem("User-Exists", lang).Text + data.Email);
                    
                 }
             }

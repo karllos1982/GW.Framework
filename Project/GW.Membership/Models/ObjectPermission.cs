@@ -15,7 +15,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class ObjectPermissionModel
+    public class ObjectPermissionEntry
     {
         
         public Int64 ObjectPermissionID { get; set; }
@@ -38,7 +38,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class ObjectPermissionSearchResult
+    public class ObjectPermissionResult
     {
         public Int64 ObjectPermissionID { get; set; }
 

@@ -39,44 +39,15 @@ namespace GW.Membership.Models
 
     }
 
-    public class DataLogModel
+    public class DataLogEntry
     {
         public Int64 DataLogID { get; set; }
 
-        public Int64 UserID { get; set; }
-
-        public string Email { get; set; }
+        public Int64 UserID { get; set; }        
 
         public DateTime Date { get; set; }
 
-        public string Operation { get; set; }
-
-        public string OperationText
-        {
-            get
-            {
-                string aux = "";
-
-                switch (Operation)
-                {
-                    case "I":
-                        aux = "INSERT";
-                        break;
-
-                    case "U":
-                        aux = "UPDATE";
-                        break;
-
-                    case "D":
-                        aux = "DELETE";
-                        break;
-
-                }
-
-                return aux;
-            }
-
-        }
+        public string Operation { get; set; }     
 
         public string TableName { get; set; }
 
@@ -167,7 +138,7 @@ namespace GW.Membership.Models
       
     }
 
-    public class DataLogSearchResult
+    public class DataLogResult
     {
         public Int64 DataLogID { get; set; }
 

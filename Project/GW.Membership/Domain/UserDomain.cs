@@ -10,23 +10,26 @@ namespace GW.Membership.Domain
 {
     public class UserDomain : IUserDomain
     {
+        private string lang = "";
+
         public UserDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet =repositorySet;  
+            RepositorySet =repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public async Task<UserModel> FillChields( UserModel obj)
+        public async Task<UserResult> FillChields(UserResult obj)
         {
             UserRolesParam param = new UserRolesParam();
             param.pUserID = obj.UserID;
 
-            List<UserRolesModel> roles
-                = await  RepositorySet.UserRoles.List(param);
+            List<UserRolesResult> roles
+                = await  RepositorySet.UserRoles.Search(param);
 
             if (roles != null)
             {
@@ -35,7 +38,7 @@ namespace GW.Membership.Domain
                     obj.RoleList = roles;
                     obj.RoleID = roles[0].RoleID;
 
-                    RoleModel r = await RepositorySet.Role
+                    RoleResult r = await RepositorySet.Role
                         .Read(new RoleParam() { pRoleID = obj.RoleID });
                     obj.Role = r;
                 }
@@ -46,8 +49,8 @@ namespace GW.Membership.Domain
             UserInstancesParam param2 = new UserInstancesParam();
             param2.pUserID = obj.UserID;
 
-            List<UserInstancesModel> instances
-                = await RepositorySet.UserInstances.List(param2);
+            List<UserInstancesResult> instances
+                = await RepositorySet.UserInstances.Search(param2);
 
             if (instances != null)
             {
@@ -56,7 +59,7 @@ namespace GW.Membership.Domain
                     obj.InstanceList = instances;
                     obj.InstanceID = instances[0].InstanceID;
 
-                    InstanceModel i = await RepositorySet.Instance
+                    InstanceResult i = await RepositorySet.Instance
                         .Read(new InstanceParam() { pInstanceID = obj.InstanceID });
                     obj.Instance = i;
                 }
@@ -65,9 +68,9 @@ namespace GW.Membership.Domain
             return obj;
         }
 
-        public async Task<UserModel> Get(UserParam param)
+        public async Task<UserResult> Get(UserParam param)
         {
-            UserModel ret = null;
+            UserResult ret = null;
 
             ret = await RepositorySet.User.Read(param); 
 
@@ -88,37 +91,32 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<UserSearchResult>> Search(UserParam param)
+        public async Task<List<UserResult>> Search(UserParam param)
         {
-            List<UserSearchResult> ret = null;
+            List<UserResult> ret = null;
 
             ret = await RepositorySet.User.Search(param);
 
             return ret;
         }
 
-        public async Task EntryValidation(UserModel obj)
+        public async Task EntryValidation(UserEntry obj)
         {
             OperationStatus ret = null;
 
-            ret = PrimaryValidation.Execute(obj, new List<string>());
-
-            if (obj.RoleID == 0)
-            {
-                ret.AddInnerException("RoleID", GW.Localization.GetItem("Profile-NotBe-Null").Text);
-                ret.Status = false;
-            }
+            ret = PrimaryValidation.Execute(obj, new List<string>());        
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
             }
 
             Context.ExecutionStatus = ret;
             
         }
 
-        public async Task InsertValidation(UserModel obj)
+        public async Task InsertValidation(UserEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             UserParam param = new UserParam()
@@ -134,7 +132,7 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("Email-Exists").Text);
+                    ret.Error = new Exception(GW.Localization.GetItem("Email-Exists", lang).Text);
                 }
             }
 
@@ -142,7 +140,7 @@ namespace GW.Membership.Domain
          
         }
 
-        public async Task UpdateValidation(UserModel obj)
+        public async Task UpdateValidation(UserEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             UserParam param = new UserParam() { pEmail = obj.Email };
@@ -157,7 +155,8 @@ namespace GW.Membership.Domain
                     if (list[0].UserID != obj.UserID)
                     {
                         ret.Status = false;
-                        ret.Error = new Exception(GW.Localization.GetItem("Email-Exists").Text);
+                        ret.Error 
+                            = new Exception(GW.Localization.GetItem("Email-Exists", lang).Text);
                     }
                 }
             }
@@ -166,14 +165,14 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task DeleteValidation(UserModel obj)
+        public async Task DeleteValidation(UserEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<UserModel> Set(UserModel model, object userid)
+        public async Task<UserEntry> Set(UserEntry model, object userid)
         {
-            UserModel ret = null;
+            UserEntry ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
            await EntryValidation(model);
@@ -181,7 +180,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                UserModel old 
+                UserResult old 
                     = await RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
 
                 if (old == null)
@@ -225,11 +224,11 @@ namespace GW.Membership.Domain
 
      
 
-        public async Task<UserModel> Delete(UserModel model, object userid)
+        public async Task<UserEntry> Delete(UserEntry model, object userid)
         {
-            UserModel ret = null;
+            UserEntry ret = null;
 
-            UserModel old 
+            UserResult old 
                 = await this.Get(new UserParam() { pUserID = model.UserID });
 
             if (old != null)
@@ -240,9 +239,15 @@ namespace GW.Membership.Domain
                 {
                     if (Context.ExecutionStatus.Status && old.RoleList != null)
                     {
-                        foreach (UserRolesModel u in old.RoleList)
+                        foreach (UserRolesResult u in old.RoleList)
                         {
-                            await RepositorySet.UserRoles.Delete(u);
+                            await RepositorySet.UserRoles.Delete(
+                                    new UserRolesEntry() { 
+                                        UserRoleID = u.UserRoleID,  
+                                        UserID  = u.UserID, 
+                                        RoleID = u.RoleID
+                                    } 
+                                );
 
                             if (!Context.ExecutionStatus.Status)
                             {
@@ -253,9 +258,18 @@ namespace GW.Membership.Domain
 
                     if (Context.ExecutionStatus.Status && old.InstanceList != null)
                     {
-                        foreach (UserInstancesModel u in old.InstanceList)
+                        foreach (UserInstancesResult u in old.InstanceList)
                         {
-                           await RepositorySet.UserInstances.Delete(u);
+                           await RepositorySet.UserInstances.Delete(
+                                     new UserInstancesEntry()
+                                     {
+                                         UserInstanceID = u.UserInstanceID, 
+                                         UserID = u.UserID, 
+                                         InstanceID =   u.InstanceID
+
+                                     }
+                               );
+
                             if (!Context.ExecutionStatus.Status)
                             {
                                 break;
@@ -265,15 +279,25 @@ namespace GW.Membership.Domain
 
                     if (Context.ExecutionStatus.Status)
                     {
-                        await RepositorySet.User.Delete(old);
-                        ret = model;
+                        await RepositorySet.User.Delete(model);
+
+                        if (Context.ExecutionStatus.Status && userid != null)
+                        {
+                            await RepositorySet.User.Context
+                                .RegisterDataLogAsync(userid.ToString(), OPERATIONLOGENUM.DELETE, "SYSUSER",
+                                model.UserID.ToString(), old, model);
+
+                            ret = model;
+                        }
+
                     }                   
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error 
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound", lang).Text);
 
             }
 
@@ -281,9 +305,9 @@ namespace GW.Membership.Domain
         }
 
     
-        public async  Task<UserModel> GetByEmail(string email)
+        public async  Task<UserResult> GetByEmail(string email)
         {
-            UserModel ret = null;
+            UserResult ret = null;
 
             ret = await RepositorySet.User.GetByEmail(email);
 
@@ -302,7 +326,7 @@ namespace GW.Membership.Domain
         {
             OperationStatus ret = new OperationStatus(true);
 
-            UserModel obj = null;
+            UserResult obj = null;
 
             obj = await RepositorySet.User.Read(new UserParam() { pUserID = model.UserID });
 
@@ -313,7 +337,8 @@ namespace GW.Membership.Domain
             else
             {
                 ret.Status = false;
-                ret.Error = new Exception(GW.Localization.GetItem("Login-User-NotFound").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Login-User-NotFound", lang).Text);
             }
 
             return ret;
@@ -327,7 +352,7 @@ namespace GW.Membership.Domain
             string errmsg = "";
             string code = "";
 
-            UserModel usermatch = null;
+            UserResult usermatch = null;
             usermatch = await RepositorySet.User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
@@ -344,7 +369,7 @@ namespace GW.Membership.Domain
                         }
                         else
                         {
-                            errmsg = GW.Localization.GetItem("Login-Inactive-Account").Text;
+                            errmsg = GW.Localization.GetItem("Login-Inactive-Account", lang).Text;
 
                         }
                     }
@@ -356,7 +381,7 @@ namespace GW.Membership.Domain
                 }
                 else
                 {
-                    errmsg = GW.Localization.GetItem("Login-User-NotFound").Text;
+                    errmsg = GW.Localization.GetItem("Login-User-NotFound", lang).Text;
                 }
 
                 if (errmsg == "")
@@ -371,7 +396,8 @@ namespace GW.Membership.Domain
 
                     if (!aux.Status)
                     {
-                        errmsg = GW.Localization.GetItem("Execution-Error").Text + aux.Error.Message;
+                        errmsg 
+                            = GW.Localization.GetItem("Execution-Error", lang).Text + aux.Error.Message;
                     }
 
                 }
@@ -379,7 +405,8 @@ namespace GW.Membership.Domain
             }
             else
             {
-                errmsg = GW.Localization.GetItem("Execution-Error").Text + Context.ExecutionStatus.Error.Message;
+                errmsg
+                    = GW.Localization.GetItem("Execution-Error", lang).Text + Context.ExecutionStatus.Error.Message;
             }
 
             if (errmsg != "")
@@ -404,7 +431,7 @@ namespace GW.Membership.Domain
 
             string errmsg = "";
 
-            UserModel usermatch = null;
+            UserResult usermatch = null;
             usermatch = await RepositorySet.User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
@@ -414,7 +441,7 @@ namespace GW.Membership.Domain
                 {
                     if (usermatch.IsActive == 0)
                     {
-                        errmsg = GW.Localization.GetItem("Login-Inactive-Account").Text;
+                        errmsg = GW.Localization.GetItem("Login-Inactive-Account",lang).Text;
                     }
                     else
                     {
@@ -422,14 +449,16 @@ namespace GW.Membership.Domain
                         {
                             if (usermatch.PasswordRecoveryCode != model.Code)
                             {
-                                errmsg = GW.Localization.GetItem("User-Invalid-Password-Code").Text;
+                                errmsg 
+                                    = GW.Localization.GetItem("User-Invalid-Password-Code",lang).Text;
 
                             }
                         }
                         else
                         {
 
-                            errmsg = GW.Localization.GetItem("User-Invalid-Password-Code").Text;
+                            errmsg
+                                = GW.Localization.GetItem("User-Invalid-Password-Code",lang).Text;
                         }
 
                     }
@@ -437,7 +466,7 @@ namespace GW.Membership.Domain
                 }
                 else
                 {
-                    errmsg = GW.Localization.GetItem("Login-User-NotFound").Text;
+                    errmsg = GW.Localization.GetItem("Login-User-NotFound", lang).Text;
                 }
 
                 if (errmsg == "")
@@ -454,7 +483,7 @@ namespace GW.Membership.Domain
 
                     if (!aux.Status)
                     {
-                        errmsg = GW.Localization.GetItem("Execution-Error").Text + aux.Error.Message;
+                        errmsg = GW.Localization.GetItem("Execution-Error", lang).Text + aux.Error.Message;
                     }
 
                 }
@@ -462,7 +491,8 @@ namespace GW.Membership.Domain
             }
             else
             {
-                errmsg = GW.Localization.GetItem("Execution-Error").Text + Context.ExecutionStatus.Error.Message;
+                errmsg
+                    = GW.Localization.GetItem("Execution-Error", lang).Text + Context.ExecutionStatus.Error.Message;
             }
 
             if (errmsg != "")
@@ -480,7 +510,7 @@ namespace GW.Membership.Domain
             OperationStatus ret = new OperationStatus(true);
 
             string errmsg = "";
-            UserModel usermatch = null;
+            UserResult usermatch = null;
             usermatch = await RepositorySet.User.GetByEmail(model.Email);
 
             if (Context.ExecutionStatus.Status)
@@ -490,7 +520,7 @@ namespace GW.Membership.Domain
                 {
                     if (usermatch.IsActive == 1)
                     {
-                        errmsg = GW.Localization.GetItem("Account-Active").Text;
+                        errmsg = GW.Localization.GetItem("Account-Active", lang).Text;
                     }
                     else
                     {
@@ -498,13 +528,13 @@ namespace GW.Membership.Domain
                         {
                             if (usermatch.PasswordRecoveryCode != model.Code)
                             {
-                                errmsg = GW.Localization.GetItem("User-Invalid-Activation-Code").Text;
+                                errmsg = GW.Localization.GetItem("User-Invalid-Activation-Code", lang).Text;
                             }
                         }
                         else
                         {
 
-                            errmsg = GW.Localization.GetItem("User-Invalid-Activation-Code").Text;
+                            errmsg = GW.Localization.GetItem("User-Invalid-Activation-Code", lang).Text;
                         }
 
                     }
@@ -512,7 +542,7 @@ namespace GW.Membership.Domain
                 }
                 else
                 {
-                    errmsg = GW.Localization.GetItem("Login-User-NotFound").Text;
+                    errmsg = GW.Localization.GetItem("Login-User-NotFound", lang).Text;
                 }
 
                 if (errmsg == "")
@@ -523,7 +553,7 @@ namespace GW.Membership.Domain
 
                     if (!aux.Status)
                     {
-                        errmsg = GW.Localization.GetItem("Execution-Error").Text + aux.Error.Message;
+                        errmsg = GW.Localization.GetItem("Execution-Error", lang).Text + aux.Error.Message;
                     }
 
                 }
@@ -531,7 +561,8 @@ namespace GW.Membership.Domain
             }
             else
             {
-                errmsg = GW.Localization.GetItem("Execution-Error").Text + Context.ExecutionStatus.Error.Message;
+                errmsg 
+                    = GW.Localization.GetItem("Execution-Error", lang).Text + Context.ExecutionStatus.Error.Message;
             }
 
             if (errmsg != "")
@@ -552,11 +583,11 @@ namespace GW.Membership.Domain
 
             if (model.FileName == "")
             {
-                errmsg = GW.Localization.GetItem("User-No-Image").Text;
+                errmsg = GW.Localization.GetItem("User-No-Image", lang).Text;
             }
             else
             {
-                UserModel usermatch = null;
+                UserResult usermatch = null;
                 usermatch = await RepositorySet.User.Read(new UserParam() { pUserID=model.UserID });
 
                 if (Context.ExecutionStatus.Status)
@@ -566,13 +597,13 @@ namespace GW.Membership.Domain
                     {
                         if (usermatch.IsActive == 0)
                         {
-                            errmsg = GW.Localization.GetItem("Login-Inactive-Account").Text;
+                            errmsg = GW.Localization.GetItem("Login-Inactive-Account", lang).Text;
                         }
 
                     }
                     else
                     {
-                        errmsg = GW.Localization.GetItem("Login-User-NotFound").Text;
+                        errmsg = GW.Localization.GetItem("Login-User-NotFound", lang).Text;
                     }
 
                     if (errmsg == "")
@@ -582,7 +613,7 @@ namespace GW.Membership.Domain
 
                         if (!aux.Status)
                         {
-                            errmsg = GW.Localization.GetItem("Execution-Error").Text + aux.Error.Message;
+                            errmsg = GW.Localization.GetItem("Execution-Error", lang).Text + aux.Error.Message;
                         }
 
                     }
@@ -590,7 +621,7 @@ namespace GW.Membership.Domain
                 }
                 else
                 {
-                    errmsg = GW.Localization.GetItem("Execution-Error").Text + Context.ExecutionStatus.Error.Message;
+                    errmsg = GW.Localization.GetItem("Execution-Error", lang).Text + Context.ExecutionStatus.Error.Message;
                 }
             }
 
@@ -638,11 +669,11 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task<UserRolesModel> AddRoleToUser(Int64 userid, Int64 roleid, bool gocommit)
+        public async Task<UserRolesEntry> AddRoleToUser(Int64 userid, Int64 roleid)
         {
-            UserRolesModel ret = null;
+            UserRolesEntry ret = null;
 
-            List<UserRolesModel> list;
+            List<UserRolesResult> list;
             UserRolesParam param = new UserRolesParam();
             param.pUserID = userid;
             param.pRoleID = roleid;
@@ -654,13 +685,14 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     Context.ExecutionStatus.Status = false;
-                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Role-Exists").Text);
+                    Context.ExecutionStatus.Error 
+                        = new Exception(GW.Localization.GetItem("User-Role-Exists", lang).Text);
                 }
             }
 
             if (Context.ExecutionStatus.Status)
             {
-                UserRolesModel obj = new UserRolesModel();
+                UserRolesEntry obj = new UserRolesEntry();
                 obj.UserRoleID = Utilities.GenerateId();
                 obj.RoleID = roleid;
                 obj.UserID = userid;
@@ -677,11 +709,11 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<UserRolesModel> RemoveRoleFromUser(Int64 userid, Int64 roleid, bool gocommit)
+        public async Task<UserRolesEntry> RemoveRoleFromUser(Int64 userid, Int64 roleid)
         {
-            UserRolesModel ret = null;
+            UserRolesEntry ret = null;
 
-            List<UserRolesModel> list;
+            List<UserRolesResult> list;
             UserRolesParam param = new UserRolesParam();
             param.pUserID = userid;
             param.pRoleID = roleid;
@@ -693,24 +725,37 @@ namespace GW.Membership.Domain
                 if (list.Count == 0)
                 {
                     Context.ExecutionStatus.Status = false;
-                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Role-No-Exists").Text);
+                    Context.ExecutionStatus.Error
+                        = new Exception(GW.Localization.GetItem("User-Role-No-Exists", lang).Text);
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Role-No-Exists").Text);
+                Context.ExecutionStatus.Error 
+                    = new Exception(GW.Localization.GetItem("User-Role-No-Exists", lang).Text);
             }
 
             if (Context.ExecutionStatus.Status)
             {
-                UserRolesModel obj = list[0];
+                UserRolesResult obj = list[0];
 
-                await RepositorySet.UserRoles.Delete(obj);
+                await RepositorySet.UserRoles.Delete(new UserRolesEntry()
+                {
+                    UserRoleID = obj.UserRoleID,
+                    UserID = obj.UserID,
+                    RoleID = obj.RoleID
+                });
+               
 
                 if (Context.ExecutionStatus.Status)
                 {
-                    ret= obj;
+                    ret= new UserRolesEntry()
+                        {
+                            UserRoleID = obj.UserRoleID,
+                            UserID = obj.UserID,
+                            RoleID = obj.RoleID
+                        };
                 }
             }        
 
@@ -718,11 +763,11 @@ namespace GW.Membership.Domain
         }
 
 
-        public async Task<UserInstancesModel> AddInstanceToUser(Int64 userid, Int64 instanceid, bool gocommit)
+        public async Task<UserInstancesEntry> AddInstanceToUser(Int64 userid, Int64 instanceid)
         {
-            UserInstancesModel ret = null;
+            UserInstancesEntry ret = null;
 
-            List<UserInstancesModel> list;
+            List<UserInstancesResult> list;
             UserInstancesParam param = new UserInstancesParam();
             param.pUserID = userid;
             param.pInstanceID = instanceid;
@@ -734,13 +779,14 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     Context.ExecutionStatus.Status = false;
-                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Instance-Exists").Text);
+                    Context.ExecutionStatus.Error 
+                        = new Exception(GW.Localization.GetItem("User-Instance-Exists", lang).Text);
                 }
             }
 
             if (Context.ExecutionStatus.Status)
             {
-                UserInstancesModel obj = new UserInstancesModel();
+                UserInstancesEntry obj = new UserInstancesEntry();
                 obj.UserInstanceID = Utilities.GenerateId();
                 obj.InstanceID = instanceid;
                 obj.UserID = userid;
@@ -758,11 +804,11 @@ namespace GW.Membership.Domain
         }
 
 
-        public async Task<UserInstancesModel> RemoveInstanceFromUser(Int64 userid, Int64 instanceid, bool gocommit)
+        public async Task<UserInstancesEntry> RemoveInstanceFromUser(Int64 userid, Int64 instanceid)
         {
-            UserInstancesModel ret = null; ;
+            UserInstancesEntry ret = null; ;
 
-            List<UserInstancesModel> list;
+            List<UserInstancesResult> list;
             UserInstancesParam param = new UserInstancesParam();
             param.pUserID = userid;
             param.pInstanceID = instanceid;
@@ -774,24 +820,38 @@ namespace GW.Membership.Domain
                 if (list.Count == 0)
                 {
                     Context.ExecutionStatus.Status = false;
-                    Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Instance-No-Exists").Text);
+                    Context.ExecutionStatus.Error
+                        = new Exception(GW.Localization.GetItem("User-Instance-No-Exists", lang).Text);
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new Exception(GW.Localization.GetItem("User-Instance-No-Exists").Text);
+                Context.ExecutionStatus.Error 
+                    = new Exception(GW.Localization.GetItem("User-Instance-No-Exists", lang).Text);
             }
 
             if (Context.ExecutionStatus.Status)
             {
-                UserInstancesModel obj = list[0];
+                UserInstancesResult obj = list[0];
 
-                await RepositorySet.UserInstances.Delete(obj);
+                await RepositorySet.UserInstances.Delete(new UserInstancesEntry()
+                {
+                    UserInstanceID = obj.UserInstanceID,
+                    UserID = obj.UserID,
+                    InstanceID = obj.InstanceID
+
+                });
 
                 if (Context.ExecutionStatus.Status)
                 {
-                    ret= obj;
+                    ret = new UserInstancesEntry()
+                    {
+                        UserInstanceID = obj.UserInstanceID,
+                        UserID = obj.UserID,
+                        InstanceID = obj.InstanceID
+
+                    };
                 }
             }         
 

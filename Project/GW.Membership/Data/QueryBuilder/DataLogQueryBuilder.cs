@@ -17,14 +17,13 @@ namespace GW.Membership.Data
             ExcludeFields = new List<string>();
 
             Keys.Add("DataLogID");
-
-            ExcludeFields.Add("Email");
-            ExcludeFields.Add("OperationText");
+            
         }
 
         public override string QueryForGet(object param)
         {
-            string ret = @"Select u.Email, l.* from sysDataLog l
+            string ret = @"Select u.Email, l.* 
+                from sysDataLog l
                 inner join sysUser u on l.UserID=u.UserID
                 where DataLogID=@pDataLogID";
 

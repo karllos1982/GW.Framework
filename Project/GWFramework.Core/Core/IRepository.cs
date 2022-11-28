@@ -2,42 +2,42 @@
 
 namespace GW.Core
 {
-    public interface IRepository<TParam,TModel,TList,TSearchResult>
+    public interface IRepository<TParam,TEntry,TResult, TList>
     {
 
         IContext Context { get; set; }
 
-        Task Create(TModel model);
+        Task Create(TEntry model);
 
-        Task<TModel> Read(TParam model);
+        Task<TResult> Read(TParam model);
 
-        Task Update(TModel model);
+        Task Update(TEntry model);
 
-        Task Delete(TModel model);
+        Task Delete(TEntry model);
 
         Task<List<TList>> List(TParam param);
 
-        Task<List<TSearchResult>> Search(TParam param);
+        Task<List<TResult>> Search(TParam param);
 
 
     }
 
-    public interface IRepositorySync<TParam, TModel, TList, TSearchResult>
+    public interface IRepositorySync<TParam, TEntry, TResult, TList>
     {
 
         IContext Context { get; set; }
 
-        void Create(TModel model);
+        void Create(TEntry model);
 
-        TModel Read(TParam model);
+        TResult Read(TParam model);
 
-        void Update(TModel model);
+        void Update(TEntry model);
 
-        void Delete(TModel model);
+        void Delete(TEntry model);
 
         List<TList> List(TParam param);
 
-        List<TSearchResult> Search(TParam param);
+        List<TResult> Search(TParam param);
 
 
     }

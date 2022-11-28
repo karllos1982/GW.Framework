@@ -105,7 +105,7 @@ namespace GW.Membership.Models
         public string Code { get; set; }
     }
 
-    public class UserModel
+    public class UserEntry
     {
         [PrimaryValidationConfig("UserID", "User ID", FieldType.NUMERIC, false, 0)]
         public Int64 UserID { get; set; }
@@ -148,28 +148,6 @@ namespace GW.Membership.Models
 
         public string AuthUserID { get; set; }
 
-        public string ProfileImageURL { get; set; }
-        
-        //
-
-        public Int64 RoleID { get; set; }        
-
-        public RoleModel Role { get; set; }
-
-        public List<UserRolesModel> RoleList { get; set; }
-       
-
-        //
-        public Int64 InstanceID { get; set; }
-
-        public InstanceModel Instance { get; set; }
-
-        public List<UserInstancesModel> InstanceList { get; set; }
-
-        //
-
-        public List<UserPermissions> Permissions { get; set; }
-
     }
 
     public class UserList
@@ -182,17 +160,22 @@ namespace GW.Membership.Models
 
     }
 
-    public class UserSearchResult
+    public class UserResult
     {
+        
         public Int64 UserID { get; set; }
 
-        public string UserName { get; set; }        
-
+        public Int64 ApplicationID { get; set; }
+        
+        public string UserName { get; set; }
+        
         public string Email { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public string Password { get; set; }
 
         public string Salt { get; set; }
+
+        public DateTime CreateDate { get; set; }
 
         public int IsActive { get; set; }
 
@@ -200,11 +183,44 @@ namespace GW.Membership.Models
 
         public DateTime LastLoginDate { get; set; }
 
+        public string LastLoginIP { get; set; }
+
+        public Int32 LoginCounter { get; set; }
+
+        public Int32 LoginFailCounter { get; set; }
+
+        public string Avatar { get; set; }
+
+        public string AuthCode { get; set; }
+
+        public DateTime AuthCodeExpires { get; set; }
+
         public string PasswordRecoveryCode { get; set; }
 
         public string ProfileImage { get; set; }
 
-        public string ProfileImageURL { get; set; }
+        public string AuthUserID { get; set; }
+
+
+        //
+
+        public Int64 RoleID { get; set; }
+
+        public RoleResult Role { get; set; }
+
+        public List<UserRolesResult> RoleList { get; set; }
+
+
+        //
+        public Int64 InstanceID { get; set; }
+
+        public InstanceResult Instance { get; set; }
+
+        public List<UserInstancesResult> InstanceList { get; set; }
+
+        //
+
+        public List<UserPermissions> Permissions { get; set; }
 
     }
 

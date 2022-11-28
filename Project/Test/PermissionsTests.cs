@@ -5,9 +5,9 @@ namespace GW.Membership.Test
     public class T03_PermissionTests: BaseTest
     {
        
-        private ObjectPermissionModel CreateNewObjectPermission(Int64 id, string name, string codigo)
+        private ObjectPermissionEntry CreateNewObjectPermission(Int64 id, string name, string codigo)
         {
-            ObjectPermissionModel ret = new ObjectPermissionModel();
+            ObjectPermissionEntry ret = new ObjectPermissionEntry();
 
             ret.ObjectPermissionID = id;
             ret.ObjectName = name;
@@ -21,17 +21,19 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            ObjectPermissionModel obj;
+            ObjectPermissionEntry obj;
 
             obj = CreateNewObjectPermission(1001, "Table.Sys.Basic", "SYSTEST");
-            ObjectPermissionModel newobj = await res.Domain.ObjectPermission.Set(obj, SysDefaultUser);
+            ObjectPermissionEntry newobj = await res.Domain.ObjectPermission.Set(obj, SysDefaultUser);
 
             obj = CreateNewObjectPermission(1002, "Table.Sys2.Basic2", "SYSTEST2");                       
             newobj = await res.Domain.ObjectPermission.Set(obj, SysDefaultUser);
-            
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -55,7 +57,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            ObjectPermissionModel result = null;
+            ObjectPermissionResult result = null;
 
             result = await res.Domain.ObjectPermission.Get(
                 new ObjectPermissionParam() { pObjectPermissionID = 1001 });
@@ -71,13 +73,13 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            List<ObjectPermissionSearchResult> result = null;
+            List<ObjectPermissionResult> result = null;
 
             result = await res.Domain.ObjectPermission.Search(new ObjectPermissionParam() { });
             
             res.finalize();
 
-            result.ShouldNotBeNull<List<ObjectPermissionSearchResult>>();
+            result.ShouldNotBeNull<List<ObjectPermissionResult>>();
 
         }
 
@@ -87,9 +89,9 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            PermissionModel obj;
+            PermissionEntry obj;
 
-            obj = new PermissionModel()
+            obj = new PermissionEntry()
             {
                 PermissionID = 1001,
                 ObjectPermissionID = 1001,
@@ -101,11 +103,13 @@ namespace GW.Membership.Test
                 TypeGrant = "N"
             };
 
-            PermissionModel newobj = await res.Domain.Permission.Set(obj, SysDefaultUser);
-            
+            PermissionEntry newobj = await res.Domain.Permission.Set(obj, SysDefaultUser);
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -114,9 +118,9 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            PermissionModel obj;
+            PermissionEntry obj;
 
-            obj = new PermissionModel()
+            obj = new PermissionEntry()
             {
                 PermissionID = 1002,
                 ObjectPermissionID = 1001,
@@ -128,12 +132,14 @@ namespace GW.Membership.Test
                 TypeGrant = "N"
             };
 
-            PermissionModel newobj = 
+            PermissionEntry newobj = 
                 await  res.Domain.Permission.Set(obj, SysDefaultUser);
-        
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -142,9 +148,9 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            PermissionModel obj;
+            PermissionEntry obj;
 
-            obj = new PermissionModel()
+            obj = new PermissionEntry()
             {
                 PermissionID = 1003,
                 ObjectPermissionID = 10001,
@@ -156,12 +162,14 @@ namespace GW.Membership.Test
                 TypeGrant = "N"
             };
 
-            PermissionModel newobj = 
+            PermissionEntry newobj = 
                 await res.Domain.Permission.Set(obj, SysDefaultUser);
-          
+
+            status = res.Context.ExecutionStatus;
+
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -186,13 +194,13 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            List<PermissionSearchResult> result = null;
+            List<PermissionResult> result = null;
 
             result = await res.Domain.Permission.Search(new PermissionParam() { });
          
             res.finalize();
 
-            result.ShouldNotBeNull<List<PermissionSearchResult>>();
+            result.ShouldNotBeNull<List<PermissionResult>>();
 
         }
 
@@ -201,7 +209,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            List<PermissionSearchResult> result = null;
+            List<PermissionResult> result = null;
 
             result = await res.Domain.Permission.GetPermissionsByRoleUser(1,1001 );
          

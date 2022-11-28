@@ -25,7 +25,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class PermissionModel
+    public class PermissionEntry
     {
         public Int64 PermissionID { get; set; }
 
@@ -62,7 +62,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class PermissionSearchResult
+    public class PermissionResult
     {
         public Int64 PermissionID { get; set; }
 

@@ -10,10 +10,13 @@ namespace GW.Membership.Domain
 {
     public class PermissionDomain : IPermissionDomain
     {
+        private string lang = "";
+
         public PermissionDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet = repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
@@ -21,14 +24,14 @@ namespace GW.Membership.Domain
         public IMembershipRepositorySet RepositorySet { get; set; }
 
       
-        public async Task<PermissionModel> FillChields(PermissionModel obj)
+        public async Task<PermissionResult> FillChields(PermissionResult obj)
         {
             return obj;
         }
 
-        public async Task<PermissionModel> Get(PermissionParam param)
+        public async Task<PermissionResult> Get(PermissionParam param)
         {
-            PermissionModel ret = null;
+            PermissionResult ret = null;
 
             ret = await RepositorySet.Permission.Read(param); 
             
@@ -44,16 +47,16 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<PermissionSearchResult>> Search(PermissionParam param)
+        public async Task<List<PermissionResult>> Search(PermissionParam param)
         {
-            List<PermissionSearchResult> ret = null;
+            List<PermissionResult> ret = null;
 
             ret = await RepositorySet.Permission.Search(param);
 
             return ret;
         }
 
-        public async Task EntryValidation(PermissionModel obj)
+        public async Task EntryValidation(PermissionEntry obj)
         {
             OperationStatus ret = null;
 
@@ -61,31 +64,32 @@ namespace GW.Membership.Domain
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error",lang).Text);
             }
 
             Context.ExecutionStatus = ret;           
         }
 
-        public async Task InsertValidation(PermissionModel obj)
+        public async Task InsertValidation(PermissionEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task UpdateValidation(PermissionModel obj)
+        public async Task UpdateValidation(PermissionEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
 
         }
 
-        public async Task DeleteValidation(PermissionModel obj)
+        public async Task DeleteValidation(PermissionEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<PermissionModel> Set(PermissionModel model, object userid)
+        public async Task<PermissionEntry> Set(PermissionEntry model, object userid)
         {
-            PermissionModel ret = null;
+            PermissionEntry ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
             await EntryValidation(model);
@@ -93,7 +97,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                PermissionModel old 
+                PermissionResult old 
                     = await RepositorySet.Permission.Read(new PermissionParam() { pPermissionID = model.PermissionID });
 
                 if (old == null)
@@ -139,11 +143,11 @@ namespace GW.Membership.Domain
         }
      
 
-        public async Task<PermissionModel> Delete(PermissionModel model, object userid)
+        public async Task<PermissionEntry> Delete(PermissionEntry model, object userid)
         {
-            PermissionModel ret = null;
+            PermissionEntry ret = null;
 
-            PermissionModel old 
+            PermissionResult old 
                 = await RepositorySet.Permission.Read(new PermissionParam() { pPermissionID = model.PermissionID });
 
             if (old != null)
@@ -153,22 +157,31 @@ namespace GW.Membership.Domain
                 if (Context.ExecutionStatus.Status)
                 {
                     await RepositorySet.Permission.Delete(model);
-                    ret = model; 
+
+                    if (Context.ExecutionStatus.Status && userid != null)
+                    {
+                        await RepositorySet.User.Context
+                            .RegisterDataLogAsync(userid.ToString(), OPERATIONLOGENUM.DELETE, "SYSPERMISSION",
+                            model.PermissionID.ToString(), old, model);
+
+                        ret = model;
+                    }
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",lang).Text);
 
             }           
 
             return ret;
         }
       
-        public async Task<List<PermissionSearchResult>> GetPermissionsByRoleUser(Int64 roleid, Int64 userid)
+        public async Task<List<PermissionResult>> GetPermissionsByRoleUser(Int64 roleid, Int64 userid)
         {
-            List<PermissionSearchResult> ret = null;
+            List<PermissionResult> ret = null;
 
             PermissionParam param = new PermissionParam()
             {

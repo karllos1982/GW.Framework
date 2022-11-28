@@ -12,18 +12,20 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            RoleModel obj = new RoleModel();
+            RoleEntry obj = new RoleEntry();
 
             obj.RoleID = 3;
             obj.RoleName = "SimpleUser";
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            RoleModel newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
+            RoleEntry newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
+
+            status = res.Context.ExecutionStatus;
 
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -32,14 +34,14 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            RoleModel obj = new RoleModel();
+            RoleEntry obj = new RoleEntry();
 
             obj.RoleID = 3;
             obj.RoleName = "";
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            RoleModel newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
+            RoleEntry newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
 
             status = res.Context.ExecutionStatus;
 
@@ -54,18 +56,20 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            RoleModel obj = new RoleModel();
+            RoleEntry obj = new RoleEntry();
 
             obj.RoleID = 4;
             obj.RoleName = "Operador";
             obj.CreateDate = DateTime.Now;
             obj.IsActive = 1;
 
-            RoleModel newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
+            RoleEntry newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
+
+            status = res.Context.ExecutionStatus;
 
             res.finalize();
 
-            res.Perform_ShouldBeTrue();
+            res.Perform_ShouldBeTrue(status);
 
         }
 
@@ -74,11 +78,11 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            RoleModel result = null;
+            RoleResult result = null;
 
             result = await res.Domain.Role.Get( new RoleParam() { pRoleID = 3 }); 
             
-            result.ShouldNotBeNull<RoleModel>();
+            result.ShouldNotBeNull<RoleResult>();
 
             res.finalize();
 
@@ -104,12 +108,12 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            List<RoleSearchResult> result = null;
+            List<RoleResult> result = null;
 
             result = 
                 await res.Domain.Role.Search(new RoleParam() { pRoleName= "SimpleUser" });
 
-            result.ShouldNotBeNull<List<RoleSearchResult>>();
+            result.ShouldNotBeNull<List<RoleResult>>();
 
             res.finalize();
 
@@ -120,12 +124,14 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            RoleModel obj = new RoleModel() { RoleID = 3 };
+            RoleEntry obj = new RoleEntry() { RoleID = 3 };
 
-            RoleModel newobj =
+            RoleEntry newobj =
                 await res.Domain.Role.Delete(obj, SysDefaultUser);
 
-            res.Perform_ShouldBeTrue();
+            status = res.Context.ExecutionStatus;
+
+            res.Perform_ShouldBeTrue(status);
 
             res.finalize();
 

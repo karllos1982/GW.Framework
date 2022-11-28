@@ -5,29 +5,34 @@ using GW.Membership.Contracts.Domain;
 using GW.Membership.Models;
 using GW.Membership.Contracts.Data;
 using GW.Helpers;
+using Microsoft.SqlServer.Server;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GW.Membership.Domain
 {
     public class InstanceDomain : IInstanceDomain
     {
+        private string lang = ""; 
+
         public InstanceDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
             RepositorySet = repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public async Task<InstanceModel> FillChields(InstanceModel obj)
+        public async Task<InstanceResult> FillChields(InstanceResult obj)
         {
             return obj;
         }
 
-        public async Task<InstanceModel> Get(InstanceParam param)
+        public async Task<InstanceResult> Get(InstanceParam param)
         {
-            InstanceModel ret = null;
+            InstanceResult ret = null;
 
             ret = await RepositorySet.Instance.Read(param);
 
@@ -43,16 +48,16 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<InstanceSearchResult>> Search(InstanceParam param)
+        public async Task<List<InstanceResult>> Search(InstanceParam param)
         {
-            List<InstanceSearchResult> ret = null;
+            List<InstanceResult> ret = null;
 
             ret = await RepositorySet.Instance.Search(param);
 
             return ret;
         }
 
-        public async Task EntryValidation(InstanceModel obj)
+        public async Task EntryValidation(InstanceEntry obj)
         {
             OperationStatus ret = null;
 
@@ -60,14 +65,15 @@ namespace GW.Membership.Domain
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
             }
 
             Context.ExecutionStatus = ret;
 
         }
 
-        public async Task InsertValidation(InstanceModel obj)
+        public async Task InsertValidation(InstanceEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             InstanceParam param = new InstanceParam()
@@ -83,7 +89,9 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
+                    string msg
+                        = string.Format(GW.Localization.GetItem("Validation-Unique-Value", lang).Text, "Instance Name"); 
+                    ret.Error = new Exception(msg);
                 }
             }
 
@@ -91,7 +99,7 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task UpdateValidation(InstanceModel obj)
+        public async Task UpdateValidation(InstanceEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             InstanceParam param = new InstanceParam() { pInstanceName = obj.InstanceName };
@@ -105,7 +113,9 @@ namespace GW.Membership.Domain
                     if (list[0].InstanceID != obj.InstanceID)
                     {
                         ret.Status = false;
-                        ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
+                        string msg 
+                            = string.Format(GW.Localization.GetItem("Validation-Unique-Value", lang).Text, "Instance Name");
+                        ret.Error = new Exception(msg);
                     }
                 }
             }
@@ -114,14 +124,14 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task DeleteValidation(InstanceModel obj)
+        public async Task DeleteValidation(InstanceEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<InstanceModel> Set(InstanceModel model, object userid)
+        public async Task<InstanceEntry> Set(InstanceEntry model, object userid)
         {
-            InstanceModel ret = null;
+            InstanceEntry ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
             await EntryValidation(model);
@@ -129,7 +139,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                InstanceModel old
+                InstanceResult old
                     = await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
 
                 if (old == null)
@@ -171,11 +181,11 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<InstanceModel> Delete(InstanceModel model, object userid)
+        public async Task<InstanceEntry> Delete(InstanceEntry model, object userid)
         {
-            InstanceModel ret = null;
+            InstanceEntry ret = null;
 
-            InstanceModel old
+            InstanceResult old
                 = await RepositorySet.Instance.Read(new InstanceParam() { pInstanceID = model.InstanceID });
 
             if (old != null)
@@ -185,12 +195,23 @@ namespace GW.Membership.Domain
                 if (Context.ExecutionStatus.Status)
                 {
                     await RepositorySet.Instance.Delete(model);
+
+                    if (Context.ExecutionStatus.Status && userid != null)
+                    {
+                        await RepositorySet.User.Context
+                            .RegisterDataLogAsync(userid.ToString(),  OPERATIONLOGENUM.DELETE, "SYSINSTANCE",
+                            model.InstanceID.ToString(), old, model);
+
+                        ret = model;
+                    }
+
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error 
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound", lang).Text);
 
             }
 

@@ -5,7 +5,7 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Domain
 {
     public interface IObjectPermissionDomain :
-        IDomain<ObjectPermissionParam, ObjectPermissionModel, ObjectPermissionList, ObjectPermissionSearchResult>
+        IDomain<ObjectPermissionParam, ObjectPermissionEntry, ObjectPermissionResult, ObjectPermissionList>
     {   
 
     }

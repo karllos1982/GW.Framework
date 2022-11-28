@@ -31,15 +31,11 @@ namespace GW.Membership.Models
 
     }
 
-    public class SessionLogModel
+    public class SessionLogEntry
     {
         public Int64 SessionID { get; set; }
 
-        public Int64 UserID { get; set; }
-
-        public string UserName { get; set; }
-
-        public string Email { get; set; }
+        public Int64 UserID { get; set; }  
 
         public DateTime Date { get; set; }
 
@@ -63,7 +59,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class SessionLogSearchResult
+    public class SessionLogResult
     {
         public Int64 SessionID { get; set; }
 

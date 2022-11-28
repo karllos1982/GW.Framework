@@ -6,15 +6,17 @@ namespace GW.Core
     public interface ISettings
     {
 
-        public SourceConfig[] Sources { get; set; }
+         SourceConfig[] Sources { get; set; }
 
-        public string SiteURL { get; set; }
+         string SiteURL { get; set; }
 
-        public string ProfileImageDir { get; set; }
+         string ProfileImageDir { get; set; }
 
-        public string ApplicationName { get; set; }
+         string ApplicationName { get; set; }
 
-        public MailSettings MailSettings { get; set; }
+         MailSettings MailSettings { get; set; }
+
+         string LocalizationLanguage { get; set; }
 
     }
 }

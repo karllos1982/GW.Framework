@@ -6,7 +6,7 @@ using GW.Membership.Contracts.Data;
 namespace GW.Membership.Contracts.Domain
 {
     public interface IDataLogDomain :
-        IDomain<DataLogParam, DataLogModel, DataLogList, DataLogSearchResult>
+        IDomain<DataLogParam, DataLogEntry, DataLogResult, DataLogList>
     {
          IMembershipRepositorySet RepositorySet { get; set;  }
 

@@ -68,10 +68,10 @@ namespace GW
             items.Add(new Item() { Code = "42", Name = "MonthName-11", Text = "NOVEMBER" });
             items.Add(new Item() { Code = "43", Name = "MonthName-12", Text = "DECEMBER" });
             items.Add(new Item() { Code = "44", Name = "Validation-NotNull", Text = "cannot be null." });
-            items.Add(new Item() { Code = "45", Name = "Validation-Max-Characters", Text = "The {fieldlabel} field cannot have more than {maxlength} characters." });
-            items.Add(new Item() { Code = "46", Name = "Validation-Invalid-Field", Text = "The {fieldlabel} field is invalid." });
-            items.Add(new Item() { Code = "47", Name = "Validation-Invalid-UserName", Text = "The {fieldlabel} field is invalid. Do not use special characters or spaces." });
-            items.Add(new Item() { Code = "48", Name = "Validation-Unique-Value", Text = "The {fieldlabel} field is invalid. Value must be unique." });
+            items.Add(new Item() { Code = "45", Name = "Validation-Max-Characters", Text = "The {0} field cannot have more than {1} characters." });
+            items.Add(new Item() { Code = "46", Name = "Validation-Invalid-Field", Text = "The {0} field is invalid." });
+            items.Add(new Item() { Code = "47", Name = "Validation-Invalid-UserName", Text = "The {0} field is invalid. Do not use special characters or spaces." });
+            items.Add(new Item() { Code = "48", Name = "Validation-Unique-Value", Text = "The {0} field is invalid. Value must be unique." });
             items.Add(new Item() { Code = "49", Name = "User-Instance-Exists", Text = "This Instance is already associated with the user." });
             items.Add(new Item() { Code = "50", Name = "User-Instance-No-Exists", Text = "This Instance does not belong to the user." });
         }
@@ -83,13 +83,13 @@ namespace GW
 
             if (_items == null)
             {
-                _items = new List<Item>();
+                _items = new List<Item>();                
 
                 try
                 {
                     string jsonfile = "localization.json";
 
-                    if (language == "")
+                    if (language != "")
                     {
                         jsonfile = "localization-" + language + ".json";
                     }

@@ -18,7 +18,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class RoleModel
+    public class RoleEntry
     {
         [PrimaryValidationConfig("RoleID", "Role ID", FieldType.NUMERIC, false, 0)]
         public long RoleID { get; set; }
@@ -42,7 +42,7 @@ namespace GW.Membership.Models
         public string sRoleID { get; set; }
     }
 
-    public class RoleSearchResult
+    public class RoleResult
     {
         
         public long RoleID { get; set; }

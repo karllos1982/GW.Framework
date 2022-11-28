@@ -20,7 +20,8 @@ namespace GW.Membership.Data
 
         public override string QueryForGet(object param)
         {
-            string ret = "Select * from sysInstance where InstanceID=@pInstanceID";
+            string ret = @"Select * 
+            from sysInstance where InstanceID=@pInstanceID";
 
             return ret;
         }
@@ -40,8 +41,8 @@ namespace GW.Membership.Data
 
         public override string QueryForSearch(object param)
         {
-            string ret = @"select *             
-             from sysInstance 
+            string ret = @"select *            
+             from sysInstance i             
              where 1=1 
              and (@pInstanceName='' or InstanceName=@pInstanceName)
              and (@pInstanceTypeName='' or InstanceTypeName=@pInstanceTypeName)

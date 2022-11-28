@@ -17,14 +17,13 @@ namespace GW.Membership.Data
             ExcludeFields = new List<string>();
 
             Keys.Add("SessionID");
-
-            ExcludeFields.Add("UserName");
-            ExcludeFields.Add("Email");
+           
         }
 
         public override string QueryForGet(object param)
         {
-            string ret = @"Select u.UserName, u.Email, s.* from sysSession
+            string ret = @"select u.UserName, u.Email, s.*   
+                from sysSession
                 inner join sysUser u on s.UserID = u.UserID   
                 where SessionID=@pSessionID";
 

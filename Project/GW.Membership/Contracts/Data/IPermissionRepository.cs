@@ -5,9 +5,9 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Data
 {
     public interface IPermissionRepository :
-        IRepository<PermissionParam, PermissionModel, PermissionList, PermissionSearchResult>
+        IRepository<PermissionParam, PermissionEntry, PermissionResult, PermissionList>
     {
-         Task<List<PermissionSearchResult>> GetPermissionsByRoleUser(object param);
+         Task<List<PermissionResult>> GetPermissionsByRoleUser(object param);
 
     }
 }

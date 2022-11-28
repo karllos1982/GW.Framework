@@ -27,7 +27,7 @@ namespace GW.Membership.Test
         {
             Resources res = new Resources();
 
-            List<SessionLogSearchResult> result = null;
+            List<SessionLogResult> result = null;
             SessionLogParam param = new SessionLogParam();
 
             param.pEmail = EMAIL_DEFAULT;
@@ -38,7 +38,7 @@ namespace GW.Membership.Test
             
             res.finalize();
 
-            result.ShouldNotBeNull<List<SessionLogSearchResult>>();
+            result.ShouldNotBeNull<List<SessionLogResult>>();
 
         }
     

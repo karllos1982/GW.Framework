@@ -25,15 +25,13 @@ namespace GW.Membership.Models
         public Int64 pRoleID { get; set; }
     }
 
-    public class UserRolesModel
+    public class UserRolesEntry
     {
         public Int64 UserRoleID { get; set; }
 
         public Int64 UserID { get; set; }
 
         public Int64 RoleID { get; set; }
-
-        public string RoleName { get; set; }
 
         public RECORDSTATEENUM RecordState { get; set; }
     }
@@ -48,7 +46,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class UserRolesSearchResult
+    public class UserRolesResult
     {
         public Int64 UserRoleID { get; set; }
 

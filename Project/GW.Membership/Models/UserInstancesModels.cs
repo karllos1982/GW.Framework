@@ -24,15 +24,13 @@ namespace GW.Membership.Models
         public Int64 pInstanceID { get; set; }
     }
 
-    public class UserInstancesModel
+    public class UserInstancesEntry
     {
         public Int64 UserInstanceID { get; set; }
 
         public Int64 UserID { get; set; }
 
-        public Int64 InstanceID { get; set; }
-
-        public string InstanceName { get; set; }
+        public Int64 InstanceID { get; set; }      
 
         public RECORDSTATEENUM RecordState { get; set; }
     }
@@ -48,7 +46,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class UserInstancesSearchResult
+    public class UserInstancesResult
     {
         public Int64 UserInstanceID { get; set; }
 

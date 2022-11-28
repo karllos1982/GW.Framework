@@ -21,7 +21,12 @@ namespace GW.Membership.Data
 
         public override string QueryForGet(object param)
         {
-            string ret = @"Select * from sysPermission                
+            string ret = @"select p.PermissionID, p.ObjectPermissionID, o.ObjectName , o.ObjectCode,
+                r.RoleID, r.RoleName, u.UserID, u.UserName, p.ReadStatus, p.SaveStatus, p.DeleteStatus, p.TypeGrant
+                from sysPermission p
+                inner join sysObjectPermission o on o.ObjectPermissionID = p.ObjectPermissionID
+                left join sysUser u on u.UserID = p.UserID          
+                left join sysRole r on r.RoleID = p.RoleID               
                 where PermissionID=@pPermissionID";
 
             return ret;

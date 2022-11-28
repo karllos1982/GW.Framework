@@ -25,7 +25,7 @@ namespace GW.Membership.Models
         
     }
 
-    public class InstanceModel
+    public class InstanceEntry
     {
         [PrimaryValidationConfig("InstanceID", "Instance ID", FieldType.NUMERIC, false, 0)]
         public Int64 InstanceID { get; set; }
@@ -51,7 +51,7 @@ namespace GW.Membership.Models
 
     }
 
-    public class InstanceSearchResult
+    public class InstanceResult
     {
         
         public Int64 InstanceID { get; set; }

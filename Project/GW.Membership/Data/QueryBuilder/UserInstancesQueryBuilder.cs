@@ -17,13 +17,12 @@ namespace GW.Membership.Data
             ExcludeFields = new List<string>();
 
             Keys.Add("UserInstanceID");
-            ExcludeFields.Add("RecordState");
-            ExcludeFields.Add("InstanceName");
+            ExcludeFields.Add("RecordState");           
         }
 
         public override string QueryForGet(object param)
         {
-            string ret = @"Select * from sysUserInstances
+            string ret = @"select a.UserInstanceID, a.UserID, u.UserName, a.InstanceID, i.InstanceName  
                 where UserInstanceID=@pUserInstanceID";
 
             return ret;

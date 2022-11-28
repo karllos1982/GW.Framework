@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(InstanceModel model)
+        public async Task Create(InstanceEntry model)
         {
             OperationStatus ret = new OperationStatus(true);
 
@@ -26,18 +26,18 @@ namespace GW.Membership.Data
             await ((DapperContext)Context).ExecuteAsync(sql, model);
         }
 
-        public async Task<InstanceModel> Read(InstanceParam param)
+        public async Task<InstanceResult> Read(InstanceParam param)
         {
-            InstanceModel ret = null;
+            InstanceResult ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<InstanceModel>(sql, param); 
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<InstanceResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(InstanceModel model)
+        public async Task Update(InstanceEntry model)
         {
             
             string sql = query.QueryForUpdate("sysInstance", model, model);
@@ -45,7 +45,7 @@ namespace GW.Membership.Data
 
         }
 
-        public async Task Delete(InstanceModel model)
+        public async Task Delete(InstanceEntry model)
         {
            
             string sql = query.QueryForDelete("sysInstance", model, model);
@@ -63,12 +63,12 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public async Task<List<InstanceSearchResult>> Search(InstanceParam param)
+        public async Task<List<InstanceResult>> Search(InstanceParam param)
         {
-            List<InstanceSearchResult> ret = null;
+            List<InstanceResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<InstanceSearchResult>(query.QueryForSearch(null),  param);
+                .ExecuteQueryToListAsync<InstanceResult>(query.QueryForSearch(null),  param);
                
 
             return ret;

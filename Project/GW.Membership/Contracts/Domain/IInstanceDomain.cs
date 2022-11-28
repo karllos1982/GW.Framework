@@ -6,7 +6,7 @@ using GW.Membership.Contracts.Data;
 namespace GW.Membership.Contracts.Domain
 {
     public interface IInstanceDomain :
-        IDomain<InstanceParam, InstanceModel, InstanceList, InstanceSearchResult>
+        IDomain<InstanceParam, InstanceEntry, InstanceResult, InstanceList>
     {
         IMembershipRepositorySet RepositorySet { get; set; }
     }

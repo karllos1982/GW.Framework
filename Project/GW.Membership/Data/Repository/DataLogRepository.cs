@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(DataLogModel model)
+        public async Task Create(DataLogEntry model)
         {
             
             string sql = query.QueryForCreate("sysDataLog", model,model);
@@ -26,25 +26,25 @@ namespace GW.Membership.Data
 
         }
 
-        public async Task<DataLogModel> Read(DataLogParam param)
+        public async Task<DataLogResult> Read(DataLogParam param)
         {
-            DataLogModel ret = null;
+            DataLogResult ret = null;
             
             string sql = query.QueryForGet(null);
 
-            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<DataLogModel>(sql, param); 
+            ret = await ((DapperContext)Context).ExecuteQueryFirstAsync<DataLogResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(DataLogModel model)
+        public async Task Update(DataLogEntry model)
         {            
             string sql = query.QueryForUpdate("sysDataLog", model, model);
               await ((DapperContext)Context).ExecuteAsync(sql, model);
          
         }
 
-        public async Task Delete(DataLogModel model)
+        public async Task Delete(DataLogEntry model)
         {
             
             string sql = query.QueryForDelete("sysDataLog", model, model);
@@ -63,12 +63,12 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public async Task<List<DataLogSearchResult>> Search(DataLogParam param)
+        public async Task<List<DataLogResult>> Search(DataLogParam param)
         {
-            List<DataLogSearchResult> ret = null;
+            List<DataLogResult> ret = null;
 
             ret = await  ((DapperContext)Context)
-                .ExecuteQueryToListAsync<DataLogSearchResult>(query.QueryForSearch(param), param);
+                .ExecuteQueryToListAsync<DataLogResult>(query.QueryForSearch(param), param);
                 
 
             return ret;

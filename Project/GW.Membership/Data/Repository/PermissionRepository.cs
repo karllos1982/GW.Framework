@@ -18,7 +18,7 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(PermissionModel model)
+        public async Task Create(PermissionEntry model)
         {
             
             string sql = query.QueryForCreate("sysPermission", model,model);
@@ -26,19 +26,19 @@ namespace GW.Membership.Data
             
         }
 
-        public async Task<PermissionModel> Read(PermissionParam param)
+        public async Task<PermissionResult> Read(PermissionParam param)
         {
-            PermissionModel ret = null;
+            PermissionResult ret = null;
             
             string sql = query.QueryForGet(null);
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryFirstAsync<PermissionModel>(sql, param); 
+                .ExecuteQueryFirstAsync<PermissionResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(PermissionModel model)
+        public async Task Update(PermissionEntry model)
         {
             
             string sql = query.QueryForUpdate("sysPermission", model, model);
@@ -46,7 +46,7 @@ namespace GW.Membership.Data
 
         }
 
-        public async Task Delete(PermissionModel model)
+        public async Task Delete(PermissionEntry model)
         {
             
             string sql = query.QueryForDelete("sysPermission", model, model);
@@ -65,22 +65,22 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public  async Task<List<PermissionSearchResult>> Search(PermissionParam param)
+        public  async Task<List<PermissionResult>> Search(PermissionParam param)
         {
-            List<PermissionSearchResult> ret = null;
+            List<PermissionResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<PermissionSearchResult>(query.QueryForSearch(null),param);
+                .ExecuteQueryToListAsync<PermissionResult>(query.QueryForSearch(null),param);
                  
 
             return ret;
         }
 
-        public async Task<List<PermissionSearchResult>> GetPermissionsByRoleUser(object param)
+        public async Task<List<PermissionResult>> GetPermissionsByRoleUser(object param)
         {
-            List<PermissionSearchResult> ret = null;
+            List<PermissionResult> ret = null;
 
-            ret = await ((DapperContext)Context).ExecuteQueryToListAsync<PermissionSearchResult>(
+            ret = await ((DapperContext)Context).ExecuteQueryToListAsync<PermissionResult>(
                 query.QueryForGetPermissionsByRoleUser(param), param);
 
             return ret;

@@ -10,24 +10,28 @@ namespace GW.Membership.Domain
 {
     public class ObjectPermissionDomain : IObjectPermissionDomain
     {
+
+        private string lang = "";
+
         public ObjectPermissionDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet = repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public async Task<ObjectPermissionModel> FillChields(ObjectPermissionModel obj)
+        public async Task<ObjectPermissionResult> FillChields(ObjectPermissionResult obj)
         {
             return obj;
         }
 
-        public async Task<ObjectPermissionModel> Get(ObjectPermissionParam param)
+        public async Task<ObjectPermissionResult> Get(ObjectPermissionParam param)
         {
-            ObjectPermissionModel ret = null;
+            ObjectPermissionResult ret = null;
 
             ret = await RepositorySet.ObjectPermission.Read(param); 
             
@@ -43,16 +47,16 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<ObjectPermissionSearchResult>> Search(ObjectPermissionParam param)
+        public async Task<List<ObjectPermissionResult>> Search(ObjectPermissionParam param)
         {
-            List<ObjectPermissionSearchResult> ret = null;
+            List<ObjectPermissionResult> ret = null;
 
             ret = await RepositorySet.ObjectPermission.Search(param);
 
             return ret;
         }
 
-        public async Task EntryValidation(ObjectPermissionModel obj)
+        public async Task EntryValidation(ObjectPermissionEntry obj)
         {
             OperationStatus ret = null;
 
@@ -60,14 +64,15 @@ namespace GW.Membership.Domain
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error",lang).Text);
             }
 
             Context.ExecutionStatus = ret;
          
         }
 
-        public async Task InsertValidation(ObjectPermissionModel obj)
+        public async Task InsertValidation(ObjectPermissionEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             ObjectPermissionParam param = new ObjectPermissionParam()
@@ -83,7 +88,10 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
+                    string msg 
+                        = string.Format(GW.Localization.GetItem("Validation-Unique-Value",lang).Text, "Object Code");
+                    ret.Error = new Exception(msg);
+                  
                 }
             }
 
@@ -91,7 +99,7 @@ namespace GW.Membership.Domain
            
         }
 
-        public async Task UpdateValidation(ObjectPermissionModel obj)
+        public async Task UpdateValidation(ObjectPermissionEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
             ObjectPermissionParam param = new ObjectPermissionParam() { pObjectCode = obj.ObjectCode };
@@ -106,7 +114,9 @@ namespace GW.Membership.Domain
                     if (list[0].ObjectPermissionID != obj.ObjectPermissionID)
                     {
                         ret.Status = false;
-                        ret.Error = new Exception(GW.Localization.GetItem("Validation-Unique-Value").Text);
+                        string msg 
+                            = string.Format(GW.Localization.GetItem("Validation-Unique-Value",lang).Text, "Object Code");
+                        ret.Error = new Exception(msg);
                     }
                 }
             }
@@ -115,14 +125,14 @@ namespace GW.Membership.Domain
 
         }
 
-        public async Task DeleteValidation(ObjectPermissionModel obj)
+        public async Task DeleteValidation(ObjectPermissionEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<ObjectPermissionModel> Set(ObjectPermissionModel model, object userid)
+        public async Task<ObjectPermissionEntry> Set(ObjectPermissionEntry model, object userid)
         {
-            ObjectPermissionModel ret = null;
+            ObjectPermissionEntry ret = null;
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
            await EntryValidation(model);
@@ -130,7 +140,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                ObjectPermissionModel old 
+                ObjectPermissionResult old 
                     = await RepositorySet.ObjectPermission
                         .Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
 
@@ -171,11 +181,11 @@ namespace GW.Membership.Domain
             return ret;
         }
       
-        public async Task<ObjectPermissionModel> Delete(ObjectPermissionModel model, object userid)
+        public async Task<ObjectPermissionEntry> Delete(ObjectPermissionEntry model, object userid)
         {
-            ObjectPermissionModel ret = null;
+            ObjectPermissionEntry ret = null;
 
-            ObjectPermissionModel old 
+            ObjectPermissionResult old 
                 = await RepositorySet.ObjectPermission
                     .Read(new ObjectPermissionParam() { pObjectPermissionID = model.ObjectPermissionID });
 
@@ -186,13 +196,22 @@ namespace GW.Membership.Domain
                 if (Context.ExecutionStatus.Status)
                 {
                      await RepositorySet.ObjectPermission.Delete(model);
-                    ret = model;
+
+                    if (Context.ExecutionStatus.Status && userid != null)
+                    {
+                        await RepositorySet.User.Context
+                            .RegisterDataLogAsync(userid.ToString(), OPERATIONLOGENUM.DELETE, "SYSOBJECTPERMISSION",
+                            model.ObjectPermissionID.ToString(), old, model);
+
+                        ret = model;
+                    }
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error 
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",lang).Text);
 
             }           
 

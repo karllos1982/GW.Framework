@@ -17,16 +17,8 @@ namespace GW.Membership.Data
             ExcludeFields = new List<string>(); 
 
             Keys.Add("UserID");
-            ExcludeFields.Add("Avatar");
-            ExcludeFields.Add("Role");
-            ExcludeFields.Add("RoleID");            
-            ExcludeFields.Add("RoleList");
-            ExcludeFields.Add("ProfileImageURL");
-            ExcludeFields.Add("Permissions");
-
-            ExcludeFields.Add("InstanceID");
-            ExcludeFields.Add("Instance");
-            ExcludeFields.Add("InstanceList");
+            ExcludeFields.Add("Avatar");           
+                  
 
         }
 
@@ -130,7 +122,7 @@ namespace GW.Membership.Data
         public override string QueryForGet(object param)
         {
             string ret = @"Select 
-                    UserID,UserName,ApplicationID,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
+                    UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
                     LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID 
                     from sysUser where userid=@pUserID";
 
@@ -155,9 +147,9 @@ namespace GW.Membership.Data
 
         public override string QueryForSearch(object param)
         {
-            string ret = @"select 
-                UserID,UserName,Email,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
-                PasswordRecoveryCode,ProfileImage
+            string ret = @"Select 
+                UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
+                LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID 
                 from sysUser u
                 where 1=1 
                 and (@pUserID=0 or u.UserID=@pUserID)

@@ -27,11 +27,11 @@ namespace GW.Membership.Data
      
         public OperationStatus ExecutionStatus { get; set; }
      
-        public OperationStatus Begin(int sourceindex)
+        public OperationStatus Begin()
         {
             OperationStatus ret = new OperationStatus(true);
 
-            Connection = new SqlConnection(Settings.Sources[sourceindex].SourceValue);
+            Connection = new SqlConnection(Settings.Sources[0].SourceValue);
             
             try
             {
@@ -164,7 +164,7 @@ namespace GW.Membership.Data
 
                 try
                 {
-                    this.Connection.ExecuteAsync(sql, data, Transaction);
+                    this.Connection.Execute(sql, data, Transaction);
 
                 }
                 catch (SqlException ex)

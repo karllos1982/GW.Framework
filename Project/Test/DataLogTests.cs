@@ -28,7 +28,7 @@ namespace GW.Membership.Test
         {
              Resources res = new Resources(); 
 
-            List<DataLogSearchResult> result = null;
+            List<DataLogResult> result = null;
             DataLogParam param = new DataLogParam();
 
             param.pEmail = EMAIL_DEFAULT;
@@ -39,7 +39,7 @@ namespace GW.Membership.Test
             
             res.finalize();
 
-            result.ShouldNotBeNull<List<DataLogSearchResult>>();
+            result.ShouldNotBeNull<List<DataLogResult>>();
 
         }
 

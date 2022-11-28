@@ -10,24 +10,27 @@ namespace GW.Membership.Domain
 {
     public class DataLogDomain : IDataLogDomain
     {
+        private string lang = "";
+
         public DataLogDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
-            RepositorySet = repositorySet;  
+            RepositorySet = repositorySet;
+            lang = Context.Settings.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }
 
         public IMembershipRepositorySet RepositorySet { get; set; }
 
-        public async Task<DataLogModel> FillChields(DataLogModel obj)
+        public async Task<DataLogResult> FillChields(DataLogResult obj)
         {
             return obj;
         }
 
-        public async Task<DataLogModel> Get(DataLogParam param)
+        public async Task<DataLogResult> Get(DataLogParam param)
         {
-            DataLogModel ret = null;
+            DataLogResult ret = null;
 
             ret = await RepositorySet.DataLog.Read(param); 
             
@@ -43,16 +46,16 @@ namespace GW.Membership.Domain
             return ret;
         }
 
-        public async Task<List<DataLogSearchResult>> Search(DataLogParam param)
+        public async Task<List<DataLogResult>> Search(DataLogParam param)
         {
-            List<DataLogSearchResult> ret = null;
+            List<DataLogResult> ret = null;
 
             ret = await RepositorySet.DataLog.Search(param);
 
             return ret;
         }
 
-        public async Task EntryValidation(DataLogModel obj)
+        public async Task EntryValidation(DataLogEntry obj)
         {
             OperationStatus ret = null;
 
@@ -60,32 +63,33 @@ namespace GW.Membership.Domain
 
             if (!ret.Status)
             {
-                ret.Error = new Exception(GW.Localization.GetItem("Validation-Error").Text);
+                ret.Error 
+                    = new Exception(GW.Localization.GetItem("Validation-Error",lang).Text);
             }
 
             Context.ExecutionStatus = ret;
             
         }
 
-        public async Task InsertValidation(DataLogModel obj)
+        public async Task InsertValidation(DataLogEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true); 
         }
 
-        public async Task UpdateValidation(DataLogModel obj)
+        public async Task UpdateValidation(DataLogEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
 
         }
 
-        public async Task DeleteValidation(DataLogModel obj)
+        public async Task DeleteValidation(DataLogEntry obj)
         {
             Context.ExecutionStatus = new OperationStatus(true);
         }
 
-        public async Task<DataLogModel> Set(DataLogModel model, object userid)
+        public async Task<DataLogEntry> Set(DataLogEntry model, object userid)
         {
-            DataLogModel ret = null;
+            DataLogEntry ret = null;
 
             OPERATIONLOGENUM operation = OPERATIONLOGENUM.INSERT;
 
@@ -94,7 +98,7 @@ namespace GW.Membership.Domain
             if (Context.ExecutionStatus.Status)
             {
 
-                DataLogModel old 
+                DataLogResult old 
                     = await RepositorySet.DataLog.Read(new DataLogParam() { pDataLogID = model.DataLogID });
 
                 if (old == null)
@@ -135,11 +139,11 @@ namespace GW.Membership.Domain
 
       
 
-        public async Task<DataLogModel> Delete(DataLogModel model, object userid)
+        public async Task<DataLogEntry> Delete(DataLogEntry model, object userid)
         {
-            DataLogModel ret = null;
+            DataLogEntry ret = null;
 
-            DataLogModel old 
+            DataLogResult old 
                 = await RepositorySet.DataLog.Read(new DataLogParam() { pDataLogID = model.DataLogID });
 
             if (old != null)
@@ -149,13 +153,22 @@ namespace GW.Membership.Domain
                 if (Context.ExecutionStatus.Status)
                 {
                    await RepositorySet.DataLog.Delete(model);
-                    ret = model; 
+
+                    if (Context.ExecutionStatus.Status && userid != null)
+                    {
+                        await RepositorySet.User.Context
+                            .RegisterDataLogAsync(userid.ToString(), OPERATIONLOGENUM.DELETE, "SYSDATALOG",
+                            model.DataLogID.ToString(), old, model);
+
+                        ret = model;
+                    }
                 }
             }
             else
             {
                 Context.ExecutionStatus.Status = false;
-                Context.ExecutionStatus.Error = new System.Exception(GW.Localization.GetItem("Record-NotFound").Text);
+                Context.ExecutionStatus.Error 
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",lang).Text);
 
             }
            

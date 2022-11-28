@@ -18,38 +18,38 @@ namespace GW.Membership.Data
 
         public IContext Context { get; set; }
 
-        public async Task Create(SessionLogModel model)
+        public async Task Create(SessionLogEntry model)
         {
             
-            string sql = query.QueryForCreate("sysSessionLog", model,model);
+            string sql = query.QueryForCreate("sysSession", model,model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
 
-        public async Task<SessionLogModel> Read(SessionLogParam param)
+        public async Task<SessionLogResult> Read(SessionLogParam param)
         {
-            SessionLogModel ret = null;
+            SessionLogResult ret = null;
             
             string sql = query.QueryForGet(null);
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryFirstAsync<SessionLogModel>(sql, param); 
+                .ExecuteQueryFirstAsync<SessionLogResult>(sql, param); 
                  
             return ret;
         }
 
-        public async Task Update(SessionLogModel model)
+        public async Task Update(SessionLogEntry model)
         {
             
-            string sql = query.QueryForUpdate("sysSessionLog", model, model);
+            string sql = query.QueryForUpdate("sysSession", model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
 
-        public async Task Delete(SessionLogModel model)
+        public async Task Delete(SessionLogEntry model)
         {
             
-            string sql = query.QueryForDelete("sysSessionLog", model, model);
+            string sql = query.QueryForDelete("sysSession", model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
  
         }
@@ -64,12 +64,12 @@ namespace GW.Membership.Data
             return ret;
         }
              
-        public async Task<List<SessionLogSearchResult>> Search(SessionLogParam param)
+        public async Task<List<SessionLogResult>> Search(SessionLogParam param)
         {
-            List<SessionLogSearchResult> ret = null;
+            List<SessionLogResult> ret = null;
 
             ret = await ((DapperContext)Context)
-                .ExecuteQueryToListAsync<SessionLogSearchResult>(query.QueryForSearch(param),  param);
+                .ExecuteQueryToListAsync<SessionLogResult>(query.QueryForSearch(param),  param);
 
             return ret;
         }

@@ -1,0 +1,252 @@
+[
+  {
+    "Code": "1",
+    "Name": "Execution-Error",
+    "Text": "Erro de execução: "
+  },
+  {
+    "Code": "2",
+    "Name": "Validation-Error",
+    "Text": "Erro na validação de dados."
+  },
+  {
+    "Code": "3",
+    "Name": "Record-NotFound",
+    "Text": "O registro solicitado não foi encontrado."
+  },
+  {
+    "Code": "4",
+    "Name": "Login-Invalid-Password",
+    "Text": "Senha inválida. Você ainda tem {trys} tentativas antes da conta ser desativada."
+  },
+  {
+    "Code": "5",
+    "Name": "Login-Attempts",
+    "Text": "Você já utilizou as tentativas de acesso e a conta foi desativada. Solicite a ativação."
+  },
+  {
+    "Code": "6",
+    "Name": "Login-Inactive-Account",
+    "Text": "A conta associada ao Usuário não está ativa. Solicite a ativação da conta."
+  },
+  {
+    "Code": "7",
+    "Name": "Login-Locked-Account",
+    "Text": "A conta associada ao Usuário está bloqueada. Contate o administrador do sistema."
+  },
+  {
+    "Code": "8",
+    "Name": "Login-User-NotFound",
+    "Text": "Usuário não encontrado."
+  },
+  {
+    "Code": "9",
+    "Name": "User-Exists",
+    "Text": "Já existe um usuário com o e-mail: "
+  },
+  {
+    "Code": "10",
+    "Name": "Email-Exists",
+    "Text": "O e-mail informado já existe."
+  },
+  {
+    "Code": "11",
+    "Name": "Profile-NotBe-Null",
+    "Text": "O Perfil não pode ser nulo."
+  },
+  {
+    "Code": "12",
+    "Name": "User-Error-Exclude-Childs",
+    "Text": "Houve um erro ao excluir os itens filhos (Roles)."
+  },
+  {
+    "Code": "13",
+    "Name": "User-Invalid-Password-Code",
+    "Text": "O código de autorização de troca de senha é inválido."
+  },
+  {
+    "Code": "14",
+    "Name": "Account-Active",
+    "Text": "A conta associada ao Usuário já está ativa."
+  },
+  {
+    "Code": "15",
+    "Name": "User-Invalid-Activation-Code",
+    "Text": "O código de autorização de ativação é inválido."
+  },
+  {
+    "Code": "16",
+    "Name": "User-No-Image",
+    "Text": "Envie o arquivo da imagem."
+  },
+  {
+    "Code": "17",
+    "Name": "User-Role-Exists",
+    "Text": "Esta Role já está associada ao usuário."
+  },
+  {
+    "Code": "18",
+    "Name": "User-Role-No-Exists",
+    "Text": "Esta Role não pertence ao usuário."
+  },
+  {
+    "Code": "19",
+    "Name": "Http-Unauthorized",
+    "Text": "Acesso não autorizado"
+  },
+  {
+    "Code": "20",
+    "Name": "Http-NotFound",
+    "Text": "O recurso não foi encontrado"
+  },
+  {
+    "Code": "21",
+    "Name": "Http-Forbidden",
+    "Text": "Perfil do usuário sem permissão de acesso"
+  },
+  {
+    "Code": "22",
+    "Name": "Http-500Error",
+    "Text": "Ocorreu um erro no processamento da requisição."
+  },
+  {
+    "Code": "23",
+    "Name": "Http-ServiceUnavailable",
+    "Text": "O serviço solicitado está indisponível."
+  },
+  {
+    "Code": "24",
+    "Name": "API-Unexpected-Exception",
+    "Text": "Erro inesperado não identificado: GetInnerExceptions@f2]"
+  },
+  {
+    "Code": "25",
+    "Name": "ShortDayName-1",
+    "Text": "Dom"
+  },
+  {
+    "Code": "26",
+    "Name": "ShortDayName-2",
+    "Text": "Seg"
+  },
+  {
+    "Code": "27",
+    "Name": "ShortDayName-3",
+    "Text": "Ter"
+  },
+  {
+    "Code": "28",
+    "Name": "ShortDayName-4",
+    "Text": "Qua"
+  },
+  {
+    "Code": "29",
+    "Name": "ShortDayName-5",
+    "Text": "Qui"
+  },
+  {
+    "Code": "30",
+    "Name": "ShortDayName-6",
+    "Text": "Sex"
+  },
+  {
+    "Code": "31",
+    "Name": "ShortDayName-7",
+    "Text": "Sáb"
+  },
+  {
+    "Code": "32",
+    "Name": "MonthName-1",
+    "Text": "JANEIRO"
+  },
+  {
+    "Code": "33",
+    "Name": "MonthName-2",
+    "Text": "FEVEREIRO"
+  },
+  {
+    "Code": "34",
+    "Name": "MonthName-3",
+    "Text": "MARÇO"
+  },
+  {
+    "Code": "35",
+    "Name": "MonthName-4",
+    "Text": "ABRIL"
+  },
+  {
+    "Code": "36",
+    "Name": "MonthName-5",
+    "Text": "MAIO"
+  },
+  {
+    "Code": "37",
+    "Name": "MonthName-6",
+    "Text": "JUNHO"
+  },
+  {
+    "Code": "38",
+    "Name": "MonthName-7",
+    "Text": "JULHO"
+  },
+  {
+    "Code": "39",
+    "Name": "MonthName-8",
+    "Text": "AGOSTO"
+  },
+  {
+    "Code": "40",
+    "Name": "MonthName-9",
+    "Text": "SETEMBRO"
+  },
+  {
+    "Code": "41",
+    "Name": "MonthName-10",
+    "Text": "OUTUBRO"
+  },
+  {
+    "Code": "42",
+    "Name": "MonthName-11",
+    "Text": "NOVEMBRO"
+  },
+  {
+    "Code": "43",
+    "Name": "MonthName-12",
+    "Text": "DEZEMBRO"
+  },
+  {
+    "Code": "44",
+    "Name": "Validation-NotNull",
+    "Text": "não pode ser nulo."
+  },
+  {
+    "Code": "45",
+    "Name": "Validation-Max-Characters",
+    "Text": "O campo {0} não pode ter mais de {maxlength} caracteres."
+  },
+  {
+    "Code": "46",
+    "Name": "Validation-Invalid-Field",
+    "Text": "O campo {0} é inválido."
+  },
+  {
+    "Code": "47",
+    "Name": "Validation-Invalid-UserName",
+    "Text": "O campo {0} é inválido. Não use caracteres especiais ou espaços."
+  },
+  {
+    "Code": "48",
+    "Name": "Validation-Unique-Value",
+    "Text": "O campo {0} é inválido. O valor informado deve ser único."
+  },
+  {
+    "Code": "49",
+    "Name": "User-Instance-Exists",
+    "Text": "Esta Instância já está associada ao Usuário."
+  },
+  {
+    "Code": "50",
+    "Name": "User-Instance-No-Exists",
+    "Text": "Esta Instância não pertence ao Usuário."
+  }
+]

@@ -5,10 +5,10 @@ using GW.Membership.Models;
 namespace GW.Membership.Contracts.Data
 {
     public interface IUserRepository :
-        IRepository<UserParam, UserModel, UserList, UserSearchResult>
+        IRepository<UserParam, UserEntry, UserResult, UserList>
     {
 
-        Task<UserModel> GetByEmail(string email);
+        Task<UserResult> GetByEmail(string email);
 
         Task<OperationStatus> UpdateUserLogin(UpdateUserLogin model);
 
