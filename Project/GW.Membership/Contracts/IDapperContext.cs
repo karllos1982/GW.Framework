@@ -8,30 +8,28 @@ namespace GW.Membership.Contracts
     public interface IDapperContext : IContext
     {
 
-         IDbConnection Connection { get; set; }
+         IDbConnection[] Connection { get; set; }
 
-         IDbTransaction Transaction { get; set; }
-
-         IsolationLevel Isolation { get; set; }
+         IDbTransaction[] Transaction { get; set; }    
 
          OperationStatus Commit();
 
          OperationStatus Rollback();
 
-         void Execute(string sql,object data);
+         void Execute(string sql,object data, int index = 0);
 
-         T ExecuteQueryFirst<T>(string sql,  object filter = null);
+         T ExecuteQueryFirst<T>(string sql,  object filter = null, int index = 0);
 
-         List<T> ExecuteQueryToList<T>(string sql,  object filter = null);
+         List<T> ExecuteQueryToList<T>(string sql,  object filter = null, int index = 0);
 
 
         // asyncs:
 
-        Task ExecuteAsync(string sql, object data);
+        Task ExecuteAsync(string sql, object data, int index = 0);
 
-        Task<T> ExecuteQueryFirstAsync<T>(string sql, object filter = null);
+        Task<T> ExecuteQueryFirstAsync<T>(string sql, object filter = null, int index = 0);
 
-        Task<List<T>> ExecuteQueryToListAsync<T>(string sql, object filter = null);
+        Task<List<T>> ExecuteQueryToListAsync<T>(string sql, object filter = null, int index = 0);
 
 
     }

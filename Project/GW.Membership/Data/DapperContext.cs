@@ -6,6 +6,9 @@ using GW.Core;
 using Newtonsoft.Json;
 using Dapper;
 using GW.Helpers;
+using System.Linq;
+using System;
+using System.Reflection;
 
 namespace GW.Membership.Data
 {
@@ -16,37 +19,38 @@ namespace GW.Membership.Data
             Settings = settings;
             ConnStatus = new OperationStatus(true);
             ExecutionStatus = new OperationStatus(true);
-            Isolation = IsolationLevel.ReadUncommitted;
+            
+            Connection = new IDbConnection[1];
+            Transaction = new IDbTransaction[1];
         }
 
-        public IDbConnection Connection { get; set; }
-        public IDbTransaction Transaction { get; set; }
-        public IsolationLevel Isolation { get; set; }   
+        public IDbConnection[] Connection { get; set; }
+
+        public IDbTransaction[] Transaction { get; set; }
+        
         public ISettings Settings { get; set; }
         public OperationStatus ConnStatus { get; set; }
      
         public OperationStatus ExecutionStatus { get; set; }
      
-        public OperationStatus Begin()
+        public OperationStatus Begin(int connindex, object isolationlavel)
         {
             OperationStatus ret = new OperationStatus(true);
 
-            Connection = new SqlConnection(Settings.Sources[0].SourceValue);
-            
             try
             {
-                Connection.Open();
-                Transaction = Connection.BeginTransaction(Isolation);                
-               
+                Connection[connindex].Open();
+                Transaction[connindex]
+                = Connection[connindex].BeginTransaction((IsolationLevel)isolationlavel);
+
             }
             catch (Exception ex)
             {
-                ret.Status = false;
-                ret.Error = ex;
-                ConnStatus = ret; 
+                ConnStatus = new OperationStatus(false);
+                ConnStatus.Error = ex;
 
             }
-
+           
             return ret;
         }
 
@@ -54,32 +58,35 @@ namespace GW.Membership.Data
         {
             OperationStatus ret = new OperationStatus(true);
 
-            if (this.Connection != null)
+            
+            for (int i = 0; i < this.Connection.Length; i++)  
             {
-                if (this.Connection.State == ConnectionState.Open)
+                if (this.Connection[i] != null)
                 {
-
-                    if (this.Transaction != null)
+                    if (Connection[i].State == ConnectionState.Open)
                     {
-                       
-                        try
+
+                        if (this.Transaction[i] != null)
                         {
-                            this.Transaction.Commit();
+
+                            try
+                            {
+                                this.Transaction[i].Commit();
+
+                            }
+                            catch (System.Exception ex)
+                            {
+                                ret.Status = false;
+                                ret.Error = ex;
+
+                            }
 
                         }
-                        catch (System.Exception ex)
-                        {
-                            ret.Status = false;
-                            ret.Error = ex;
-                           
-                        }
-                                              
-                    }                   
 
+                    }
                 }
-
             }
-
+                           
             ExecutionStatus = ret;
 
             return ret;
@@ -88,32 +95,34 @@ namespace GW.Membership.Data
         public OperationStatus Rollback()
         {
             OperationStatus ret = new OperationStatus(true);
-
-            if (this.Connection != null)
+                      
+            for (int i = 0; i < this.Connection.Length; i++)
             {
-                if (this.Connection.State == ConnectionState.Open)
+                if (this.Connection[i] != null)
                 {
-
-                    if (this.Transaction != null)
+                    if (Connection[i].State == ConnectionState.Open)
                     {
 
-                        try
+                        if (this.Transaction[i] != null)
                         {
-                            this.Transaction.Rollback();
 
-                        }
-                        catch (System.Exception ex)
-                        {
-                            ret.Status = false;
-                            ret.Error = ex;
-                           
+                            try
+                            {
+                                this.Transaction[i].Rollback();
+
+                            }
+                            catch (System.Exception ex)
+                            {
+                                ret.Status = false;
+                                ret.Error = ex;
+
+                            }
+
                         }
 
                     }
-
                 }
-
-            }
+            }                        
 
             ExecutionStatus = ret;
             return ret;
@@ -122,27 +131,15 @@ namespace GW.Membership.Data
         public OperationStatus End()
         {
             OperationStatus ret = new OperationStatus(true);
-
-            if (this.Connection != null)
+                        
+            if (ExecutionStatus.Status)
             {
-                if (this.Connection.State == ConnectionState.Open)
-                {
-
-                    if (this.Transaction != null)
-                    {
-                        if (ExecutionStatus.Status)
-                        {
-                            ret = this.Commit(); 
-                        }
-                        else
-                        {
-                            ret = this.Rollback();
-                        }
-                    }
-
-                }
-
+                ret = this.Commit(); 
             }
+            else
+            {
+                ret = this.Rollback();
+            }                 
 
             this.Dispose();
 
@@ -153,18 +150,18 @@ namespace GW.Membership.Data
 
         //
 
-        public void Execute(string sql, object data)
+        public void Execute(string sql, object data, int index = 0 )
         {
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
             ExecutionStatus.Returns = null;
 
-            if (this.Connection.State == System.Data.ConnectionState.Open)
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                    this.Connection.Execute(sql, data, Transaction);
+                    this.Connection[index].Execute(sql, data, Transaction[index]);
 
                 }
                 catch (SqlException ex)
@@ -189,7 +186,7 @@ namespace GW.Membership.Data
 
         }
 
-        public T ExecuteQueryFirst<T>(string sql,object filter = null)                
+        public T ExecuteQueryFirst<T>(string sql,object filter = null, int index = 0)                
         {
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
@@ -197,12 +194,12 @@ namespace GW.Membership.Data
 
             T ret = (default);
 
-            if (this.Connection.State == System.Data.ConnectionState.Open)
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                    ret = this.Connection.QueryFirst<T>(sql, filter, Transaction);
+                    ret = this.Connection[index].QueryFirst<T>(sql, filter, Transaction[index]);
                  
                 }
                 catch (SqlException ex)
@@ -229,20 +226,20 @@ namespace GW.Membership.Data
 
         }
 
-        public List<T> ExecuteQueryToList<T>(string sql, object filter = null)
+        public List<T> ExecuteQueryToList<T>(string sql, object filter = null, int index = 0)
         {
             List<T> ret = new List<T>();
 
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
 
-            if (this.Connection.State == System.Data.ConnectionState.Open)
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                    ret = this.Connection
-                        .Query<T>(sql, filter, Transaction).AsList<T>();
+                    ret = this.Connection[index]
+                        .Query<T>(sql, filter, Transaction[index]).AsList<T>();
                 }
                 catch (SqlException ex)
                 {
@@ -270,20 +267,68 @@ namespace GW.Membership.Data
         }
 
 
+        public List<T> ExecuteQueryToListMultiple<T,U>(string sql,
+                Func<T,U,T> relationship, string splitfields, object filter = null, int index = 0)
+        {
+            List<T> ret = new List<T>();
+
+            ExecutionStatus.Status = true;
+            ExecutionStatus.Error = null;
+
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
+            {
+
+                try
+                {
+                    ret = this.Connection[index]
+                        .Query<T, U, T>(
+                          sql,                      
+                          relationship ,
+                          filter,
+                          Transaction[index],
+                          false,
+                          splitfields).AsList<T>();
+
+                }
+                catch (SqlException ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+                catch (System.Exception ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+
+            }
+            else
+            {
+                ExecutionStatus.Status = false;
+                ExecutionStatus.Error = new Exception("The connection is closed!");
+            }
+
+
+            return ret;
+
+        }
+
         // asyncs:
 
-        public async Task ExecuteAsync(string sql, object data)
+        public async Task ExecuteAsync(string sql, object data, int index = 0)
         {
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
             ExecutionStatus.Returns = null;
 
-            if (this.Connection.State == System.Data.ConnectionState.Open)
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                  await  this.Connection.ExecuteAsync(sql, data, Transaction);
+                  await  this.Connection[index].ExecuteAsync(sql, data, Transaction[index]);
 
                 }
                 catch (SqlException ex)
@@ -308,7 +353,8 @@ namespace GW.Membership.Data
 
         }
 
-        public async Task<T> ExecuteQueryFirstAsync<T>( string sql, object filter = null)            
+        public async Task<T> ExecuteQueryFirstAsync<T>( string sql, 
+            object filter = null, int index = 0)            
         {
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
@@ -317,13 +363,13 @@ namespace GW.Membership.Data
             T ret = (default);
         
 
-            if (this.Connection.State == System.Data.ConnectionState.Open)
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
 
-                    ret = await this.Connection.QueryFirstAsync<T>(sql, filter, Transaction);                  
+                    ret = await this.Connection[index].QueryFirstAsync<T>(sql, filter, Transaction[index]);                  
 
                 }
                 catch (SqlException ex)
@@ -350,20 +396,21 @@ namespace GW.Membership.Data
 
         }
 
-        public async Task<List<T>> ExecuteQueryToListAsync<T>(string sql, object filter = null)
+        public async Task<List<T>> ExecuteQueryToListAsync<T>(string sql, 
+            object filter = null, int index = 0)
         {
             List<T> ret = new List<T>();
 
             ExecutionStatus.Status = true;
             ExecutionStatus.Error = null;
 
-            if (this.Connection.State == System.Data.ConnectionState.Open)
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
             {
 
                 try
                 {
-                    IEnumerable<T> list = await this.Connection
-                        .QueryAsync<T>(sql, filter, Transaction);
+                    IEnumerable<T> list = await this.Connection[index]
+                        .QueryAsync<T>(sql, filter, Transaction[index]);
 
                     ret = list.AsList(); 
 
@@ -394,23 +441,79 @@ namespace GW.Membership.Data
         }
 
 
+        public async Task<List<T>> ExecuteQueryToListOneToOneAsync<T, U>(string sql,
+        Func<T, U, T> mapping, string splitfields, object filter = null, int index = 0)
+        {
+            List<T> ret = new List<T>();
+
+            ExecutionStatus.Status = true;
+            ExecutionStatus.Error = null;
+
+            if (this.Connection[index].State == System.Data.ConnectionState.Open)
+            {
+
+                try
+                {
+                    IEnumerable<T> list = await this.Connection[index]
+                        .QueryAsync<T, U, T>(
+                          sql,
+                          mapping,
+                          filter,
+                          Transaction[index],
+                          false,
+                          splitfields);
+
+                    ret = list.AsList();
+
+                }
+                catch (SqlException ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+                catch (System.Exception ex)
+                {
+                    ExecutionStatus.Status = false;
+                    ExecutionStatus.Error = ex;
+
+                }
+
+            }
+            else
+            {
+                ExecutionStatus.Status = false;
+                ExecutionStatus.Error = new Exception("The connection is closed!");
+            }
+
+
+            return ret;
+
+        }
+
         //
 
 
         public void Dispose()
         {
-            if (this.Transaction != null)
-            {
-                this.Transaction.Dispose();
-                this.Transaction = null;
-            }
 
-            if (this.Connection != null)
+            for (int i = 0; i < this.Connection.Length; i++)
             {
-                this.Connection.Close();
-                this.Connection.Dispose();
-                this.Connection = null;
+                if (this.Transaction[i] != null)
+                {
+                    this.Transaction[i].Dispose();
+                    this.Transaction[i] = null;
+                }
+
+                if (this.Connection[i] != null)
+                {
+                    this.Connection[i].Close();
+                    this.Connection[i].Dispose();
+                    this.Connection[i] = null;
+                }
+
             }
+           
         }
 
 

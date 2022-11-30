@@ -123,7 +123,7 @@ namespace GW.Membership.Data
         {
             string ret = @"Select 
                     UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
-                    LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID 
+                    LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID                     
                     from sysUser where userid=@pUserID";
 
             return ret;

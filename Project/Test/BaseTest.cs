@@ -1,6 +1,8 @@
 ﻿
-
 using GW.Membership.Contracts.Domain;
+using System.Data;
+using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Test
 {
@@ -40,7 +42,12 @@ namespace Test
             Context = new DapperContext(Settings);
             Repository = new MembershipRepositorySet(Context);
             Domain = new MembershipManager(Context, Repository);
-            Context.Begin();
+
+                      
+            Context.Connection[0] = new SqlConnection(Settings.Sources[0].SourceValue);        
+
+            Context.Begin(0, System.Data.IsolationLevel.ReadUncommitted );
+
         }
 
         public ISettings Settings { get; set; }
