@@ -18,5 +18,7 @@ namespace GW.Core
 
          string LocalizationLanguage { get; set; }
 
+         int ContextLength { get; set; }
+
     }
 }

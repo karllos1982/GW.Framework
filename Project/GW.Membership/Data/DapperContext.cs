@@ -20,8 +20,9 @@ namespace GW.Membership.Data
             ConnStatus = new OperationStatus(true);
             ExecutionStatus = new OperationStatus(true);
             
-            Connection = new IDbConnection[1];
-            Transaction = new IDbTransaction[1];
+            Connection = new IDbConnection[settings.ContextLength];
+            Transaction = new IDbTransaction[settings.ContextLength];        
+
         }
 
         public IDbConnection[] Connection { get; set; }

@@ -4,12 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>4.0.1</AssemblyVersion>
-    <FileVersion>4.0.1</FileVersion>
+    <AssemblyVersion>4.0.3</AssemblyVersion>
+    <FileVersion>4.0.3</FileVersion>
     <AssemblyName>GW.Framework</AssemblyName>
     <RootNamespace>GW.Framework.Core</RootNamespace>
     <PackageId>GW.Framework</PackageId>
-    <Version>4.0.1</Version>
+    <Version>4.0.3</Version>
     <Authors>Carlos Fonteles</Authors>
     <Company>GW Tecnologia</Company>
     <Product>GW.Framework</Product>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
 </Project>

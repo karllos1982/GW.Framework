@@ -21,6 +21,7 @@ namespace Test
             };
 
             this.LocalizationLanguage = "pt";
+            this.ContextLength = 1; 
          }
             
             
@@ -32,6 +33,27 @@ namespace Test
 
         public string LocalizationLanguage { get; set; }
 
+        public int ContextLength { get; set; }
+
+    }
+
+    public class TestContextBuilder : IContextBuilder
+    {
+        public ISettings Settings { get; set; }
+
+        public TestContextBuilder(ISettings settings)
+        {
+            Settings = settings; 
+        }
+
+        public void BuilderContext(IContext context)
+        {
+           ((DapperContext)context)
+                .Connection[0] = new SqlConnection(Settings.Sources[0].SourceValue);
+
+            context.Begin(0, System.Data.IsolationLevel.ReadUncommitted);
+
+        }
     }
 
     public class Resources
@@ -39,18 +61,17 @@ namespace Test
         public Resources()
         {
             Settings = new TesteConfigs();
+            Builder = new TestContextBuilder(Settings);
             Context = new DapperContext(Settings);
             Repository = new MembershipRepositorySet(Context);
             Domain = new MembershipManager(Context, Repository);
 
-                      
-            Context.Connection[0] = new SqlConnection(Settings.Sources[0].SourceValue);        
-
-            Context.Begin(0, System.Data.IsolationLevel.ReadUncommitted );
-
+            Builder.BuilderContext(Context); 
         }
 
         public ISettings Settings { get; set; }
+
+        public TestContextBuilder Builder {get;set;}
 
         public IDapperContext Context { get; set; }
 

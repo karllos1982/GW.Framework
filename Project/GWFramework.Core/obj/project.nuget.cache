@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "u461beDA6PYmakJfRtIA0j5kbJ1xbiu+gCFepYf4osB8vHMicmo2STUFZT8mD/rbvBIwUhDxWgXdmm89CZuf9A==",
+  "dgSpecHash": "ksGGcnWZLIS1UoWH4RvRiqSIaH0ZY6c3jTWQ/asC0FJ/Gqtk2rfAUJALozNd6mY2cRlm065LoO97cYjrOAByWA==",
   "success": true,
   "projectFilePath": "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GWFramework.Core\\GWFramework.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\karll\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\karll\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512"
   ],
   "logs": []
 }
