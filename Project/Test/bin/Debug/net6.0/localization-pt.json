@@ -17,7 +17,7 @@
   {
     "Code": "4",
     "Name": "Login-Invalid-Password",
-    "Text": "Senha inválida. Você ainda tem {trys} tentativas antes da conta ser desativada."
+    "Text": "Senha inválida. Você ainda tem {0} tentativas antes da conta ser desativada."
   },
   {
     "Code": "5",

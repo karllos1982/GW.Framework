@@ -17,7 +17,7 @@
   {
     "Code": "4",
     "Name": "Login-Invalid-Password",
-    "Text": "Invalid password. You still have {trys} attempts before the account is deactivated."
+    "Text": "Invalid password. You still have {0} attempts before the account is deactivated."
   },
   {
     "Code": "5",

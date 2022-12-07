@@ -27,7 +27,7 @@ namespace GW
             items.Add(new Item() { Code = "1", Name = "Execution-Error", Text = "Execution error:" });
             items.Add(new Item() { Code = "2", Name = "Validation-Error", Text = "Data validation error." });
             items.Add(new Item() { Code = "3", Name = "Record-NotFound", Text = "The requested record was not found." });
-            items.Add(new Item() { Code = "4", Name = "Login-Invalid-Password", Text = "Invalid password. You still have {trys} attempts before the account is deactivated." });
+            items.Add(new Item() { Code = "4", Name = "Login-Invalid-Password", Text = "Invalid password. You still have {0} attempts before the account is deactivated." });
             items.Add(new Item() { Code = "5", Name = "Login-Attempts", Text = "You have already used access attempts and the account has been disabled. Request activation." });
             items.Add(new Item() { Code = "6", Name = "Login-Inactive-Account", Text = "The account associated with the User is not active. Request account activation." });
             items.Add(new Item() { Code = "7", Name = "Login-Locked-Account", Text = "The account associated with the User is locked out. Contact your system administrator." });

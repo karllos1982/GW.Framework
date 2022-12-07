@@ -201,6 +201,7 @@ namespace GW.Membership.Models
 
         public string AuthUserID { get; set; }
 
+        public string ProfileImageURL { get; set; }
 
         //
 

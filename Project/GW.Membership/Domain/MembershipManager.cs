@@ -80,7 +80,9 @@ namespace GW.Membership.Domain
                             else
                             {
                                 trys = 5 - usermatch.LoginFailCounter;
-                                errmsg = GW.Localization.GetItem("Login-Invalid-Password",lang).Text.Replace("{trys}", trys.ToString());
+                                
+                                errmsg = string.Format(GW.Localization.GetItem("Login-Invalid-Password", lang).Text, trys.ToString());
+
                                 invalidpassword = true;
 
                                 if (usermatch.PasswordRecoveryCode != null)

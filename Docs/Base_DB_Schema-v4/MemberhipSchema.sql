@@ -82,7 +82,7 @@ CREATE TABLE [dbo].[sysUser](
 	[LoginCounter] [int] NULL,
 	[LoginFailCounter] [int] NULL,
 	[Avatar] [image] NULL,
-	[AuthCode] [varchar](50) NULL,
+	[AuthCode] [varchar](max) NULL,
 	[AuthCodeExpires] [datetime] NULL,
 	[PasswordRecoveryCode] [varchar](45) NULL,
 	[ProfileImage] [varchar](255) NULL,
