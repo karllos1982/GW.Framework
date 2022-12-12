@@ -31,18 +31,7 @@ namespace GW.Membership.Domain
             List<UserRolesResult> roles
                 = await  RepositorySet.UserRoles.Search(param);
 
-            if (roles != null)
-            {
-                if (roles.Count > 0)
-                {
-                    obj.RoleList = roles;
-                    obj.RoleID = roles[0].RoleID;
-
-                    RoleResult r = await RepositorySet.Role
-                        .Read(new RoleParam() { pRoleID = obj.RoleID });
-                    obj.Role = r;
-                }
-            }
+            obj.Roles = roles;
 
             //
 
@@ -52,18 +41,7 @@ namespace GW.Membership.Domain
             List<UserInstancesResult> instances
                 = await RepositorySet.UserInstances.Search(param2);
 
-            if (instances != null)
-            {
-                if (instances.Count > 0)
-                {
-                    obj.InstanceList = instances;
-                    obj.InstanceID = instances[0].InstanceID;
-
-                    InstanceResult i = await RepositorySet.Instance
-                        .Read(new InstanceParam() { pInstanceID = obj.InstanceID });
-                    obj.Instance = i;
-                }
-            }
+            obj.Instances = instances; 
 
             return obj;
         }
@@ -237,9 +215,9 @@ namespace GW.Membership.Domain
 
                 if (Context.ExecutionStatus.Status)
                 {
-                    if (Context.ExecutionStatus.Status && old.RoleList != null)
+                    if (Context.ExecutionStatus.Status && old.Roles != null)
                     {
-                        foreach (UserRolesResult u in old.RoleList)
+                        foreach (UserRolesResult u in old.Roles)
                         {
                             await RepositorySet.UserRoles.Delete(
                                     new UserRolesEntry() { 
@@ -256,9 +234,9 @@ namespace GW.Membership.Domain
                         }
                     }
 
-                    if (Context.ExecutionStatus.Status && old.InstanceList != null)
+                    if (Context.ExecutionStatus.Status && old.Instances != null)
                     {
-                        foreach (UserInstancesResult u in old.InstanceList)
+                        foreach (UserInstancesResult u in old.Instances)
                         {
                            await RepositorySet.UserInstances.Delete(
                                      new UserInstancesEntry()

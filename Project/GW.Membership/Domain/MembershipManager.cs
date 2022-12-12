@@ -127,7 +127,7 @@ namespace GW.Membership.Domain
                 if (errmsg == "")
                 {
                     usermatch.Permissions
-                        = await this.GetUserPermissions(usermatch.RoleID, usermatch.UserID);
+                        = await this.GetUserPermissions(usermatch.Roles[0].RoleID, usermatch.UserID);
 
                     ret = usermatch;
                 }

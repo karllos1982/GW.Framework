@@ -7,6 +7,13 @@ namespace GW.Membership.Models
 {
     public class ObjectPermissionParam
     {
+        public ObjectPermissionParam()
+        {
+            pObjectCode = "";
+            pObjectName = "";
+            pObjectPermissionID = 0; 
+        }
+
         public Int64 pObjectPermissionID { get; set; }
 
         public string pObjectName { get; set; }

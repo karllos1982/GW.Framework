@@ -38,6 +38,8 @@ namespace GW.Membership.Models
 
         public string RoleName { get; set; }
 
+        public string InstanceName { get; set; }
+
         public string HomeURL { get; set; }
 
         public string ProfileImageURL { get; set; }
@@ -204,20 +206,10 @@ namespace GW.Membership.Models
         public string ProfileImageURL { get; set; }
 
         //
+      
+        public List<UserRolesResult> Roles { get; set; }
 
-        public Int64 RoleID { get; set; }
-
-        public RoleResult Role { get; set; }
-
-        public List<UserRolesResult> RoleList { get; set; }
-
-
-        //
-        public Int64 InstanceID { get; set; }
-
-        public InstanceResult Instance { get; set; }
-
-        public List<UserInstancesResult> InstanceList { get; set; }
+        public List<UserInstancesResult> Instances { get; set; }
 
         //
 
