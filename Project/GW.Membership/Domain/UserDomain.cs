@@ -110,7 +110,9 @@ namespace GW.Membership.Domain
                 if (list.Count > 0)
                 {
                     ret.Status = false;
-                    ret.Error = new Exception(GW.Localization.GetItem("Email-Exists", lang).Text);
+                    string msg = GW.Localization.GetItem("Email-Exists", lang).Text;
+                    ret.Error = new Exception(msg);
+                    ret.AddInnerException("Email", msg);
                 }
             }
 
@@ -133,8 +135,9 @@ namespace GW.Membership.Domain
                     if (list[0].UserID != obj.UserID)
                     {
                         ret.Status = false;
-                        ret.Error 
-                            = new Exception(GW.Localization.GetItem("Email-Exists", lang).Text);
+                        string msg = GW.Localization.GetItem("Email-Exists", lang).Text;
+                        ret.Error = new Exception(msg);
+                        ret.AddInnerException("Email", msg);
                     }
                 }
             }

@@ -92,6 +92,7 @@ namespace GW.Membership.Domain
                     string msg
                         = string.Format(GW.Localization.GetItem("Validation-Unique-Value", lang).Text, "Instance Name"); 
                     ret.Error = new Exception(msg);
+                    ret.AddInnerException("InstanceName", msg);
                 }
             }
 
@@ -116,6 +117,7 @@ namespace GW.Membership.Domain
                         string msg 
                             = string.Format(GW.Localization.GetItem("Validation-Unique-Value", lang).Text, "Instance Name");
                         ret.Error = new Exception(msg);
+                        ret.AddInnerException("InstanceName", msg);
                     }
                 }
             }

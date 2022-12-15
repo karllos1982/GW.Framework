@@ -89,6 +89,7 @@ namespace GW.Membership.Domain
                     string msg 
                         = string.Format(GW.Localization.GetItem("Validation-Unique-Value",lang).Text, "Role Name");
                     ret.Error = new Exception(msg);
+                    ret.AddInnerException("RoleName", msg);
                 }
             }
 
@@ -114,6 +115,7 @@ namespace GW.Membership.Domain
                         string msg 
                             = string.Format(GW.Localization.GetItem("Validation-Unique-Value",lang).Text, "Role Name");
                         ret.Error = new Exception(msg);
+                        ret.AddInnerException("RoleName", msg);
                     }
                 }
             }

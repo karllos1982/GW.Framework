@@ -133,7 +133,7 @@ namespace GW.Membership.Data
         public override string QueryForList(object param)
         {
             string ret = @"select 
-                UserID,UserName,Emailfrom sysUser
+                UserID,UserName,Email from sysUser u
                 where 1=1 
                 and (@pUserID=0 or u.UserID=@pUserID)
                 and (@pEmail='' or u.Email=@pEmail)

@@ -9,8 +9,8 @@
       "Test/1.0.0": {
         "dependencies": {
           "Dapper": "2.0.123",
-          "GW.Framework": "4.0.4",
-          "GW.Membership": "2.0.4",
+          "GW.Framework": "4.0.9",
+          "GW.Membership": "2.0.9",
           "MSTest.TestAdapter": "2.2.8",
           "MSTest.TestFramework": "2.2.8",
           "Microsoft.NET.Test.Sdk": "17.1.0",
@@ -1157,7 +1157,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "GW.Framework/4.0.4": {
+      "GW.Framework/4.0.9": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.2"
         },
@@ -1165,10 +1165,10 @@
           "GW.Framework.dll": {}
         }
       },
-      "GW.Membership/2.0.4": {
+      "GW.Membership/2.0.9": {
         "dependencies": {
           "Dapper": "2.0.123",
-          "GW.Framework": "4.0.4",
+          "GW.Framework": "4.0.9",
           "System.Data.SqlClient": "4.8.5"
         },
         "runtime": {
@@ -1883,12 +1883,12 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "GW.Framework/4.0.4": {
+    "GW.Framework/4.0.9": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "GW.Membership/2.0.4": {
+    "GW.Membership/2.0.9": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
