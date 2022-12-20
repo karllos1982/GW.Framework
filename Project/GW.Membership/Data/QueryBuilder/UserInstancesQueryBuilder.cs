@@ -56,5 +56,15 @@ namespace GW.Membership.Data
             return ret;
 
         }
+
+        public string QueryForAlterInstance(object param)
+        {
+            string ret = @"update sysuserinstances set instanceid = @pInstanceID
+                        where userinstanceid = @pUserInstanceID
+                     ";
+
+            return ret;
+
+        }
     }
 }

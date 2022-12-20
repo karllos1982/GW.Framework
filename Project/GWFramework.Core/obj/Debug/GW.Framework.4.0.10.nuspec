@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GW.Framework</id>
+    <version>4.0.10</version>
+    <authors>Carlos Fonteles</authors>
+    <projectUrl>https://github.com/karllos1982/GW.Framework</projectUrl>
+    <description>Library fundations for building applications, like websites, desktop and mobile. There is all stuffs for development of backend of this aplications.</description>
+    <repository url="https://github.com/karllos1982/GW.Framework" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="Newtonsoft.Json" version="13.0.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\bin\Debug\net6.0\GW.Framework.dll" target="lib\net6.0\GW.Framework.dll" />
+  </files>
+</package>

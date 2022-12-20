@@ -128,6 +128,21 @@ namespace GW.Membership.Test
         }
 
         [TestMethod]
+        public async Task T02_06_04_AlterRole()
+        {
+            Resources res = new Resources();
+
+             await res.Domain.User.AlterRole(3, 2); 
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeTrue(status);
+
+        }
+
+        [TestMethod]
         public async Task T02_07_01_AddInstanceToUser_Success()
         {
             Resources res = new Resources();
@@ -164,6 +179,21 @@ namespace GW.Membership.Test
             Resources res = new Resources();
 
             var obj = await res.Domain.User.RemoveInstanceFromUser(1003, 2);
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeTrue(status);
+
+        }
+
+        [TestMethod]
+        public async Task T02_07_04_AlterInstance()
+        {
+            Resources res = new Resources();
+
+            await res.Domain.User.AlterInstance(3, 2);
 
             status = res.Context.ExecutionStatus;
 

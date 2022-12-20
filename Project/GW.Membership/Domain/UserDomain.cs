@@ -82,7 +82,7 @@ namespace GW.Membership.Domain
         {
             OperationStatus ret = null;
 
-            ret = PrimaryValidation.Execute(obj, new List<string>());        
+            ret = PrimaryValidation.Execute(obj, new List<string>(),lang);        
 
             if (!ret.Status)
             {
@@ -837,6 +837,77 @@ namespace GW.Membership.Domain
             }         
 
             return ret;
+        }
+
+
+        public async Task AlterRole(Int64 userroleid, Int64 newroleid)
+        {
+            
+            Context.ExecutionStatus.InnerExceptions = new List<InnerException>();
+
+            if (userroleid == 0)
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
+                Context.ExecutionStatus.AddInnerException("UserRoleID",
+                    GW.Localization.GetItem("Validation-NotNull", lang).Text);
+            }
+
+            if (newroleid == 0)
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
+                Context.ExecutionStatus.AddInnerException("RoleID",
+                    GW.Localization.GetItem("Validation-NotNull", lang).Text);
+            }
+
+            if (Context.ExecutionStatus.Status)
+            {
+                UserRolesParam obj = new UserRolesParam();
+                obj.pUserRoleID = userroleid;
+                obj.pRoleID = newroleid;
+
+                await RepositorySet.UserRoles.AlterRole(obj); 
+                
+            }
+            
+        }
+
+        public async Task AlterInstance(Int64 userinstanceid, Int64 newinstanceid)
+        {
+
+            Context.ExecutionStatus.InnerExceptions = new List<InnerException>();
+
+            if (userinstanceid == 0)
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
+                Context.ExecutionStatus.AddInnerException("UserInstanceID",
+                    GW.Localization.GetItem("Validation-NotNull", lang).Text);
+            }
+
+            if (newinstanceid == 0)
+            {
+                Context.ExecutionStatus.Status = false;
+                Context.ExecutionStatus.Error
+                    = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
+                Context.ExecutionStatus.AddInnerException("InstanceID",
+                    GW.Localization.GetItem("Validation-NotNull", lang).Text);
+            }
+
+            if (Context.ExecutionStatus.Status)
+            {
+                UserInstancesParam obj = new UserInstancesParam();
+                obj.pUserInstanceID= userinstanceid;
+                obj.pInstanceID = newinstanceid;
+
+                await RepositorySet.UserInstances.AlterInstance(obj);
+
+            }
+
         }
 
     }

@@ -60,5 +60,15 @@ namespace GW.Membership.Data
             return ret;
 
         }
+
+        public string QueryForAlterRole(object param)
+        {
+            string ret = @"update sysuserroles set roleid = @pRoleID
+                        where userroleid = @pUserRoleID
+                     ";
+
+            return ret;
+
+        }
     }
 }

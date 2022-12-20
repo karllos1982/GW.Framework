@@ -74,7 +74,15 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        
+
+        public async Task AlterInstance(UserInstancesParam obj)
+        {
+
+            string sql = query.QueryForAlterInstance (null);
+            await ((DapperContext)Context).ExecuteAsync(sql, obj);
+
+        }
+
     }
 
 }

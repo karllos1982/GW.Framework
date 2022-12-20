@@ -8,6 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<UserRolesParam, UserRolesEntry, UserRolesResult, UserRolesResult>
     {
 
-        
+        Task AlterRole(UserRolesParam obj);
     }
 }

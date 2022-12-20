@@ -74,7 +74,14 @@ namespace GW.Membership.Data
             return ret;
         }
 
-        
+        public async Task AlterRole(UserRolesParam obj)
+        {
+
+            string sql = query.QueryForAlterRole(null);
+            await ((DapperContext)Context).ExecuteAsync(sql, obj);
+
+        }
+
     }
 
 }

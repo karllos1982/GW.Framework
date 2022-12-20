@@ -4,6 +4,7 @@ using GW.Membership.Contracts.Data;
 using GW.Common;
 using GW.Helpers;
 using GW.Membership.Models;
+using System.Runtime.Intrinsics.X86;
 
 namespace GW.Membership.Domain
 {
@@ -219,8 +220,31 @@ namespace GW.Membership.Domain
         public async Task<UserEntry> CreateNewUser(NewUser data, bool gocommit, object userid)
         {
             UserEntry ret = null;
+         
+            Context.ExecutionStatus =  PrimaryValidation.Execute(data, new List<string>(), lang);
 
-            Context.ExecutionStatus =  PrimaryValidation.Execute(data, new List<string>());
+            if (!Context.ExecutionStatus.Status)
+            {                
+
+                if (data.InstanceID == 0)
+                {
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error
+                        = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);                    
+                    Context.ExecutionStatus.AddInnerException("InstanceID",
+                        GW.Localization.GetItem("Validation-NotNull", lang).Text);
+                }
+
+                if (data.RoleID == 0)
+                {
+                    Context.ExecutionStatus.Status = false;
+                    Context.ExecutionStatus.Error
+                        = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);                   
+                    Context.ExecutionStatus.AddInnerException("RoleID",
+                        GW.Localization.GetItem("Validation-NotNull", lang).Text);
+                }
+
+            }
 
             if (Context.ExecutionStatus.Status)
             {
@@ -230,7 +254,7 @@ namespace GW.Membership.Domain
                 old = await this.User.GetByEmail(data.Email);
 
                 string pwd = MD5.BuildMD5(data.Password);
-                string slt = "GWSLT";
+                string slt = Utilities.GenerateCode(5);
 
                 if (old == null)
                 {
@@ -259,7 +283,15 @@ namespace GW.Membership.Domain
                     if (Context.ExecutionStatus.Status)
                     {
                         var aux 
-                            = await this.User.AddRoleToUser(ret.UserID, data.RoleID); 
+                            = await this.User.AddRoleToUser(ret.UserID, data.RoleID);
+                        
+                        if (aux != null)
+                        {
+                            var aux2
+                            = await this.User.AddInstanceToUser(ret.UserID, data.InstanceID);
+                            
+                        }                                           
+
                     }
                    
                 }
@@ -271,7 +303,13 @@ namespace GW.Membership.Domain
                    
                 }
             }
-          
+            else
+            {
+                Context.ExecutionStatus.Error
+                          = new Exception(GW.Localization.GetItem("Validation-Error", lang).Text);
+            }
+           
+
             return ret;
         }
 

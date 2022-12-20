@@ -33,5 +33,9 @@ namespace GW.Membership.Contracts.Domain
 
         Task<UserInstancesEntry> RemoveInstanceFromUser(Int64 userid, Int64 instanceid);
 
+        Task AlterRole(Int64 userroleid, Int64 newroleid);
+
+        Task AlterInstance(Int64 userinstanceid, Int64 newinstanceid);
+
     }
 }

@@ -60,7 +60,7 @@ namespace GW.Membership.Domain
         {
             OperationStatus ret = null;
 
-            ret = PrimaryValidation.Execute(obj, new List<string>());
+            ret = PrimaryValidation.Execute(obj, new List<string>(), lang);
 
             if (!ret.Status)
             {

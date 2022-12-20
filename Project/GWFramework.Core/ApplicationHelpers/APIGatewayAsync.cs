@@ -57,7 +57,7 @@ namespace GW.ApplicationHelpers
         }
 
       
-        private async Task  GetStatusRequest (HttpResponseMessage response)
+        private async Task  GetStatusRequest (HttpResponseMessage response, string lang="")
         {
              APIResponse = new APIGatewayResponse();
             
@@ -70,24 +70,24 @@ namespace GW.ApplicationHelpers
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.Unauthorized:
-                        APIResponse.Message = GW.Localization.GetItem("Http-Unauthorized").Text;
+                        APIResponse.Message = GW.Localization.GetItem("Http-Unauthorized", lang).Text;
                         break;
 
                     case HttpStatusCode.NotFound:
-                        APIResponse.Message = GW.Localization.GetItem("Http-NotFound").Text;
+                        APIResponse.Message = GW.Localization.GetItem("Http-NotFound", lang).Text;
                         break;
 
                     case HttpStatusCode.Forbidden:
-                        APIResponse.Message = GW.Localization.GetItem("Http-Forbidden").Text;
+                        APIResponse.Message = GW.Localization.GetItem("Http-Forbidden", lang).Text;
                         break;
 
                     case HttpStatusCode.InternalServerError:
-                        APIResponse.Message = GW.Localization.GetItem("Http-500Error").Text;
+                        APIResponse.Message = GW.Localization.GetItem("Http-500Error", lang).Text;
                                                
                         break;
 
                     case HttpStatusCode.ServiceUnavailable:
-                        APIResponse.Message = GW.Localization.GetItem("Http-ServiceUnavailable").Text;
+                        APIResponse.Message = GW.Localization.GetItem("Http-ServiceUnavailable", lang).Text;
                         break;
                 }
 
@@ -200,7 +200,7 @@ namespace GW.ApplicationHelpers
             }
             else
             {
-                defaulterror = new Exception(GW.Localization.GetItem("API-Unexpected-Exception").Text);
+                defaulterror = new Exception(GW.Localization.GetItem("API-Unexpected-Exception","eng").Text);
                 return null;
             }
 

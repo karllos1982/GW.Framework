@@ -8,6 +8,8 @@ namespace GW.Membership.Contracts.Data
         IRepository<UserInstancesParam, UserInstancesEntry, UserInstancesResult, UserInstancesResult>
     {
 
-        
+        Task AlterInstance(UserInstancesParam obj);
+
+
     }
 }

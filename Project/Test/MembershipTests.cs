@@ -55,6 +55,28 @@ namespace GW.Membership.Test
         }
 
         [TestMethod]
+        public async Task T04_01_3_Create_New_User_Role_Instance_Null()
+        {
+            Resources res = new Resources();
+
+            NewUser nuser = new NewUser();
+
+            nuser.UserName = "UserTest2";
+            nuser.Password = "654321";
+            nuser.Email = "usertest2@gw.com.br";
+            nuser.RoleID = 0;
+            nuser.InstanceID = 0;
+            UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeFalse(status);
+
+        }
+
+        [TestMethod]
         public async Task T04_02_Active_User_Account()
         {
             Resources res = new Resources();
