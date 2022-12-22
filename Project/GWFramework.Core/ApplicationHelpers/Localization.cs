@@ -120,11 +120,11 @@ namespace GW
                     LoadLocalizationENG(ref _items);
                 }
 
-                ret = _items.Where(l => l.Code == codeorname || l.Language==language).FirstOrDefault();
+                ret = _items.Where(l => l.Code == codeorname && l.Language==language).FirstOrDefault();
 
                 if (ret == null)
                 {
-                    ret = _items.Where(l => l.Name == codeorname || l.Language == language).FirstOrDefault();
+                    ret = _items.Where(l => l.Name == codeorname && l.Language == language).FirstOrDefault();
                 }
             }
 

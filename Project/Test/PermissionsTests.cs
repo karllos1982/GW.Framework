@@ -17,7 +17,7 @@ namespace GW.Membership.Test
         }
 
         [TestMethod]
-        public async Task T03_01_InsertObjectPermissions()
+        public async Task T03_01_1_InsertObjectPermissions_Success()
         {
             Resources res = new Resources();
 
@@ -38,7 +38,26 @@ namespace GW.Membership.Test
         }
 
         [TestMethod]
-        public async Task T03_02_List_ObjectPermissions()
+        public async Task T03_01_2_InsertObjectPermissions_Fail()
+        {
+            Resources res = new Resources();
+
+            ObjectPermissionEntry obj;
+
+            obj = CreateNewObjectPermission(999, "", "");
+            ObjectPermissionEntry newobj = await res.Domain.ObjectPermission.Set(obj, SysDefaultUser);          
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeFalse(status);
+
+        }
+
+
+        [TestMethod]
+        public async Task T03_02_1_List_ObjectPermissions()
         {
             Resources res = new Resources();
 
