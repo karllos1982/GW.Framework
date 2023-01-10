@@ -77,6 +77,7 @@ CREATE TABLE [dbo].[sysUser](
 	[CreateDate] [datetime] NOT NULL,
 	[IsActive] [tinyint] NOT NULL,
 	[IsLocked] [tinyint] NOT NULL,
+	[DefaultLanguage] [varchar](5) NOT NULL,
 	[LastLoginDate] [datetime] NULL,
 	[LastLoginIP] [varchar](30) NULL,
 	[LoginCounter] [int] NULL,

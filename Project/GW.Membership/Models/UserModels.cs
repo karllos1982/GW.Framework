@@ -52,6 +52,8 @@ namespace GW.Membership.Models
 
         public List<UserPermissions> Permissions { get; set; }
 
+        public string LocalizationLanguage { get; set; }
+
     }
    
 
@@ -93,6 +95,9 @@ namespace GW.Membership.Models
         [PrimaryValidationConfig("InstanceID", "Instance ID", FieldType.NUMERIC, false, 0)]
         public Int64 InstanceID { get; set; }
 
+        [PrimaryValidationConfig("DefaultLanguage", "Default Language", FieldType.TEXT, false, 5)]
+        public string DefaultLanguage { get; set; }
+
         [PrimaryValidationConfig("Password", "Password", FieldType.TEXT, false, 8)]
         public string Password { get; set; }
 
@@ -129,6 +134,8 @@ namespace GW.Membership.Models
         public int IsActive { get; set; }
 
         public int IsLocked { get; set; }
+
+        public string DefaultLanguage { get; set; }
 
         public DateTime LastLoginDate { get; set; }
 
@@ -182,6 +189,8 @@ namespace GW.Membership.Models
         public int IsActive { get; set; }
 
         public int IsLocked { get; set; }
+
+        public string DefaultLanguage { get; set; }
 
         public DateTime LastLoginDate { get; set; }
 

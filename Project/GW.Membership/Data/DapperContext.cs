@@ -30,6 +30,9 @@ namespace GW.Membership.Data
         public IDbTransaction[] Transaction { get; set; }
         
         public ISettings Settings { get; set; }
+
+        public string LocalizationLanguage { get; set; }
+
         public OperationStatus ConnStatus { get; set; }
      
         public OperationStatus ExecutionStatus { get; set; }

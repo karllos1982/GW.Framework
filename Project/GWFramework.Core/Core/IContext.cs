@@ -6,6 +6,8 @@ namespace GW.Core
     {
         ISettings Settings { get; set; }
 
+        string LocalizationLanguage { get; set; }
+
         OperationStatus ConnStatus { get; set; }
 
         OperationStatus ExecutionStatus { get; set; }

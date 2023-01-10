@@ -25,7 +25,7 @@ namespace GW.Membership.Data
         public string QueryForGetByEmail()
         {
             string ret = @"Select 
-                    UserID,UserName,ApplicationID,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
+                    UserID,UserName,ApplicationID,Email,Password,Salt,CreateDate,IsActive,IsLocked,DefaultLanguage,LastLoginDate,
                     LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID 
                     from sysUser where Email=@pEmail";
 
@@ -122,7 +122,7 @@ namespace GW.Membership.Data
         public override string QueryForGet(object param)
         {
             string ret = @"Select 
-                    UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
+                    UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,DefaultLanguage,LastLoginDate,
                     LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID                     
                     from sysUser where userid=@pUserID";
 
@@ -148,7 +148,7 @@ namespace GW.Membership.Data
         public override string QueryForSearch(object param)
         {
             string ret = @"Select 
-                UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,LastLoginDate,
+                UserID,ApplicationID,UserName,Email,Password,Salt,CreateDate,IsActive,IsLocked,DefaultLanguage,LastLoginDate,
                 LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID 
                 from sysUser u
                 where 1=1 

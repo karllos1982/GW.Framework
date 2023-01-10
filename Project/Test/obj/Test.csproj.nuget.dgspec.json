@@ -5,7 +5,7 @@
   },
   "projects": {
     "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GW.Membership\\GW.Membership.csproj": {
-      "version": "2.0.13",
+      "version": "2.0.15",
       "restore": {
         "projectUniqueName": "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GW.Membership\\GW.Membership.csproj",
         "projectName": "GW.Membership",
@@ -79,7 +79,7 @@
       }
     },
     "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GWFramework.Core\\GWFramework.Core.csproj": {
-      "version": "4.0.13",
+      "version": "4.0.15",
       "restore": {
         "projectUniqueName": "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GWFramework.Core\\GWFramework.Core.csproj",
         "projectName": "GW.Framework",

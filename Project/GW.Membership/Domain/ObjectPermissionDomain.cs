@@ -17,7 +17,7 @@ namespace GW.Membership.Domain
         {
             Context = context;
             RepositorySet = repositorySet;
-            lang = Context.Settings.LocalizationLanguage;
+            lang = Context.LocalizationLanguage;
         }
 
         public IContext Context { get; set; }

@@ -21,6 +21,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
+            nuser.DefaultLanguage = "eng"; 
             UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;
@@ -44,6 +45,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
+            nuser.DefaultLanguage = "eng";
             UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;
@@ -66,6 +68,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest2@gw.com.br";
             nuser.RoleID = 0;
             nuser.InstanceID = 0;
+            nuser.DefaultLanguage = "eng";
             UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;

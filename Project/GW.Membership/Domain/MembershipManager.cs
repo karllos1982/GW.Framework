@@ -18,7 +18,7 @@ namespace GW.Membership.Domain
             Context = context;
             InitializeDomains(context, repositorySet);
 
-            lang = Context.Settings.LocalizationLanguage;
+            lang = Context.LocalizationLanguage;
         }
 
         public void InitializeDomains(IContext context, IRepositorySet repositorySet)
@@ -268,6 +268,7 @@ namespace GW.Membership.Domain
                     obj.CreateDate = DateTime.Now;
                     obj.IsActive = 0;
                     obj.IsLocked = 0;
+                    obj.DefaultLanguage = data.DefaultLanguage; 
                     obj.LastLoginDate = DateTime.Now;
                     obj.LastLoginIP = null;
                     obj.LoginCounter = 0;
