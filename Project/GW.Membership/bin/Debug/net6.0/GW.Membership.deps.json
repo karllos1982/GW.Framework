@@ -6,10 +6,10 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "GW.Membership/2.0.15": {
+      "GW.Membership/2.0.16": {
         "dependencies": {
           "Dapper": "2.0.123",
-          "GW.Framework": "4.0.15",
+          "GW.Framework": "4.0.16",
           "System.Data.SqlClient": "4.8.5"
         },
         "runtime": {
@@ -107,7 +107,7 @@
         }
       },
       "System.Security.Principal.Windows/4.7.0": {},
-      "GW.Framework/4.0.15": {
+      "GW.Framework/4.0.16": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.2"
         },
@@ -118,7 +118,7 @@
     }
   },
   "libraries": {
-    "GW.Membership/2.0.15": {
+    "GW.Membership/2.0.16": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -200,7 +200,7 @@
       "path": "system.security.principal.windows/4.7.0",
       "hashPath": "system.security.principal.windows.4.7.0.nupkg.sha512"
     },
-    "GW.Framework/4.0.15": {
+    "GW.Framework/4.0.16": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

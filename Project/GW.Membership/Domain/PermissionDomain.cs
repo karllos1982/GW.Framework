@@ -10,13 +10,12 @@ namespace GW.Membership.Domain
 {
     public class PermissionDomain : IPermissionDomain
     {
-        private string lang = "";
-
+       
         public PermissionDomain(IContext context, IMembershipRepositorySet repositorySet)
         {
             Context = context;
             RepositorySet = repositorySet;
-            lang = Context.LocalizationLanguage;
+          
         }
 
         public IContext Context { get; set; }
@@ -60,12 +59,12 @@ namespace GW.Membership.Domain
         {
             OperationStatus ret = null;
 
-            ret = PrimaryValidation.Execute(obj, new List<string>(), lang);
+            ret = PrimaryValidation.Execute(obj, new List<string>(), Context.LocalizationLanguage);
 
             if (!ret.Status)
             {
                 ret.Error 
-                    = new Exception(GW.Localization.GetItem("Validation-Error",lang).Text);
+                    = new Exception(GW.Localization.GetItem("Validation-Error",Context.LocalizationLanguage).Text);
             }
 
             Context.ExecutionStatus = ret;           
@@ -172,7 +171,7 @@ namespace GW.Membership.Domain
             {
                 Context.ExecutionStatus.Status = false;
                 Context.ExecutionStatus.Error
-                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",lang).Text);
+                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",Context.LocalizationLanguage).Text);
 
             }           
 
