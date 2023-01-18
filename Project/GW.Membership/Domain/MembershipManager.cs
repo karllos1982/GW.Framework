@@ -137,6 +137,11 @@ namespace GW.Membership.Domain
                 }
 
             }
+            else
+            {
+                errmsg =
+                        GW.Localization.GetItem("Login-User-NotFound", Context.LocalizationLanguage).Text;
+            }
             
             if (errmsg != "")
             {

@@ -21,7 +21,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
-            nuser.DefaultLanguage = "eng"; 
+            nuser.DefaultLanguage = "en-us"; 
             UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;
@@ -45,7 +45,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest@gw.com.br";
             nuser.RoleID = 1;
             nuser.InstanceID = 1;
-            nuser.DefaultLanguage = "eng";
+            nuser.DefaultLanguage = "en-us";
             UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;
@@ -68,7 +68,7 @@ namespace GW.Membership.Test
             nuser.Email = "usertest2@gw.com.br";
             nuser.RoleID = 0;
             nuser.InstanceID = 0;
-            nuser.DefaultLanguage = "eng";
+            nuser.DefaultLanguage = "en-us";
             UserEntry user = await res.Domain.CreateNewUser(nuser, false, 1001);
 
             status = res.Context.ExecutionStatus;
@@ -155,6 +155,29 @@ namespace GW.Membership.Test
 
         }
 
+        [TestMethod]
+        public async Task T04_04_2_Login_UserNotExists()
+        {
+            Resources res = new Resources();
+
+            UserLogin Entry = new UserLogin();
+
+            Entry.Email = "userinvalid@sys.com";
+            Entry.Password = GW.Helpers.MD5.BuildMD5("pwdinvalid");
+            Entry.ClientIP = "127.0.0.1";
+            Entry.ClienteBrowserName = "Test";
+            Entry.AuthToken = Guid.NewGuid().ToString();
+            Entry.AuthTokenExpires = DateTime.Now.AddHours(8);
+
+            UserResult user = await res.Domain.Login(Entry);
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeFalse(status);
+
+        }
 
         [TestMethod]
         public async Task T04_05_1_CheckPermissions_When_Allowed()

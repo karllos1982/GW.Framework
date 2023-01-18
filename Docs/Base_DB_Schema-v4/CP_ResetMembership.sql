@@ -27,7 +27,7 @@ BEGIN
 
 	insert into [sysUser] values (1001,1,'master.admin','master.user@sys.com',
 		'03273b3cc1a8e4c9811ac88ee757275f','GWSLT',GetDate(),
-		1,0,'eng',null,null,0,0,null,null,null,null,null,null)
+		1,0,'en-us',null,null,0,0,null,null,null,null,null,null)
 
 	insert into [sysUserRoles] values (1,1001,1)
 	insert into [sysUserInstances] values (1,1001,1)
@@ -36,7 +36,7 @@ BEGIN
 
 	insert into [sysUser] values (1002,1,'deleted.user','deleted.user@sys.com',
 		'03273b3cc1a8e4c9811ac88ee757275f','GWSLT',GetDate(),
-		1,0,'eng',null,null,0,0,null,null,null,null,null,null)
+		1,0,'en-us',null,null,0,0,null,null,null,null,null,null)
 
 	insert into [sysUserRoles] values (2,1002,1)
 	insert into [sysUserInstances] values (2,1002,1)
@@ -45,7 +45,7 @@ BEGIN
 
 	insert into [sysUser] values (1003,1,'simple.user','simple.user@sys.com',
 		'03273b3cc1a8e4c9811ac88ee757275f','GWSLT',GetDate(),
-		1,0,'eng',null,null,0,0,null,null,null,null,null,null)
+		1,0,'en-us',null,null,0,0,null,null,null,null,null,null)
 
 	insert into [sysUserRoles] values (3,1003,2)
 	insert into [sysUserInstances] values (3,1003,1)

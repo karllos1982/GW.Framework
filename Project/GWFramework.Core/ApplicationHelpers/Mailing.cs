@@ -46,11 +46,7 @@ namespace GW.ApplicationHelpers
 
         }
 
-        public MailManager(ISettings configs)
-        {
-            _config = configs.MailSettings;
-        }
-
+       
         private List<Destination> _destinations = new List<Destination>();
 
         public List<string> _attfiles { get; set; }

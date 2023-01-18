@@ -6,15 +6,15 @@
     <AssemblyName>GW.Membership</AssemblyName>
     <RootNamespace>GW.Membership.Domain</RootNamespace>
     <PackageId>GW.Membership</PackageId>
-    <Version>2.0.16</Version>
+    <Version>2.0.18</Version>
     <Authors>Carlos Fonteles</Authors>
     <Company>GW Tecnologia</Company>
     <Product>GW.Membership</Product>
     <Description>Library foundations for building apps such as websites, desktop and mobile. There are all materials for managing users, roles and logs. It is linked to GW.Framework package.</Description>
     <PackageProjectUrl>https://github.com/karllos1982/GW.Framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/karllos1982/GW.Framework</RepositoryUrl>
-    <AssemblyVersion>2.0.16</AssemblyVersion>
-    <FileVersion>2.0.16</FileVersion>
+    <AssemblyVersion>2.0.18</AssemblyVersion>
+    <FileVersion>2.0.18</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
