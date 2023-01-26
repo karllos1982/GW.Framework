@@ -92,7 +92,7 @@ namespace GW.Membership.Models
         [PrimaryValidationConfig("RoleID", "Role ID", FieldType.NUMERIC, false, 0)]
         public Int64 RoleID { get; set; }
 
-        [PrimaryValidationConfig("InstanceID", "Instance ID", FieldType.NUMERIC, false, 0)]
+        [PrimaryValidationConfig("InstanceID", "LocalizationText ID", FieldType.NUMERIC, false, 0)]
         public Int64 InstanceID { get; set; }
 
         [PrimaryValidationConfig("DefaultLanguage", "Default Language", FieldType.TEXT, false, 5)]

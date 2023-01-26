@@ -70,24 +70,24 @@ namespace GW.ApplicationHelpers
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.Unauthorized:
-                        APIResponse.Message = GW.Localization.GetItem("Http-Unauthorized", lang).Text;
+                        APIResponse.Message = GW.LocalizationText.Get("Http-Unauthorized", lang).Text;
                         break;
 
                     case HttpStatusCode.NotFound:
-                        APIResponse.Message = GW.Localization.GetItem("Http-NotFound", lang).Text;
+                        APIResponse.Message = GW.LocalizationText.Get("Http-NotFound", lang).Text;
                         break;
 
                     case HttpStatusCode.Forbidden:
-                        APIResponse.Message = GW.Localization.GetItem("Http-Forbidden", lang).Text;
+                        APIResponse.Message = GW.LocalizationText.Get("Http-Forbidden", lang).Text;
                         break;
 
                     case HttpStatusCode.InternalServerError:
-                        APIResponse.Message = GW.Localization.GetItem("Http-500Error", lang).Text;
+                        APIResponse.Message = GW.LocalizationText.Get("Http-500Error", lang).Text;
                                                
                         break;
 
                     case HttpStatusCode.ServiceUnavailable:
-                        APIResponse.Message = GW.Localization.GetItem("Http-ServiceUnavailable", lang).Text;
+                        APIResponse.Message = GW.LocalizationText.Get("Http-ServiceUnavailable", lang).Text;
                         break;
                 }
 
@@ -200,7 +200,7 @@ namespace GW.ApplicationHelpers
             }
             else
             {
-                defaulterror = new Exception(GW.Localization.GetItem("API-Unexpected-Exception","eng").Text);
+                defaulterror = new Exception(GW.LocalizationText.Get("API-Unexpected-Exception","eng").Text);
                 return null;
             }
 

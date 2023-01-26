@@ -22,6 +22,9 @@ namespace GW.Core
         Task RegisterDataLogAsync(string userid, OPERATIONLOGENUM operation,
              string tableaname, string objID, object olddata, object currentdata);
 
+        Task<List<LocalizationTextItem>> GetLocalizationTextsAsync();
+
+
         void Dispose(); 
 
     }

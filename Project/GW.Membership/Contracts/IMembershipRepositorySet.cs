@@ -26,6 +26,8 @@ namespace GW.Membership.Contracts.Data
 
         IUserRolesRepository UserRoles { get; set; }
 
+        ILocalizationTextRepository LocalizationText { get; set; }
+
 
     }
 }

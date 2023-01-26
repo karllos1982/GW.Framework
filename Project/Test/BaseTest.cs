@@ -53,6 +53,7 @@ namespace Test
 
             context.Begin(0, System.Data.IsolationLevel.ReadUncommitted);
 
+            GW.LocalizationText.LoadDataSync(context); 
         }
     }
 
@@ -63,7 +64,7 @@ namespace Test
             Settings = new TesteConfigs();
             Builder = new TestContextBuilder(Settings);
             Context = new DapperContext(Settings);
-            Context.LocalizationLanguage = "eng"; 
+            Context.LocalizationLanguage = "eng-us"; 
             Repository = new MembershipRepositorySet(Context);
             Domain = new MembershipManager(Context, Repository);
 

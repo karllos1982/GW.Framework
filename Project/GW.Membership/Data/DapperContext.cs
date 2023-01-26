@@ -625,5 +625,16 @@ namespace GW.Membership.Data
 
         }
 
+
+        public async Task<List<LocalizationTextItem>> GetLocalizationTextsAsync()
+        {
+            List<LocalizationTextItem> ret = new List<LocalizationTextItem>();  
+            
+            string sqltext = "select * from [sysLocalizationText] "; 
+                    
+            ret =  await this.ExecuteQueryToListAsync<LocalizationTextItem>(sqltext);
+
+            return ret;
+        }
     }
 }

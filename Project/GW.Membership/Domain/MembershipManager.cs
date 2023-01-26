@@ -27,7 +27,7 @@ namespace GW.Membership.Domain
             Role = new RoleDomain(context, (IMembershipRepositorySet)repositorySet);
             SessionLog = new SessionLogDomain(context, (IMembershipRepositorySet)repositorySet);
             User = new UserDomain(context, (IMembershipRepositorySet)repositorySet);
-
+            LocalizationText = new LocalizationTextDomain(context, (IMembershipRepositorySet)repositorySet);
         }
 
         public IContext Context { get; set; }
@@ -46,6 +46,7 @@ namespace GW.Membership.Domain
 
         public IUserDomain User { get; set; }
 
+        public ILocalizationTextDomain LocalizationText { get; set; }
 
         // 
 
@@ -79,7 +80,7 @@ namespace GW.Membership.Domain
                             {
                                 trys = 5 - usermatch.LoginFailCounter;
                                 
-                                errmsg = string.Format(GW.Localization.GetItem("Login-Invalid-Password", Context.LocalizationLanguage).Text, trys.ToString());
+                                errmsg = string.Format(GW.LocalizationText.Get("Login-Invalid-Password", Context.LocalizationLanguage).Text, trys.ToString());
 
                                 invalidpassword = true;
 
@@ -98,7 +99,7 @@ namespace GW.Membership.Domain
                                 if (usermatch.LoginFailCounter == 5)
                                 {
                                     activestatus = 0;
-                                    errmsg = GW.Localization.GetItem("Login-Attempts",Context.LocalizationLanguage).Text;
+                                    errmsg = GW.LocalizationText.Get("Login-Attempts",Context.LocalizationLanguage).Text;
                                 }
 
                             }
@@ -106,20 +107,20 @@ namespace GW.Membership.Domain
                         }
                         else
                         {
-                            errmsg = GW.Localization.GetItem("Login-Inactive-Account", Context.LocalizationLanguage).Text;
+                            errmsg = GW.LocalizationText.Get("Login-Inactive-Account", Context.LocalizationLanguage).Text;
 
                         }
                     }
                     else
                     {
                         errmsg =
-                            GW.Localization.GetItem("Login-Locked-Account", Context.LocalizationLanguage).Text;
+                            GW.LocalizationText.Get("Login-Locked-Account", Context.LocalizationLanguage).Text;
                     }
                 }
                 else
                 {
                     errmsg =
-                         GW.Localization.GetItem("Login-User-NotFound", Context.LocalizationLanguage).Text;
+                         GW.LocalizationText.Get("Login-User-NotFound", Context.LocalizationLanguage).Text;
                 }
 
                 if (errmsg == "")
@@ -140,7 +141,7 @@ namespace GW.Membership.Domain
             else
             {
                 errmsg =
-                        GW.Localization.GetItem("Login-User-NotFound", Context.LocalizationLanguage).Text;
+                        GW.LocalizationText.Get("Login-User-NotFound", Context.LocalizationLanguage).Text;
             }
             
             if (errmsg != "")
@@ -232,18 +233,18 @@ namespace GW.Membership.Domain
                 {
                     Context.ExecutionStatus.Status = false;
                     Context.ExecutionStatus.Error
-                        = new Exception(GW.Localization.GetItem("Validation-Error", Context.LocalizationLanguage).Text);                    
+                        = new Exception(GW.LocalizationText.Get("Validation-Error", Context.LocalizationLanguage).Text);                    
                     Context.ExecutionStatus.AddInnerException("InstanceID",
-                        GW.Localization.GetItem("Validation-NotNull", Context.LocalizationLanguage).Text);
+                        GW.LocalizationText.Get("Validation-NotNull", Context.LocalizationLanguage).Text);
                 }
 
                 if (data.RoleID == 0)
                 {
                     Context.ExecutionStatus.Status = false;
                     Context.ExecutionStatus.Error
-                        = new Exception(GW.Localization.GetItem("Validation-Error", Context.LocalizationLanguage).Text);                   
+                        = new Exception(GW.LocalizationText.Get("Validation-Error", Context.LocalizationLanguage).Text);                   
                     Context.ExecutionStatus.AddInnerException("RoleID",
-                        GW.Localization.GetItem("Validation-NotNull", Context.LocalizationLanguage).Text);
+                        GW.LocalizationText.Get("Validation-NotNull", Context.LocalizationLanguage).Text);
                 }
 
             }
@@ -302,14 +303,14 @@ namespace GW.Membership.Domain
                 {
                     Context.ExecutionStatus.Status = false;
                     Context.ExecutionStatus.Error 
-                        = new Exception(GW.Localization.GetItem("User-Exists", Context.LocalizationLanguage).Text + data.Email);
+                        = new Exception(GW.LocalizationText.Get("User-Exists", Context.LocalizationLanguage).Text + data.Email);
                    
                 }
             }
             else
             {
                 Context.ExecutionStatus.Error
-                          = new Exception(GW.Localization.GetItem("Validation-Error", Context.LocalizationLanguage).Text);
+                          = new Exception(GW.LocalizationText.Get("Validation-Error", Context.LocalizationLanguage).Text);
             }
            
 

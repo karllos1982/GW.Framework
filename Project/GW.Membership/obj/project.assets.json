@@ -173,7 +173,7 @@
           }
         }
       },
-      "GW.Framework/4.0.18": {
+      "GW.Framework/4.0.19": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -550,7 +550,7 @@
         "version.txt"
       ]
     },
-    "GW.Framework/4.0.18": {
+    "GW.Framework/4.0.19": {
       "type": "project",
       "path": "../GWFramework.Core/GWFramework.Core.csproj",
       "msbuildProject": "../GWFramework.Core/GWFramework.Core.csproj"
@@ -559,7 +559,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Dapper >= 2.0.123",
-      "GW.Framework >= 4.0.18",
+      "GW.Framework >= 4.0.19",
       "System.Data.SqlClient >= 4.8.5"
     ]
   },
@@ -568,7 +568,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.0.18",
+    "version": "2.0.19",
     "restore": {
       "projectUniqueName": "H:\\LocalDrive_00\\Projetos\\GearsOfWeb_Project\\v4.0\\GW.Framework\\Project\\GW.Membership\\GW.Membership.csproj",
       "projectName": "GW.Membership",

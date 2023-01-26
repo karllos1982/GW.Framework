@@ -29,6 +29,8 @@ namespace GW.Membership.Data
 
         public IUserRolesRepository UserRoles { get; set; }
 
+        public ILocalizationTextRepository LocalizationText { get; set; }
+
         public void InitializeRespositories(IContext context)
         {
             DapperContext ctx = (DapperContext)context; 
@@ -42,7 +44,7 @@ namespace GW.Membership.Data
             this.UserInstances = new UserInstancesRepository(ctx);
             this.User = new UserRepository(ctx);
             this.UserRoles = new UserRolesRepository(ctx); 
-
+            this.LocalizationText = new LocalizationTextRepository(ctx);   
         }
     }
 

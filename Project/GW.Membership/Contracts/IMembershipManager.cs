@@ -21,6 +21,8 @@ namespace GW.Membership.Contracts.Domain
 
         IUserDomain User { get; set; }
 
+        ILocalizationTextDomain LocalizationText { get; set; }  
+
         //
 
 

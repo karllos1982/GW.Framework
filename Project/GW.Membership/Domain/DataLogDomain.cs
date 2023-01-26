@@ -62,7 +62,7 @@ namespace GW.Membership.Domain
             if (!ret.Status)
             {
                 ret.Error 
-                    = new Exception(GW.Localization.GetItem("Validation-Error",Context.LocalizationLanguage).Text);
+                    = new Exception(GW.LocalizationText.Get("Validation-Error",Context.LocalizationLanguage).Text);
             }
 
             Context.ExecutionStatus = ret;
@@ -166,7 +166,7 @@ namespace GW.Membership.Domain
             {
                 Context.ExecutionStatus.Status = false;
                 Context.ExecutionStatus.Error 
-                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",Context.LocalizationLanguage).Text);
+                    = new System.Exception(GW.LocalizationText.Get("Record-NotFound",Context.LocalizationLanguage).Text);
 
             }
            

@@ -164,31 +164,31 @@ namespace GW.Helpers
             switch (date.DayOfWeek)
             {
                 case System.DayOfWeek.Sunday:
-                    ret = GW.Localization.GetItem("ShortDayName-1", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-1", lang).Text;
                     break;
 
                 case System.DayOfWeek.Monday:
-                    ret = GW.Localization.GetItem("ShortDayName-2", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-2", lang).Text;
                     break;
 
                 case System.DayOfWeek.Tuesday:
-                    ret = GW.Localization.GetItem("ShortDayName-3", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-3", lang).Text;
                     break;
 
                 case System.DayOfWeek.Wednesday:
-                    ret = GW.Localization.GetItem("ShortDayName-4", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-4", lang).Text;
                     break;
 
                 case System.DayOfWeek.Thursday:
-                    ret = GW.Localization.GetItem("ShortDayName-5", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-5", lang).Text;
                     break;
 
                 case System.DayOfWeek.Friday:
-                    ret = GW.Localization.GetItem("ShortDayName-6", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-6", lang).Text;
                     break;
 
                 case System.DayOfWeek.Saturday:
-                    ret = GW.Localization.GetItem("ShortDayName-7", lang).Text;
+                    ret = GW.LocalizationText.Get("ShortDayName-7", lang).Text;
                     break;
 
             }
@@ -202,18 +202,18 @@ namespace GW.Helpers
 
             List<string> lista = new List<string>();
 
-            lista.Add(GW.Localization.GetItem("ShortDayName-1","eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-2", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-2", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-4", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-5", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-6", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-7", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-8", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-9", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-10", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-11", "eng").Text);
-            lista.Add(GW.Localization.GetItem("ShortDayName-12", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-1","eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-2", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-2", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-4", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-5", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-6", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-7", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-8", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-9", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-10", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-11", "eng").Text);
+            lista.Add(GW.LocalizationText.Get("ShortDayName-12", "eng").Text);
 
             ret = lista[month-1]; 
             

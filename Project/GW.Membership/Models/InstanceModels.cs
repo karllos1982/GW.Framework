@@ -27,13 +27,13 @@ namespace GW.Membership.Models
 
     public class InstanceEntry
     {
-        [PrimaryValidationConfig("InstanceID", "Instance ID", FieldType.NUMERIC, false, 0)]
+        [PrimaryValidationConfig("InstanceID", "LocalizationText ID", FieldType.NUMERIC, false, 0)]
         public Int64 InstanceID { get; set; }
 
-        [PrimaryValidationConfig("InstanceTypeName", "Instance Type Name", FieldType.TEXT , false, 50)]
+        [PrimaryValidationConfig("InstanceTypeName", "LocalizationText Type Name", FieldType.TEXT , false, 50)]
         public string InstanceTypeName { get; set; }
 
-        [PrimaryValidationConfig("InstanceName", "Instance Name", FieldType.TEXT, false, 100)]
+        [PrimaryValidationConfig("InstanceName", "LocalizationText Name", FieldType.TEXT, false, 100)]
         public string InstanceName { get; set; }
 
         public int IsActive { get; set; }

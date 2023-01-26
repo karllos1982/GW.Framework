@@ -260,7 +260,7 @@ namespace GW.Helpers
                     if (value == null)
                     {                            
                         ret.AddInnerException(fieldname, fieldlabel + " " + 
-                                GW.Localization.GetItem("Validation-NotNull",lang).Text);
+                                GW.LocalizationText.Get("Validation-NotNull",lang).Text);
                         exit = true;
                             
                     }
@@ -269,7 +269,7 @@ namespace GW.Helpers
                         if (value.Length == 0)
                         {
                         ret.AddInnerException(fieldname, fieldlabel + " " +
-                            GW.Localization.GetItem("Validation-NotNull",lang).Text);
+                            GW.LocalizationText.Get("Validation-NotNull",lang).Text);
                         exit = true;
                         }
                     }
@@ -293,7 +293,7 @@ namespace GW.Helpers
                         case FieldType.TEXT:
                             if (value.Length > maxlength)
                             {
-                                msg = string.Format( GW.Localization.GetItem("Validation-Max-Characters", lang).Text,fieldlabel, maxlength.ToString());
+                                msg = string.Format( GW.LocalizationText.Get("Validation-Max-Characters", lang).Text,fieldlabel, maxlength.ToString());
                               
                                 ret.AddInnerException(fieldname, msg);
                             }
@@ -302,7 +302,7 @@ namespace GW.Helpers
                         case FieldType.CPF:
                             if (value.Length > 0 && !this.ValidateCPF(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text,fieldlabel);                                
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text,fieldlabel);                                
                                 ret.AddInnerException(fieldname,msg);
                             }
                             break;
@@ -310,7 +310,7 @@ namespace GW.Helpers
                         case FieldType.CNPJ:
                             if (value.Length > 0 && !this.ValidateCNPJ(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text,fieldlabel);                                
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text,fieldlabel);                                
                                 ret.AddInnerException(fieldname, msg);
                              }
                             break;
@@ -318,7 +318,7 @@ namespace GW.Helpers
                         case FieldType.CEP:
                             if (value.Length > 0 && !this.ValidateCEP(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text , fieldlabel);
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text , fieldlabel);
                                 ret.AddInnerException(fieldname, msg);
                             }
                             break;
@@ -326,7 +326,7 @@ namespace GW.Helpers
                         case FieldType.PHONENUMBER:
                             if (value.Length > 0 && !this.ValidatePhone(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text, fieldlabel);
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text, fieldlabel);
                                 ret.AddInnerException(fieldname, msg);
                             }
                             break;
@@ -334,7 +334,7 @@ namespace GW.Helpers
                         case FieldType.CELLPHONENUMBER:
                             if (value.Length > 0 && !this.ValidateCellPhone(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text, fieldlabel);
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text, fieldlabel);
                                 ret.AddInnerException(fieldname, msg);
                             }
                             break;
@@ -344,7 +344,7 @@ namespace GW.Helpers
                             {
                                 if (value.Length > 0 && !this.IsDate(value))
                                 {
-                                    msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text, fieldlabel);
+                                    msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text, fieldlabel);
                                     ret.AddInnerException(fieldname, msg);
                                 }
                             }
@@ -354,7 +354,7 @@ namespace GW.Helpers
                         case FieldType.EMAIL:
                             if (value.Length > 0 && !this.ValidateEmail(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text, fieldlabel);
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text, fieldlabel);
                                 ret.AddInnerException(fieldname, msg);
                             }
                             break;
@@ -362,7 +362,7 @@ namespace GW.Helpers
                         case FieldType.TIME:
                             if (value.Length > 0 && !this.IsTime(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text, fieldlabel);
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text, fieldlabel);
                                 ret.AddInnerException(fieldname, msg);
                             }
                             break;
@@ -370,7 +370,7 @@ namespace GW.Helpers
                         case FieldType.URL:
                             if (value.Length > 0 && !this.ValidateURL(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-Field", lang).Text, fieldlabel);
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-Field", lang).Text, fieldlabel);
                                 ret.AddInnerException(fieldname, msg);
                             }
                             break;
@@ -378,7 +378,7 @@ namespace GW.Helpers
                         case FieldType.USERNAME:
                             if (value.Length > 0 && !this.ValidateUserName(value))
                             {
-                                msg = string.Format(GW.Localization.GetItem("Validation-Invalid-UserName", lang).Text,fieldlabel);                                
+                                msg = string.Format(GW.LocalizationText.Get("Validation-Invalid-UserName", lang).Text,fieldlabel);                                
                                 ret.AddInnerException(fieldname, msg);
                            
                             }

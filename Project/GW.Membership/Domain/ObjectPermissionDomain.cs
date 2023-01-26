@@ -62,7 +62,7 @@ namespace GW.Membership.Domain
             if (!ret.Status)
             {
                 ret.Error 
-                    = new Exception(GW.Localization.GetItem("Validation-Error",Context.LocalizationLanguage).Text);
+                    = new Exception(GW.LocalizationText.Get("Validation-Error",Context.LocalizationLanguage).Text);
             }
 
             Context.ExecutionStatus = ret;
@@ -86,7 +86,7 @@ namespace GW.Membership.Domain
                 {
                     ret.Status = false;
                     string msg 
-                        = string.Format(GW.Localization.GetItem("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Object Code");
+                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Object Code");
                     ret.Error = new Exception(msg);
                     ret.AddInnerException("ObjectCode", msg);
 
@@ -113,7 +113,7 @@ namespace GW.Membership.Domain
                     {
                         ret.Status = false;
                         string msg 
-                            = string.Format(GW.Localization.GetItem("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Object Code");
+                            = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Object Code");
                         ret.Error = new Exception(msg);
                         ret.AddInnerException("ObjectCode", msg); 
                     }
@@ -210,7 +210,7 @@ namespace GW.Membership.Domain
             {
                 Context.ExecutionStatus.Status = false;
                 Context.ExecutionStatus.Error 
-                    = new System.Exception(GW.Localization.GetItem("Record-NotFound",Context.LocalizationLanguage).Text);
+                    = new System.Exception(GW.LocalizationText.Get("Record-NotFound",Context.LocalizationLanguage).Text);
 
             }           
 

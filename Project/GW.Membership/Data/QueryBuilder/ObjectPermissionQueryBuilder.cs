@@ -33,8 +33,8 @@ namespace GW.Membership.Data
             string ret = @"select *             
              from sysObjectPermission s                           
              where 1=1 
-             and (@pObjectPermissionID=0 or s.ObjectPermissionID=@pObjectPermissionID)
-             and (@pObjectName='' or s.ObjectName=@pObjectName)
+             and (@pObjectPermissionID=0 or s.ObjectPermissionID=@pObjectPermissionID)             
+             and (@pObjectName='' or s.ObjectName like '%' + @pObjectName + '%')  
              and (@pObjectCode='' or s.ObjectCode=@pObjectCode)
              order by ObjectName
              ";

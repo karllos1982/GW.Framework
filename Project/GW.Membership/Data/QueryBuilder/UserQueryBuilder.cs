@@ -152,9 +152,9 @@ namespace GW.Membership.Data
                 LastLoginIP,LoginCounter,LoginFailCounter,AuthCode,AuthCodeExpires,PasswordRecoveryCode,ProfileImage,AuthUserID 
                 from sysUser u
                 where 1=1 
-                and (@pUserID=0 or u.UserID=@pUserID)
-                and (@pEmail='' or u.Email=@pEmail)
-                and (@pUserName='' or u.UserName=@pUserName)
+                and (@pUserID=0 or u.UserID=@pUserID)                
+                and (@pEmail='' or u.Email like '%' + @pEmail + '%')
+                and (@pUserName='' or u.UserName like '%' + @pUserName + '%')                
                 and (@pRoleID=0 or (u.UserID in (select r.UserID from sysUserRoles r where r.RoleID=@pRoleID)))
                 and (@pInstanceID=0 or (u.UserID in (select r.UserID from sysUserInstances r where r.InstanceID=@pInstanceID)))
                 ";
