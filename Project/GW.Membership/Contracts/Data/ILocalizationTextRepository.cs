@@ -8,6 +8,6 @@ namespace GW.Membership.Contracts.Data
         IRepository<LocalizationTextParam, LocalizationTextEntry, LocalizationTextResult, LocalizationTextList>
     {
 
-
+        Task<List<LocalizationTextList>> GetListOfLanguages();
     }
 }

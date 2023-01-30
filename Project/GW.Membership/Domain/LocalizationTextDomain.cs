@@ -75,17 +75,35 @@ namespace GW.Membership.Domain
         public async Task InsertValidation(LocalizationTextEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            LocalizationTextParam param = new LocalizationTextParam()
-            {
-                pName = obj.Name
-            };
+            LocalizationTextParam param = null;
+            List<LocalizationTextList> list = null;
 
-            List<LocalizationTextList> list
-                = await RepositorySet.LocalizationText.List(param);
+            // verificar por code
+
+            param = new LocalizationTextParam() { pCode = obj.Code };
+            list  = await RepositorySet.LocalizationText.List(param);
 
             if (list != null)
             {
-                if (list.Count > 0)
+                if (list.Count > 0 )
+                {
+                    ret.Status = false;
+                    string msg
+                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",
+                        Context.LocalizationLanguage).Text, "Code");
+                    ret.Error = new Exception(msg);
+                    ret.AddInnerException("Code", msg);
+                }
+            }
+
+            // verificar por name na mesma linguagem
+
+            param = new LocalizationTextParam() { pName = obj.Name };
+            list = await RepositorySet.LocalizationText.List(param);
+
+            if (list != null)
+            {
+                if (list.Count > 0 && list[0].Language == obj.Language)
                 {
                     ret.Status = false;
                     string msg
@@ -96,6 +114,7 @@ namespace GW.Membership.Domain
                 }
             }
 
+
             Context.ExecutionStatus = ret;
 
         }
@@ -103,9 +122,13 @@ namespace GW.Membership.Domain
         public async Task UpdateValidation(LocalizationTextEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            LocalizationTextParam param = new LocalizationTextParam() { pName = obj.Name };
-            List<LocalizationTextList> list
-                = await RepositorySet.LocalizationText.List(param);
+            LocalizationTextParam param = null;
+            List<LocalizationTextList> list = null;
+
+            // verificar por code
+
+            param = new LocalizationTextParam() { pCode = obj.Code };
+            list = await RepositorySet.LocalizationText.List(param);
 
             if (list != null)
             {
@@ -116,10 +139,30 @@ namespace GW.Membership.Domain
                         ret.Status = false;
                         string msg
                             = string.Format(GW.LocalizationText.Get("Validation-Unique-Value", 
-                            Context.LocalizationLanguage).Text, "Name");
+                            Context.LocalizationLanguage).Text, "Code");
                         ret.Error = new Exception(msg);
-                        ret.AddInnerException("Name", msg);
+                        ret.AddInnerException("Code", msg);
                     }
+                }
+            }
+
+
+            // verificar por name na mesma linguagem
+
+            param = new LocalizationTextParam() { pName = obj.Name };
+            list = await RepositorySet.LocalizationText.List(param);
+
+            if (list != null)
+            {
+                if (list.Count > 0 && list[0].LocalizationTextID != obj.LocalizationTextID 
+                    && list[0].Language == obj.Language)
+                {
+                    ret.Status = false;
+                    string msg
+                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",
+                        Context.LocalizationLanguage).Text, "Name");
+                    ret.Error = new Exception(msg);
+                    ret.AddInnerException("Name", msg);
                 }
             }
 
@@ -219,6 +262,14 @@ namespace GW.Membership.Domain
             return ret;
         }
 
+        public async Task<List<LocalizationTextList>> GetListOfLanguages()
+        {
+            List<LocalizationTextList> ret = null;
+
+            ret = await RepositorySet.LocalizationText.GetListOfLanguages();
+
+            return ret;
+        }
 
 
     }

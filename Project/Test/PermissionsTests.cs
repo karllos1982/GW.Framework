@@ -234,7 +234,7 @@ namespace GW.Membership.Test
          
             res.finalize();
 
-            result.Count.ShouldBeEquivalentTo(8);
+            result.Count.ShouldBeEquivalentTo(9);
 
         }
 

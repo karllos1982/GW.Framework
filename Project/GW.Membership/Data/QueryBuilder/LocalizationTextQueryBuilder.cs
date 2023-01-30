@@ -55,5 +55,15 @@ namespace GW.Membership.Data
             return ret;
 
         }
+
+        public  string QueryForListOfLanguages(object param)
+        {
+            string ret = @"select distinct [language]          
+             from syslocalizationtext                 
+             ";
+
+            return ret;
+        }
+
     }
 }

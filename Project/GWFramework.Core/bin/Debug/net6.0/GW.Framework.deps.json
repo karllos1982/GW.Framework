@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "GW.Framework/4.0.19": {
+      "GW.Framework/4.0.21": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.2"
         },
@@ -25,7 +25,7 @@
     }
   },
   "libraries": {
-    "GW.Framework/4.0.19": {
+    "GW.Framework/4.0.21": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

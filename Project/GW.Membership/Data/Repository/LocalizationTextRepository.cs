@@ -74,6 +74,15 @@ namespace GW.Membership.Data
             return ret;
         }
 
+        public async Task<List<LocalizationTextList>> GetListOfLanguages()
+        {
+            List<LocalizationTextList> ret = null;
+
+            ret = await ((DapperContext)Context)
+                .ExecuteQueryToListAsync<LocalizationTextList>(query.QueryForListOfLanguages(null), null);
+
+            return ret;
+        }
 
     }
 

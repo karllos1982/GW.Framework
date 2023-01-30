@@ -9,5 +9,8 @@ namespace GW.Membership.Contracts.Domain
         IDomain<LocalizationTextParam, LocalizationTextEntry, LocalizationTextResult, LocalizationTextList>
     {
         IMembershipRepositorySet RepositorySet { get; set; }
+
+        Task<List<LocalizationTextList>> GetListOfLanguages();
+
     }
 }

@@ -59,6 +59,7 @@ BEGIN
 	insert into sysObjectPermission values (10005, 'Table.sysSession.Basic', 'SYSSESSION')
 	insert into sysObjectPermission values (10006, 'Table.sysDataLog.Basic', 'SYSDATALOG')
 	insert into sysObjectPermission values (10007, 'Table.SysInstance.Basic', 'SYSINSTANCE')
+	insert into sysObjectPermission values (10008, 'Table.SysLocalizationText.Basic', 'SYSLOCALIZATIONTEXT')
 
 	insert into sysPermission values (10001, 10001, 1, null, 1,1,1,'R')
 	insert into sysPermission values (10002, 10002, 1, null, 1,1,1,'R')
@@ -67,6 +68,7 @@ BEGIN
 	insert into sysPermission values (10005, 10005, 1, null, 1,1,1,'R')
 	insert into sysPermission values (10006, 10006, 1, null, 1,1,1,'R')
 	insert into sysPermission values (10007, 10007, 1, null, 1,1,1,'R')
+	insert into sysPermission values (10008, 10008, 1, null, 1,1,1,'R')
 
 END
 

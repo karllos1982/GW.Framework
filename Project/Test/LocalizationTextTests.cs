@@ -34,16 +34,16 @@ namespace GW.Membership.Test
         }
 
         [TestMethod]
-        public async Task T07_01_2_Insert_New_LocalizationText_InvalidName()
+        public async Task T07_01_2_Insert_New_LocalizationText_InvalidCode()
         {
             Resources res = new Resources();
 
             LocalizationTextEntry obj = new LocalizationTextEntry();
 
-            obj.LocalizationTextID = 1000;
+            obj.LocalizationTextID = 0;
             obj.Language = "en-us";
             obj.Name = "New-Localization-Name";
-            obj.Code = "1000";
+            obj.Code = "999";
             obj.Text = "New-Localization-Text";
 
             LocalizationTextEntry Entry = await res.Domain.LocalizationText.Set(obj, this.SysDefaultUser);
@@ -53,6 +53,51 @@ namespace GW.Membership.Test
             res.finalize();
 
             res.Perform_ShouldBeFalse(status);
+        }
+
+        [TestMethod]
+        public async Task T07_01_3_Insert_New_LocalizationText_InvalidName()
+        {
+            Resources res = new Resources();
+
+            LocalizationTextEntry obj = new LocalizationTextEntry();
+
+            obj.LocalizationTextID = 0;
+            obj.Language = "en-us";
+            obj.Name = "Execution-Error";
+            obj.Code = "9999";
+            obj.Text = "New Execution error";
+
+            LocalizationTextEntry Entry = await res.Domain.LocalizationText.Set(obj, this.SysDefaultUser);
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeFalse(status);
+        }
+       
+
+        [TestMethod]
+        public async Task T07_01_4_Edit_New_LocalizationText_Success()
+        {
+            Resources res = new Resources();
+
+            LocalizationTextEntry obj = new LocalizationTextEntry();
+
+            obj.LocalizationTextID = 2;
+            obj.Language = "en-us";
+            obj.Name = "Validation-Error";
+            obj.Code = "1002";
+            obj.Text = "Data validation error. [ed]";
+
+            LocalizationTextEntry Entry = await res.Domain.LocalizationText.Set(obj, this.SysDefaultUser);
+
+            status = res.Context.ExecutionStatus;
+
+            res.finalize();
+
+            res.Perform_ShouldBeTrue(status);
         }
 
         [TestMethod]
@@ -102,6 +147,37 @@ namespace GW.Membership.Test
 
         }
 
+        [TestMethod]
+        public async Task T07_05_Delete_LocalizationText()
+        {
+            Resources res = new Resources();
+
+            LocalizationTextEntry obj = new LocalizationTextEntry();
+            obj.LocalizationTextID = 999;
+
+            LocalizationTextEntry deleteobj 
+                = await res.Domain.LocalizationText.Delete(obj, this.SysDefaultUser);
+
+            res.finalize();
+
+            deleteobj.ShouldNotBeNull<LocalizationTextEntry>();
+
+        }
+
+        [TestMethod]
+        public async Task T07_06_GetListOfLanguage()
+        {
+            Resources res = new Resources();
+
+            List<LocalizationTextList> result = null;
+
+            result = await res.Domain.LocalizationText.GetListOfLanguages();
+
+            res.finalize();
+
+            result.ShouldNotBeNull<List<LocalizationTextList>>();
+
+        }
 
     }
 }
