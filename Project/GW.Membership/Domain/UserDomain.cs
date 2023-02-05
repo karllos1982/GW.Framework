@@ -342,7 +342,7 @@ namespace GW.Membership.Domain
                 {
                     if (!model.ToActivate)
                     {
-                        if (usermatch.IsActive == 1)
+                        if (usermatch.IsActive)
                         {
                             code = Utilities.GenerateCode(6);
 
@@ -419,7 +419,7 @@ namespace GW.Membership.Domain
 
                 if (usermatch != null)
                 {
-                    if (usermatch.IsActive == 0)
+                    if (!usermatch.IsActive)
                     {
                         errmsg = GW.LocalizationText.Get("Login-Inactive-Account",Context.LocalizationLanguage).Text;
                     }
@@ -498,7 +498,7 @@ namespace GW.Membership.Domain
 
                 if (usermatch != null)
                 {
-                    if (usermatch.IsActive == 1)
+                    if (usermatch.IsActive)
                     {
                         errmsg = GW.LocalizationText.Get("Account-Active", Context.LocalizationLanguage).Text;
                     }
@@ -575,7 +575,7 @@ namespace GW.Membership.Domain
 
                     if (usermatch != null)
                     {
-                        if (usermatch.IsActive == 0)
+                        if (!usermatch.IsActive)
                         {
                             errmsg = GW.LocalizationText.Get("Login-Inactive-Account", Context.LocalizationLanguage).Text;
                         }

@@ -22,7 +22,7 @@ namespace GW.Membership.Test
             obj.InstanceName = "System";
             obj.InstanceTypeName = "Default Instances"; 
             obj.CreateDate = DateTime.Now;
-            obj.IsActive = 1;
+            obj.IsActive = true;
 
             InstanceEntry Entry = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
 
@@ -44,7 +44,7 @@ namespace GW.Membership.Test
             obj.InstanceName = "System";
             obj.InstanceTypeName = "Default Instances";
             obj.CreateDate = DateTime.Now;
-            obj.IsActive = 1;
+            obj.IsActive = true;
 
             InstanceEntry Entry = await res.Domain.Instance.Set(obj, this.SysDefaultUser);
 

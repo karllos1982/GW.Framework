@@ -17,7 +17,7 @@ namespace GW.Membership.Test
             obj.RoleID = 3;
             obj.RoleName = "SimpleUser";
             obj.CreateDate = DateTime.Now;
-            obj.IsActive = 1;
+            obj.IsActive = true;
 
             RoleEntry newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
 
@@ -39,7 +39,7 @@ namespace GW.Membership.Test
             obj.RoleID = 3;
             obj.RoleName = "";
             obj.CreateDate = DateTime.Now;
-            obj.IsActive = 1;
+            obj.IsActive = true;
 
             RoleEntry newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
 
@@ -61,7 +61,7 @@ namespace GW.Membership.Test
             obj.RoleID = 4;
             obj.RoleName = "Operador";
             obj.CreateDate = DateTime.Now;
-            obj.IsActive = 1;
+            obj.IsActive = true;
 
             RoleEntry newobj = await res.Domain.Role.Set(obj, this.SysDefaultUser);
 

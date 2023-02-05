@@ -131,9 +131,9 @@ namespace GW.Membership.Models
 
         public DateTime CreateDate { get; set; }
 
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
 
-        public int IsLocked { get; set; }
+        public bool IsLocked { get; set; }
 
         public string DefaultLanguage { get; set; }
 
@@ -186,9 +186,9 @@ namespace GW.Membership.Models
 
         public DateTime CreateDate { get; set; }
 
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
 
-        public int IsLocked { get; set; }
+        public bool IsLocked { get; set; }
 
         public string DefaultLanguage { get; set; }
 
@@ -280,7 +280,7 @@ namespace GW.Membership.Models
 
         public bool Reset { get; set; }
 
-        public Int32 ActiveStatus { get; set; }
+        public bool ActiveStatus { get; set; }
 
     }
 
@@ -288,9 +288,9 @@ namespace GW.Membership.Models
     {
         public Int64 UserID { get; set; }
 
-        public Int32 ActiveValue { get; set; }
+        public bool ActiveValue { get; set; }
 
-        public Int32 LockedValue { get; set; }
+        public bool LockedValue { get; set; }
     }
 
     public class RegisterSession

@@ -253,7 +253,7 @@ namespace GW.Membership.Test
             userPermissions.ShouldNotBeNull<List<UserPermissions>>();
 
             PERMISSION_STATE_ENUM state
-                = await res.Domain.CheckPermission(userPermissions, "SYSUSER", PERMISSION_CHECK_ENUM.SAVE);
+                = await res.Domain.CheckPermission(userPermissions, "SYSTEST", PERMISSION_CHECK_ENUM.SAVE);
            
             res.finalize();
 
@@ -323,8 +323,8 @@ namespace GW.Membership.Test
 
             UserChangeState Entry = new UserChangeState();
             Entry.UserID = USERID_DEFAULT;
-            Entry.LockedValue = 0;
-            Entry.ActiveValue = 1;
+            Entry.LockedValue = false;
+            Entry.ActiveValue = true ;
 
             status = await res.Domain.User.ChangeState(Entry);
 

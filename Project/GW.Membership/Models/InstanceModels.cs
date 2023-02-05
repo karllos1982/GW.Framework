@@ -36,7 +36,7 @@ namespace GW.Membership.Models
         [PrimaryValidationConfig("InstanceName", "LocalizationText Name", FieldType.TEXT, false, 100)]
         public string InstanceName { get; set; }
 
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         public DateTime CreateDate { get; set; }
 
@@ -60,7 +60,7 @@ namespace GW.Membership.Models
        
         public string InstanceName { get; set; }
 
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         public DateTime CreateDate { get; set; }
 

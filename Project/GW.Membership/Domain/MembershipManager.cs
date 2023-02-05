@@ -57,7 +57,7 @@ namespace GW.Membership.Domain
 
             string errmsg = "";
             bool invalidpassword = false;
-            Int32 activestatus = 1;
+            bool activestatus = true;
             int trys = 0;
 
             UserResult usermatch = null;
@@ -67,9 +67,9 @@ namespace GW.Membership.Domain
             {
                 if (usermatch != null)
                 {
-                    if (usermatch.IsLocked == 0)
+                    if (!usermatch.IsLocked)
                     {
-                        if (usermatch.IsActive == 1)
+                        if (usermatch.IsActive)
                         {
 
                             if (usermatch.Password == MD5.BuildMD5(model.Password + usermatch.Salt))
@@ -98,7 +98,7 @@ namespace GW.Membership.Domain
 
                                 if (usermatch.LoginFailCounter == 5)
                                 {
-                                    activestatus = 0;
+                                    activestatus = false;
                                     errmsg = GW.LocalizationText.Get("Login-Attempts",Context.LocalizationLanguage).Text;
                                 }
 
@@ -269,8 +269,8 @@ namespace GW.Membership.Domain
                     obj.Password = MD5.BuildMD5(pwd + slt);
                     obj.Salt = slt;
                     obj.CreateDate = DateTime.Now;
-                    obj.IsActive = 0;
-                    obj.IsLocked = 0;
+                    obj.IsActive = false;
+                    obj.IsLocked = false;
                     obj.DefaultLanguage = data.DefaultLanguage; 
                     obj.LastLoginDate = DateTime.Now;
                     obj.LastLoginIP = null;

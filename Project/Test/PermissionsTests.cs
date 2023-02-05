@@ -172,7 +172,7 @@ namespace GW.Membership.Test
             obj = new PermissionEntry()
             {
                 PermissionID = 1003,
-                ObjectPermissionID = 10001,
+                ObjectPermissionID = 1001,
                 UserID = 1001,
                 RoleID = null,
                 ReadStatus = 1,

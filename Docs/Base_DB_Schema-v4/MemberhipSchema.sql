@@ -29,7 +29,7 @@ CREATE TABLE [dbo].[sysRole](
 	[RoleID] [bigint] NOT NULL,
 	[RoleName] [varchar](30) NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
-	[IsActive] [tinyint] NOT NULL,
+	[IsActive] [bit] NOT NULL,
  CONSTRAINT [pk_sysRole] PRIMARY KEY CLUSTERED 
 (
 	[RoleID] ASC
@@ -58,7 +58,7 @@ CREATE TABLE [dbo].[sysInstance](
 	[InstanceID] [bigint] NOT NULL,
 	[InstanceTypeName] [varchar](50) NOT NULL,
 	[InstanceName] [varchar](100) NOT NULL,
-	[IsActive] [tinyint] NOT NULL,
+	[IsActive] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
  CONSTRAINT [PK_sysInstance] PRIMARY KEY CLUSTERED 
 (
@@ -79,8 +79,8 @@ CREATE TABLE [dbo].[sysUser](
 	[Password] [varchar](100) NOT NULL,
 	[Salt] [varchar](10) NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
-	[IsActive] [tinyint] NOT NULL,
-	[IsLocked] [tinyint] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[IsLocked] [bit] NOT NULL,
 	[DefaultLanguage] [varchar](5) NOT NULL,
 	[LastLoginDate] [datetime] NULL,
 	[LastLoginIP] [varchar](30) NULL,

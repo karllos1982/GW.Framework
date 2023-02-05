@@ -28,7 +28,7 @@ namespace GW.Membership.Models
 
         public DateTime CreateDate { get; set; }
 
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
       
     }
 
@@ -51,7 +51,7 @@ namespace GW.Membership.Models
 
         public DateTime CreateDate { get; set; }
 
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
         
 
     }
