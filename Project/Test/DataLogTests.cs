@@ -1,5 +1,8 @@
 
 
+using System.Data;
+using System.Data.SqlClient;
+
 namespace GW.Membership.Test
 {
     [TestClass]
@@ -16,7 +19,9 @@ namespace GW.Membership.Test
             List<DataLogList> result = null;
 
             result = await res.Domain.DataLog.List(new DataLogParam() { });
-           
+
+            DataTable dt = ((SqlConnection)((DapperContext)res.Domain.Context).Connection[0]).GetSchema(); 
+
             res.finalize();
 
             result.ShouldNotBeNull<List<DataLogList>>();
@@ -43,6 +48,23 @@ namespace GW.Membership.Test
 
         }
 
+        [TestMethod]
+        public async Task T06_03_Get_DataLog()
+        {
+            Resources res = new Resources();
+
+            DataLogResult result = null;
+            DataLogParam param = new DataLogParam();
+
+            param.pDataLogID = 0; 
+
+            result = await res.Domain.DataLog.Get(param);
+
+            res.finalize();
+
+            result.ShouldBeNull<DataLogResult>();
+
+        }
 
     }
 }

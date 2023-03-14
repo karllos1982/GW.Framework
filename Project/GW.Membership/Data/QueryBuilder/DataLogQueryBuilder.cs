@@ -1,6 +1,7 @@
 ﻿using GW.Helpers;
 using System.Collections.Generic;
 using GW.Membership.Models;
+using System.ComponentModel.Design;
 
 namespace GW.Membership.Data
 {
@@ -22,19 +23,27 @@ namespace GW.Membership.Data
 
         public override string QueryForGet(object param)
         {
-            string ret = @"Select u.Email, l.* 
-                from sysDataLog l
-                inner join sysUser u on l.UserID=u.UserID
-                where DataLogID=@pDataLogID";
+            string ret = "";
+
+            SelectBuilder.Clear();
+            SelectBuilder.AddTable("sysDataLog", "l", true, "UserID", "", JOINTYPE.NONE, null);
+            SelectBuilder.AddTable("sysUser", "u", false, "DataLogID", "UserID", JOINTYPE.INNER, SelectBuilder.Tables[0]);
+            SelectBuilder.AddField("u", "Email", "", true,null,null, ORDERBYTYPE.NONE);
+            SelectBuilder.AddField("l", "DataLogID", "@pDataLogID",false,"0",null, ORDERBYTYPE.NONE);
+            
+            ret = SelectBuilder.BuildQuery();
 
             return ret;
         }
 
         public override string QueryForList(object param)
         {
-            string ret = @"select *             
-             from sysDataLog s
-             ";
+            string ret = ""; 
+
+            SelectBuilder.Clear();
+            SelectBuilder.AddTable("sysDataLog", "l", true, "", "", JOINTYPE.NONE, null);
+
+            ret = SelectBuilder.BuildQuery();
 
             return ret;
         }
@@ -43,24 +52,29 @@ namespace GW.Membership.Data
         {
             bool gobydate = ((DataLogParam)param).SearchByDate;
 
-            string ret = @"select s.*, u.Email             
-             from sysDataLog s
-             inner join sysUser u on s.UserID = u.UserID  
-             where 1=1 
-             and (@pUserID=0 or s.UserID=@pUserID)  
-             and (@pEmail='' or u.Email=@pEmail) 
-             and (@pOperation='0' or Operation=@pOperation)
-             and (@pTableName='0' or TableName=@pTableName) 
-             and (@pID=0 or s.ID=@pID)              
-             ";
+            string ret = ""; 
+                                     
 
+            SelectBuilder.Clear();
+            SelectBuilder.AddTable("sysDataLog", "l", true, "UserID", "", JOINTYPE.NONE, null);
+            SelectBuilder.AddTable("sysUser", "u", false, "DataLogID", "UserID", JOINTYPE.INNER, SelectBuilder.Tables[0]);
+            SelectBuilder.AddField("u", "Email", "@pEmail", true, "''", null, ORDERBYTYPE.NONE);
+
+            SelectBuilder.AddField("l", "UserID", "@pUserID", false,"0",null, ORDERBYTYPE.NONE);
+            SelectBuilder.AddField("l", "Operation", "@pOperation",false,"'0'",null, ORDERBYTYPE.NONE);
+            SelectBuilder.AddField("l", "TableName", "@pTableName",false,"'0'",null, ORDERBYTYPE.NONE);
+            SelectBuilder.AddField("l", "ID", "@pID", false, "0", null, ORDERBYTYPE.NONE);
+            SelectBuilder.AddField("l", "Date", "", false, null, null, ORDERBYTYPE.DESC);
+           
             if (gobydate)
             {
-                ret = ret + " and (s.Date between @pDate_Start and @pData_End )";
+                ret = SelectBuilder.BuildQuery(" and (l.Date between @pDate_Start and @pData_End )");               
             }
-
-            ret = ret + " order by s.Date desc ";
-            
+            else
+            {
+                ret = SelectBuilder.BuildQuery(); 
+            }
+                                   
 
             return ret;
 
