@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>    
-    <AssemblyVersion>4.0.24</AssemblyVersion>
-    <FileVersion>4.0.24</FileVersion>
+    <AssemblyVersion>4.0.26</AssemblyVersion>
+    <FileVersion>4.0.26</FileVersion>
     <AssemblyName>GW.Framework</AssemblyName>
     <RootNamespace>GW.Framework.Core</RootNamespace>
     <PackageId>GW.Framework</PackageId>
-    <Version>4.0.24</Version>
+    <Version>4.0.26</Version>
     <Authors>Carlos Fonteles</Authors>
     <Company>GW Tecnologia</Company>
     <Product>GW.Framework</Product>

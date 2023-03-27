@@ -1941,7 +1941,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "GW.Framework/4.0.24": {
+      "GW.Framework/4.0.26": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1954,12 +1954,12 @@
           "bin/placeholder/GW.Framework.dll": {}
         }
       },
-      "GW.Membership/2.0.24": {
+      "GW.Membership/2.0.26": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "Dapper": "2.0.123",
-          "GW.Framework": "4.0.24",
+          "GW.Framework": "4.0.26",
           "System.Data.SqlClient": "4.8.5"
         },
         "compile": {
@@ -6852,12 +6852,12 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "GW.Framework/4.0.24": {
+    "GW.Framework/4.0.26": {
       "type": "project",
       "path": "../GWFramework.Core/GWFramework.Core.csproj",
       "msbuildProject": "../GWFramework.Core/GWFramework.Core.csproj"
     },
-    "GW.Membership/2.0.24": {
+    "GW.Membership/2.0.26": {
       "type": "project",
       "path": "../GW.Membership/GW.Membership.csproj",
       "msbuildProject": "../GW.Membership/GW.Membership.csproj"
@@ -6866,8 +6866,8 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Dapper >= 2.0.123",
-      "GW.Framework >= 4.0.24",
-      "GW.Membership >= 2.0.24",
+      "GW.Framework >= 4.0.26",
+      "GW.Membership >= 2.0.26",
       "MSTest.TestAdapter >= 2.2.8",
       "MSTest.TestFramework >= 2.2.8",
       "Microsoft.NET.Test.Sdk >= 17.1.0",

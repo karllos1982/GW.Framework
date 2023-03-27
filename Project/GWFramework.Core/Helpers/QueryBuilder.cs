@@ -246,7 +246,7 @@ namespace GW.Helpers
 
         public JOINTYPE JoinType { get; set; }
 
-        public TableDef JoinTable { get; set; }
+        public string AliasJoinTable { get; set; }
     }
 
     public record FieldDef
@@ -290,7 +290,7 @@ namespace GW.Helpers
         }
 
         public void AddTable(string name, string alias, bool allcolumns, 
-            string pk, string joinfield , JOINTYPE join, TableDef jointable )
+            string pk, string joinfield , JOINTYPE join, string aliasjointable )
         {
             var obj = new TableDef
             {
@@ -300,7 +300,7 @@ namespace GW.Helpers
                 PKFieldName = pk,
                 JoinFieldName = joinfield,
                 JoinType = join,
-                JoinTable = jointable
+                AliasJoinTable = aliasjointable
             };
 
             _Tables.Add(obj); 
@@ -396,8 +396,10 @@ namespace GW.Helpers
 
                     }
 
+                    TableDef jointable = _Tables.Where(a =>a.Alias ==t.AliasJoinTable ).FirstOrDefault();
+                        
                     strq.Append($"{join_text} {t.Name} {t.Alias}{" on "} "+
-                         $"{t.JoinTable.Alias}.{t.JoinTable.PKFieldName} = {t.Alias}.{t.JoinFieldName} ");
+                         $"{jointable.Alias}.{jointable.PKFieldName} = {t.Alias}.{t.JoinFieldName} ");
                 }
             }
 
@@ -429,12 +431,22 @@ namespace GW.Helpers
                 text = text + " " +  extrawhere;
             }
 
-            text = text + " order by ";
+           
+
+            bool flagorder = false; 
 
             foreach (FieldDef f in _Fields)
             {
                 if (f.OrderType != ORDERBYTYPE.NONE)
                 {
+                    flagorder = true;
+                    
+                    if (flagorder) 
+                    {
+                        text = text + " order by ";
+                        flagorder = false;  
+                    }
+
                     if (f.OrderType != ORDERBYTYPE.ASC)
                     {
                         strq.Append($"{f.TableAlias}.{f.FieldName} ASC,");

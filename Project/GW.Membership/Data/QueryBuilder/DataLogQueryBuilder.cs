@@ -27,7 +27,7 @@ namespace GW.Membership.Data
 
             SelectBuilder.Clear();
             SelectBuilder.AddTable("sysDataLog", "l", true, "UserID", "", JOINTYPE.NONE, null);
-            SelectBuilder.AddTable("sysUser", "u", false, "DataLogID", "UserID", JOINTYPE.INNER, SelectBuilder.Tables[0]);
+            SelectBuilder.AddTable("sysUser", "u", false, "DataLogID", "UserID", JOINTYPE.INNER, "l");
             SelectBuilder.AddField("u", "Email", "", true,null,null, ORDERBYTYPE.NONE);
             SelectBuilder.AddField("l", "DataLogID", "@pDataLogID",false,"0",null, ORDERBYTYPE.NONE);
             
@@ -57,7 +57,7 @@ namespace GW.Membership.Data
 
             SelectBuilder.Clear();
             SelectBuilder.AddTable("sysDataLog", "l", true, "UserID", "", JOINTYPE.NONE, null);
-            SelectBuilder.AddTable("sysUser", "u", false, "DataLogID", "UserID", JOINTYPE.INNER, SelectBuilder.Tables[0]);
+            SelectBuilder.AddTable("sysUser", "u", false, "DataLogID", "UserID", JOINTYPE.INNER, "l");
             SelectBuilder.AddField("u", "Email", "@pEmail", true, "''", null, ORDERBYTYPE.NONE);
 
             SelectBuilder.AddField("l", "UserID", "@pUserID", false,"0",null, ORDERBYTYPE.NONE);

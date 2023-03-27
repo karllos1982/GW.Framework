@@ -56,7 +56,7 @@ namespace GW.Membership.Test
             DataLogResult result = null;
             DataLogParam param = new DataLogParam();
 
-            param.pDataLogID = 0; 
+            param.pDataLogID = -1; 
 
             result = await res.Domain.DataLog.Get(param);
 
