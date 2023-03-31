@@ -11,17 +11,25 @@ namespace GW.Membership.Data
        
         public UserRolesRepository(IContext context)
         {
-            Context = context;            
+            Context = context;
+
+            TableName = "sysUserRoles";
+            PKFieldName = "UserRoleD";
+
         }
          
         private UserRolesQueryBuilder query = new UserRolesQueryBuilder();
+
+        public string TableName { get; set; }
+
+        public string PKFieldName { get; set; }
 
         public IContext Context { get; set; }
 
         public async Task Create(UserRolesEntry model)
         {
             
-            string sql = query.QueryForCreate("sysUserRoles", model,model);
+            string sql = query.QueryForCreate(TableName, model,model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
@@ -41,7 +49,7 @@ namespace GW.Membership.Data
         public async Task Update(UserRolesEntry model)
         {
             
-            string sql = query.QueryForUpdate("sysUserRoles", model, model);
+            string sql = query.QueryForUpdate(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
@@ -49,7 +57,7 @@ namespace GW.Membership.Data
         public async Task Delete(UserRolesEntry model)
         {            
 
-            string sql = query.QueryForDelete("sysUserRoles", model, model);
+            string sql = query.QueryForDelete(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }

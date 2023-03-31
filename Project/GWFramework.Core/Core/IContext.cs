@@ -24,6 +24,10 @@ namespace GW.Core
 
         Task<List<LocalizationTextItem>> GetLocalizationTextsAsync();
 
+        Task<bool> CheckUniqueValueForInsert(string tablename, string fieldname, string fieldvalue);
+
+        Task<bool> CheckUniqueValueForUpdate(string tablename, string fieldname,
+                   string fieldvalue, string pkfieldname, string pkvalue); 
 
         void Dispose(); 
 

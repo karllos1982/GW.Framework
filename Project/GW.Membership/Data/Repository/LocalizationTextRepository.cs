@@ -12,9 +12,15 @@ namespace GW.Membership.Data
         public LocalizationTextRepository(IContext context)
         {
             Context = context;
+            TableName = "sysLocalizationText";
+            PKFieldName = "LocalizationTextID";
         }
 
         private LocalizationTextQueryBuilder query = new LocalizationTextQueryBuilder();
+
+        public string TableName { get; set; }
+
+        public string PKFieldName { get; set; }
 
         public IContext Context { get; set; }
 
@@ -22,7 +28,7 @@ namespace GW.Membership.Data
         {
             OperationStatus ret = new OperationStatus(true);
 
-            string sql = query.QueryForCreate("sysLocalizationText", model, model);
+            string sql = query.QueryForCreate(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
         }
 
@@ -40,7 +46,7 @@ namespace GW.Membership.Data
         public async Task Update(LocalizationTextEntry model)
         {
 
-            string sql = query.QueryForUpdate("sysLocalizationText", model, model);
+            string sql = query.QueryForUpdate(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
 
         }
@@ -48,7 +54,7 @@ namespace GW.Membership.Data
         public async Task Delete(LocalizationTextEntry model)
         {
 
-            string sql = query.QueryForDelete("sysLocalizationText", model, model);
+            string sql = query.QueryForDelete(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
 
         }

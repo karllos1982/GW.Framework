@@ -115,7 +115,15 @@ namespace GW.Helpers
              
                 return ret;
             }
-        }  
+
+            public static void AddCheckValidationException(ref OperationStatus status,
+                string fieldname, string message)
+            {   
+                status.Status = false;
+                status.Error = new Exception(message);
+                status.AddInnerException(fieldname, message);
+            }
+    }  
 
 
         /// <summary>
@@ -652,6 +660,7 @@ namespace GW.Helpers
             }
 
         }
-    
+
+        
 
 }

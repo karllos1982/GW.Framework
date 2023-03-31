@@ -75,52 +75,39 @@ namespace GW.Membership.Domain
         public async Task InsertValidation(InstanceEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam()
-            {
-                pInstanceName = obj.InstanceName
-            };
 
-            List<InstanceList> list
-                = await RepositorySet.Instance.List(param);
 
-            if (list != null)
+            bool check =
+              await RepositorySet.Instance.Context.CheckUniqueValueForInsert(RepositorySet.Instance.TableName, "InstanceName", obj.InstanceName);
+
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    ret.Status = false;
-                    string msg
-                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Instance Name"); 
-                    ret.Error = new Exception(msg);
-                    ret.AddInnerException("InstanceName", msg);
-                }
+                PrimaryValidation.AddCheckValidationException(ref ret, "InstanceName",
+                    string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Instance Name"));
+              
             }
 
-            Context.ExecutionStatus = ret;
+             Context.ExecutionStatus = ret;
 
         }
 
         public async Task UpdateValidation(InstanceEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            InstanceParam param = new InstanceParam() { pInstanceName = obj.InstanceName };
-            List<InstanceList> list
-                = await RepositorySet.Instance.List(param);
 
-            if (list != null)
+
+            bool check =
+              await RepositorySet.Instance.Context.CheckUniqueValueForUpdate(RepositorySet.Instance.TableName, "InstanceName",
+                    obj.InstanceName, RepositorySet.User.PKFieldName,obj.InstanceID.ToString());
+
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    if (list[0].InstanceID != obj.InstanceID)
-                    {
-                        ret.Status = false;
-                        string msg 
-                            = string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Instance Name");
-                        ret.Error = new Exception(msg);
-                        ret.AddInnerException("InstanceName", msg);
-                    }
-                }
+                PrimaryValidation.AddCheckValidationException(ref ret, "InstanceName",
+                    string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Instance Name"));
+
             }
 
+       
             Context.ExecutionStatus = ret;
 
         }

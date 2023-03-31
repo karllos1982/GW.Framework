@@ -76,27 +76,21 @@ namespace GW.Membership.Domain
         public async Task InsertValidation(LocalizationTextEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
+
+            bool check =
+                  await RepositorySet.LocalizationText.Context.CheckUniqueValueForInsert(RepositorySet.LocalizationText.TableName, "Code", obj.Code);
+
+            if (!check)
+            {
+                PrimaryValidation.AddCheckValidationException(ref ret, "Code",
+                    string.Format(GW.LocalizationText.Get("Validation-Unique-Value",
+                        Context.LocalizationLanguage).Text, "Code"));
+            }
+         
+
             LocalizationTextParam param = null;
             List<LocalizationTextList> list = null;
-
-            // verificar por code
-
-            param = new LocalizationTextParam() { pCode = obj.Code };
-            list  = await RepositorySet.LocalizationText.List(param);
-
-            if (list != null)
-            {
-                if (list.Count > 0 )
-                {
-                    ret.Status = false;
-                    string msg
-                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",
-                        Context.LocalizationLanguage).Text, "Code");
-                    ret.Error = new Exception(msg);
-                    ret.AddInnerException("Code", msg);
-                }
-            }
-
+          
             // verificar por name na mesma linguagem
 
             param = new LocalizationTextParam() { pName = obj.Name };
@@ -128,25 +122,16 @@ namespace GW.Membership.Domain
 
             // verificar por code
 
-            param = new LocalizationTextParam() { pCode = obj.Code };
-            list = await RepositorySet.LocalizationText.List(param);
+            bool check =
+            await RepositorySet.LocalizationText.Context.CheckUniqueValueForUpdate(RepositorySet.LocalizationText.TableName, "Code",
+                  obj.Code, RepositorySet.User.PKFieldName, obj.LocalizationTextID.ToString());
 
-            if (list != null)
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    if (list[0].LocalizationTextID != obj.LocalizationTextID)
-                    {
-                        ret.Status = false;
-                        string msg
-                            = string.Format(GW.LocalizationText.Get("Validation-Unique-Value", 
-                            Context.LocalizationLanguage).Text, "Code");
-                        ret.Error = new Exception(msg);
-                        ret.AddInnerException("Code", msg);
-                    }
-                }
-            }
-
+                PrimaryValidation.AddCheckValidationException(ref ret, "Code",
+                    string.Format(GW.LocalizationText.Get("Validation-Unique-Value",
+                            Context.LocalizationLanguage).Text, "Code"));
+            }      
 
             // verificar por name na mesma linguagem
 

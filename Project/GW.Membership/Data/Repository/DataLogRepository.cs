@@ -11,17 +11,23 @@ namespace GW.Membership.Data
        
         public DataLogRepository(IContext context)
         {
-            Context = context;            
+            Context = context;
+            TableName = "sysDataLog"; 
+            PKFieldName = "DataLogID";
         }
          
         private DataLogQueryBuilder query = new DataLogQueryBuilder();
+
+        public string TableName { get; set; }
+
+        public string PKFieldName { get; set; }
 
         public IContext Context { get; set; }
 
         public async Task Create(DataLogEntry model)
         {
             
-            string sql = query.QueryForCreate("sysDataLog", model,model);
+            string sql = query.QueryForCreate(TableName, model,model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
 
         }
@@ -39,7 +45,7 @@ namespace GW.Membership.Data
 
         public async Task Update(DataLogEntry model)
         {            
-            string sql = query.QueryForUpdate("sysDataLog", model, model);
+            string sql = query.QueryForUpdate(TableName, model, model);
               await ((DapperContext)Context).ExecuteAsync(sql, model);
          
         }
@@ -47,7 +53,7 @@ namespace GW.Membership.Data
         public async Task Delete(DataLogEntry model)
         {
             
-            string sql = query.QueryForDelete("sysDataLog", model, model);
+            string sql = query.QueryForDelete(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
 
             

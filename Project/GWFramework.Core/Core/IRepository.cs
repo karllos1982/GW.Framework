@@ -4,6 +4,9 @@ namespace GW.Core
 {
     public interface IRepository<TParam,TEntry,TResult, TList>
     {
+        string TableName { get; set; }
+
+        string PKFieldName { get; set; }
 
         IContext Context { get; set; }
 
@@ -39,7 +42,7 @@ namespace GW.Core
 
         List<TResult> Search(TParam param);
 
-
+        
     }
 
 }

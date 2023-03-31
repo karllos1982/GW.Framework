@@ -11,17 +11,23 @@ namespace GW.Membership.Data
        
         public ObjectPermissionRepository(IContext context)
         {
-            Context = context;            
+            Context = context;
+            TableName = "sysObjectPermission";
+            PKFieldName = "ObjectPermissionID";
         }
          
         private ObjectPermissionQueryBuilder query = new ObjectPermissionQueryBuilder();
 
         public IContext Context { get; set; }
 
+        public string TableName { get; set; }
+
+        public string PKFieldName { get; set; }
+
         public async Task Create(ObjectPermissionEntry model)
         {
             
-            string sql = query.QueryForCreate("sysObjectPermission", model,model);
+            string sql = query.QueryForCreate(TableName, model,model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
@@ -41,7 +47,7 @@ namespace GW.Membership.Data
         public async Task Update(ObjectPermissionEntry model)
         {
             
-            string sql = query.QueryForUpdate("sysObjectPermission", model, model);
+            string sql = query.QueryForUpdate(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
 
          }
@@ -49,7 +55,7 @@ namespace GW.Membership.Data
         public async Task Delete(ObjectPermissionEntry model)
         {
             
-            string sql = query.QueryForDelete("sysObjectPermission", model, model);
+            string sql = query.QueryForDelete(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
 
         }

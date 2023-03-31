@@ -11,17 +11,24 @@ namespace GW.Membership.Data
        
         public SessionLogRepository(IContext context)
         {
-            Context = context;            
+            Context = context;
+            TableName = "sysSession";
+            PKFieldName = "SessionID";
+
         }
          
         private SessionQueryBuilder query = new SessionQueryBuilder();
+
+        public string TableName { get; set; }
+
+        public string PKFieldName { get; set; }
 
         public IContext Context { get; set; }
 
         public async Task Create(SessionLogEntry model)
         {
             
-            string sql = query.QueryForCreate("sysSession", model,model);
+            string sql = query.QueryForCreate(TableName, model,model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
@@ -41,7 +48,7 @@ namespace GW.Membership.Data
         public async Task Update(SessionLogEntry model)
         {
             
-            string sql = query.QueryForUpdate("sysSession", model, model);
+            string sql = query.QueryForUpdate(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
             
         }
@@ -49,7 +56,7 @@ namespace GW.Membership.Data
         public async Task Delete(SessionLogEntry model)
         {
             
-            string sql = query.QueryForDelete("sysSession", model, model);
+            string sql = query.QueryForDelete(TableName, model, model);
             await ((DapperContext)Context).ExecuteAsync(sql, model);
  
         }

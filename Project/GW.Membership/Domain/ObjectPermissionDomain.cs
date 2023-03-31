@@ -72,26 +72,17 @@ namespace GW.Membership.Domain
         public async Task InsertValidation(ObjectPermissionEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            ObjectPermissionParam param = new ObjectPermissionParam()
+
+
+            bool check =
+            await RepositorySet.ObjectPermission.Context.CheckUniqueValueForInsert(RepositorySet.ObjectPermission.TableName, "ObjectCode", obj.ObjectCode) ;
+
+            if (!check)
             {
-                pObjectCode = obj.ObjectCode
-            };
-
-            List<ObjectPermissionList> list
-                = await RepositorySet.ObjectPermission.List(param);
-
-            if (list != null)
-            {
-                if (list.Count > 0)
-                {
-                    ret.Status = false;
-                    string msg 
-                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Object Code");
-                    ret.Error = new Exception(msg);
-                    ret.AddInnerException("ObjectCode", msg);
-
-                }
+                PrimaryValidation.AddCheckValidationException(ref ret, "ObjectCode",
+                   string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Object Code"));
             }
+
 
             Context.ExecutionStatus = ret;
            
@@ -100,26 +91,18 @@ namespace GW.Membership.Domain
         public async Task UpdateValidation(ObjectPermissionEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            ObjectPermissionParam param = new ObjectPermissionParam() { pObjectCode = obj.ObjectCode };
-           
-            List<ObjectPermissionList> list
-                = await RepositorySet.ObjectPermission.List(param);
 
-            if (list != null)
+            bool check =
+                 await RepositorySet.ObjectPermission.Context.CheckUniqueValueForUpdate(RepositorySet.ObjectPermission.TableName, "ObjectCode",
+                obj.ObjectCode, RepositorySet.User.PKFieldName, obj.ObjectPermissionID.ToString());
+
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    if (list[0].ObjectPermissionID != obj.ObjectPermissionID)
-                    {
-                        ret.Status = false;
-                        string msg 
-                            = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Object Code");
-                        ret.Error = new Exception(msg);
-                        ret.AddInnerException("ObjectCode", msg); 
-                    }
-                }
+                PrimaryValidation.AddCheckValidationException(ref ret, "ObjectCode",
+                    string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Object Code"));
             }
 
+       
             Context.ExecutionStatus = ret;    
 
         }

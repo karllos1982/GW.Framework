@@ -625,7 +625,37 @@ namespace GW.Membership.Data
 
         }
 
+        public async Task<bool> CheckUniqueValueForInsert(
+            string tablename, string fieldname, string fieldvalue)
+        {
+            bool ret = true;
 
+            string sqltext = $"exec CheckUniqueValueForInsert '{tablename}','{fieldname}','{fieldvalue}'";
+
+
+            int cnt =  await ExecuteQueryFirstAsync<int>(sqltext);
+
+            if (cnt > 0) { ret = false;  }
+
+            return ret;
+        }
+
+        public async Task<bool> CheckUniqueValueForUpdate(
+          string tablename, string fieldname, string fieldvalue, 
+          string pkfieldname, string pkvalue)
+        {
+            bool ret = true;
+
+            string sqltext = $"exec CheckUniqueValueForUpdate " +
+                $"'{tablename}','{fieldname}','{fieldvalue}','{pkfieldname}',{pkvalue}";
+
+            int cnt = await ExecuteQueryFirstAsync<int>(sqltext);
+
+            if (cnt > 0) { ret = false; }
+
+            return ret;
+        }
+   
         public async Task<List<LocalizationTextItem>> GetLocalizationTextsAsync()
         {
             List<LocalizationTextItem> ret = new List<LocalizationTextItem>();  

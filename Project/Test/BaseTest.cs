@@ -64,7 +64,7 @@ namespace Test
             Settings = new TesteConfigs();
             Builder = new TestContextBuilder(Settings);
             Context = new DapperContext(Settings);
-            Context.LocalizationLanguage = "eng-us"; 
+            Context.LocalizationLanguage = "en-us"; 
             Repository = new MembershipRepositorySet(Context);
             Domain = new MembershipManager(Context, Repository);
 

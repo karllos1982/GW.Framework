@@ -6,6 +6,7 @@ using GW.Membership.Models;
 using GW.Membership.Contracts.Data;
 using GW.Helpers;
 
+
 namespace GW.Membership.Domain
 {
     public class UserDomain : IUserDomain
@@ -96,24 +97,26 @@ namespace GW.Membership.Domain
         public async Task InsertValidation(UserEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            UserParam param = new UserParam()
-            {
-                pEmail = obj.Email,
-            };
 
-            List<UserList> list
-                = await RepositorySet.User.List(param);
+            bool check =
+                await RepositorySet.User.Context.CheckUniqueValueForInsert(RepositorySet.User.TableName, "Email", obj.Email) ;
 
-            if (list != null)
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    ret.Status = false;
-                    string msg = GW.LocalizationText.Get("Email-Exists", Context.LocalizationLanguage).Text;
-                    ret.Error = new Exception(msg);
-                    ret.AddInnerException("Email", msg);
-                }
+                PrimaryValidation.AddCheckValidationException(ref ret, "Email",
+                    GW.LocalizationText.Get("Email-Exists", Context.LocalizationLanguage).Text);           
             }
+
+            bool check2 =
+              await RepositorySet.User.Context.CheckUniqueValueForInsert(RepositorySet.User.TableName, "UserName", obj.UserName);
+
+            if (!check2)
+            {               
+
+                PrimaryValidation.AddCheckValidationException(ref ret, "UserName",
+                  GW.LocalizationText.Get("User-Exists", Context.LocalizationLanguage).Text);
+            }
+
 
             Context.ExecutionStatus = ret;
          
@@ -122,23 +125,28 @@ namespace GW.Membership.Domain
         public async Task UpdateValidation(UserEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            UserParam param = new UserParam() { pEmail = obj.Email };
 
-            List<UserList> list
-                = await RepositorySet.User.List(param);
+            bool check =
+              await RepositorySet.User.Context.CheckUniqueValueForUpdate(RepositorySet.User.TableName, "Email", 
+                    obj.Email, RepositorySet.User.PKFieldName, obj.UserID.ToString());
 
-            if (list != null)
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    if (list[0].UserID != obj.UserID)
-                    {
-                        ret.Status = false;
-                        string msg = GW.LocalizationText.Get("Email-Exists", Context.LocalizationLanguage).Text;
-                        ret.Error = new Exception(msg);
-                        ret.AddInnerException("Email", msg);
-                    }
-                }
+                PrimaryValidation.AddCheckValidationException(ref ret, "Email",
+                    GW.LocalizationText.Get("Email-Exists", Context.LocalizationLanguage).Text);            
+            }
+
+            //
+
+            bool check2 =
+                 await RepositorySet.User.Context.CheckUniqueValueForUpdate(RepositorySet.User.TableName, "UserName",
+                obj.Email, RepositorySet.User.PKFieldName, obj.UserName);
+
+            if (!check2)
+             {               
+
+                PrimaryValidation.AddCheckValidationException(ref ret, "UserName",
+                  GW.LocalizationText.Get("User-Exists", Context.LocalizationLanguage).Text);
             }
 
             Context.ExecutionStatus = ret;      

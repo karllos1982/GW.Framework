@@ -71,25 +71,15 @@ namespace GW.Membership.Domain
         public async Task InsertValidation(RoleEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            RoleParam param = new RoleParam()
-            {
-                pRoleName = obj.RoleName
-            };
 
-            List<RoleList> list
-                = await RepositorySet.Role.List(param);
+            bool check =
+                await RepositorySet.Role.Context.CheckUniqueValueForInsert(RepositorySet.Role.TableName, "RoleName", obj.RoleName);
 
-            if (list != null)
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    ret.Status = false;
-                    string msg 
-                        = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Role Name");
-                    ret.Error = new Exception(msg);
-                    ret.AddInnerException("RoleName", msg);
-                }
-            }
+                PrimaryValidation.AddCheckValidationException(ref ret, "RoleName",
+                   string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Role Name"));
+            }  
 
             Context.ExecutionStatus = ret;
           
@@ -98,25 +88,16 @@ namespace GW.Membership.Domain
         public async Task UpdateValidation(RoleEntry obj)
         {
             OperationStatus ret = new OperationStatus(true);
-            RoleParam param = new RoleParam() { pRoleName = obj.RoleName };
 
-            List<RoleList> list
-                = await RepositorySet.Role.List(param);
+            bool check =
+                await RepositorySet.Role.Context.CheckUniqueValueForUpdate(RepositorySet.Role.TableName, "RoleName",
+                obj.RoleName, RepositorySet.User.PKFieldName, obj.RoleID.ToString());
 
-            if (list != null)
+            if (!check)
             {
-                if (list.Count > 0)
-                {
-                    if (list[0].RoleID != obj.RoleID)
-                    {
-                        ret.Status = false;
-                        string msg 
-                            = string.Format(GW.LocalizationText.Get("Validation-Unique-Value",Context.LocalizationLanguage).Text, "Role Name");
-                        ret.Error = new Exception(msg);
-                        ret.AddInnerException("RoleName", msg);
-                    }
-                }
-            }
+                PrimaryValidation.AddCheckValidationException(ref ret, "RoleName",
+                    string.Format(GW.LocalizationText.Get("Validation-Unique-Value", Context.LocalizationLanguage).Text, "Role Name"));
+            }          
 
             Context.ExecutionStatus = ret;          
 
