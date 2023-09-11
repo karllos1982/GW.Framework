@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GW.Membership</id>
+    <version>2.0.29</version>
+    <authors>Carlos Fonteles</authors>
+    <projectUrl>https://github.com/karllos1982/GW.Framework</projectUrl>
+    <description>Library foundations for building apps such as websites, desktop and mobile. There are all materials for managing users, roles and logs. It is linked to GW.Framework package.</description>
+    <repository url="https://github.com/karllos1982/GW.Framework" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="GW.Framework" version="4.0.29" exclude="Build,Analyzers" />
+        <dependency id="Dapper" version="2.0.123" exclude="Build,Analyzers" />
+        <dependency id="System.Data.SqlClient" version="4.8.5" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug\net6.0\GW.Membership.dll" target="lib\net6.0\GW.Membership.dll" />
+  </files>
+</package>

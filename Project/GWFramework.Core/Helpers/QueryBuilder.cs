@@ -399,7 +399,7 @@ namespace GW.Helpers
                     TableDef jointable = _Tables.Where(a =>a.Alias ==t.AliasJoinTable ).FirstOrDefault();
                         
                     strq.Append($"{join_text} {t.Name} {t.Alias}{" on "} "+
-                         $"{jointable.Alias}.{jointable.PKFieldName} = {t.Alias}.{t.JoinFieldName} ");
+                         $"{jointable.Alias}.{t.JoinFieldName} = {t.Alias}.{t.JoinFieldName} ");
                 }
             }
 

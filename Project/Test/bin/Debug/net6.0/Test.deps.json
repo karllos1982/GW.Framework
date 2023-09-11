@@ -9,15 +9,15 @@
       "Test/1.0.0": {
         "dependencies": {
           "Dapper": "2.0.123",
-          "GW.Framework": "4.0.26",
-          "GW.Membership": "2.0.26",
+          "GW.Framework": "4.0.29",
+          "GW.Membership": "2.0.29",
           "MSTest.TestAdapter": "2.2.8",
           "MSTest.TestFramework": "2.2.8",
           "Microsoft.NET.Test.Sdk": "17.1.0",
           "Shouldly": "4.1.0",
           "System.Data.SqlClient": "4.8.5",
           "coverlet.collector": "3.1.2",
-          "GW.Framework.Reference": "4.0.26.0"
+          "GW.Framework.Reference": "4.0.29.0"
         },
         "runtime": {
           "Test.dll": {}
@@ -1158,7 +1158,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "GW.Framework/4.0.26": {
+      "GW.Framework/4.0.29": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.2"
         },
@@ -1166,21 +1166,21 @@
           "GW.Framework.dll": {}
         }
       },
-      "GW.Membership/2.0.26": {
+      "GW.Membership/2.0.29": {
         "dependencies": {
           "Dapper": "2.0.123",
-          "GW.Framework": "4.0.26",
+          "GW.Framework": "4.0.29",
           "System.Data.SqlClient": "4.8.5"
         },
         "runtime": {
           "GW.Membership.dll": {}
         }
       },
-      "GW.Framework.Reference/4.0.26.0": {
+      "GW.Framework.Reference/4.0.29.0": {
         "runtime": {
           "GW.Framework.dll": {
-            "assemblyVersion": "4.0.26.0",
-            "fileVersion": "4.0.26.0"
+            "assemblyVersion": "4.0.29.0",
+            "fileVersion": "4.0.29.0"
           }
         }
       }
@@ -1892,17 +1892,17 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "GW.Framework/4.0.26": {
+    "GW.Framework/4.0.29": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "GW.Membership/2.0.26": {
+    "GW.Membership/2.0.29": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "GW.Framework.Reference/4.0.26.0": {
+    "GW.Framework.Reference/4.0.29.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

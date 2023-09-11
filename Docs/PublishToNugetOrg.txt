@@ -5,7 +5,7 @@ carlos.aspnet@hotmail.com
 # API Keys:
 
 
-NEW: oy2i5jhm6mqnsho3zoga6j4qspphu75ebakwipliafquhi
+NEW: oy2grapfffav63t5sq3qlmgbcux4cg5e5evggm3olxmcpi
 
 
 # cli command:
@@ -16,10 +16,10 @@ dotnet pack
 cd \..
 cd LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GWFramework.Core\bin\Debug
 
-dotnet nuget push GW.Framework.4.0.27.nupkg --api-key oy2i5jhm6mqnsho3zoga6j4qspphu75ebakwipliafquhi --source https://api.nuget.org/v3/index.json
+dotnet nuget push GW.Framework.4.0.29.nupkg --api-key oy2grapfffav63t5sq3qlmgbcux4cg5e5evggm3olxmcpi --source https://api.nuget.org/v3/index.json
 
 
 cd \..
 cd LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug
 
-dotnet nuget push GW.Membership.2.0.27.nupkg --api-key oy2i5jhm6mqnsho3zoga6j4qspphu75ebakwipliafquhi --source https://api.nuget.org/v3/index.json
+dotnet nuget push GW.Membership.2.0.29.nupkg --api-key oy2grapfffav63t5sq3qlmgbcux4cg5e5evggm3olxmcpi --source https://api.nuget.org/v3/index.json

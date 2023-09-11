@@ -257,6 +257,8 @@ insert into sysLocalizationText Values(1252,      'en-us','1252','Permissions-Me
 insert into sysLocalizationText Values(1253,      'en-us','1253','Localization-MenuText','Localization Texts')
 insert into sysLocalizationText Values(1254,      'en-us','1254','DataLog-MenuText','Data Log')
 insert into sysLocalizationText Values(1255,      'en-us','1255','SessionLog-MenuText','Session Log')
+insert into sysLocalizationText Values(1256,      'en-us','1256','Save-Label','Save')
+insert into sysLocalizationText Values(1257,      'en-us','1257','New-Label','New Record')
 
 -- 
 
@@ -516,3 +518,5 @@ insert into sysLocalizationText Values(2252,      'pt-br','2252','Permissions-Me
 insert into sysLocalizationText Values(2253,      'pt-br','2253','Localization-MenuText','Textos de Localização')
 insert into sysLocalizationText Values(2254,      'pt-br','2254','DataLog-MenuText','Log de Dados')
 insert into sysLocalizationText Values(2255,      'pt-br','2255','SessionLog-MenuText','Log de Sessão')
+insert into sysLocalizationText Values(2256,      'pt-br','2256','Save-Label','Salvar')
+insert into sysLocalizationText Values(2257,      'pt-br','2257','New-Label','Novo Registro')
