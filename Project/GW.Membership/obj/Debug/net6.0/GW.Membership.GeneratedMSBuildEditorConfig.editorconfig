@@ -9,3 +9,5 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GW.Membership.Domain
 build_property.ProjectDir = H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

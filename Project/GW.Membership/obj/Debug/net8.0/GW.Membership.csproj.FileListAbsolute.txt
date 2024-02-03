@@ -1,0 +1,16 @@
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug\net8.0\GW.Membership.deps.json
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug\net8.0\GW.Membership.dll
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug\net8.0\GW.Membership.pdb
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug\net8.0\GW.Framework.dll
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\bin\Debug\net8.0\GW.Framework.pdb
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.csproj.AssemblyReference.cache
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.GeneratedMSBuildEditorConfig.editorconfig
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.AssemblyInfoInputs.cache
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.AssemblyInfo.cs
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.csproj.CoreCompileInputs.cache
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.sourcelink.json
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.csproj.CopyComplete
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.dll
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\refint\GW.Membership.dll
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.pdb
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\ref\GW.Membership.dll

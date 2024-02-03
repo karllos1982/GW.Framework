@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>    
-    <AssemblyVersion>4.0.29</AssemblyVersion>
-    <FileVersion>4.0.29</FileVersion>
+    <AssemblyVersion>4.1.0</AssemblyVersion>
+    <FileVersion>4.1.0</FileVersion>
     <AssemblyName>GW.Framework</AssemblyName>
     <RootNamespace>GW.Framework.Core</RootNamespace>
     <PackageId>GW.Framework</PackageId>
-    <Version>4.0.29</Version>
+    <Version>4.1.0</Version>
     <Authors>Carlos Fonteles</Authors>
     <Company>GW Tecnologia</Company>
     <Product>GW.Framework</Product>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
