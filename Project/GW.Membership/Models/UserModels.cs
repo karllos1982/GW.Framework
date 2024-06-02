@@ -40,6 +40,8 @@ namespace GW.Membership.Models
 
         public string InstanceName { get; set; }
 
+        public string InstanceID { get; set; }
+
         public string HomeURL { get; set; }
 
         public string ProfileImageURL { get; set; }

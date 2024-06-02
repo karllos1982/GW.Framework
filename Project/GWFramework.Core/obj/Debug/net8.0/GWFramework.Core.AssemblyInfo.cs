@@ -15,11 +15,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Library fundations for building applications, like websites, desktop and mobile. " +
     "There is all stuffs for development of backend of this aplications.")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("4.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("4.1.0+4d61f79d6dc9ab221e542d1b61edef1d002db350")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("4.1.2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("4.1.2+9dbc68ba01eeb463e3cb478f9998d2a384b019e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("GW.Framework")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GW.Framework")]
-[assembly: System.Reflection.AssemblyVersionAttribute("4.1.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("4.1.2")]
 [assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/karllos1982/GW.Framework")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.

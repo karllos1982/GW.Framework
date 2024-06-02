@@ -9,7 +9,7 @@ H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Member
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.AssemblyInfo.cs
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.csproj.CoreCompileInputs.cache
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.sourcelink.json
-H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.csproj.CopyComplete
+H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membe.24A555AD.Up2Date
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.dll
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\refint\GW.Membership.dll
 H:\LocalDrive_00\Projetos\GearsOfWeb_Project\v4.0\GW.Framework\Project\GW.Membership\obj\Debug\net8.0\GW.Membership.pdb
